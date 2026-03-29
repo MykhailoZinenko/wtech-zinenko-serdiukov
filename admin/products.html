@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products — Admin — White Wolf Emporium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+<div class="sidebar-overlay"></div>
+
+<div class="admin-wrap">
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <span class="sidebar__brand-name">White Wolf Emporium</span>
+      <span class="sidebar__brand-sub">Admin Panel</span>
+    </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__section">Overview</span>
+      <a href="dashboard.html" class="sidebar__link"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <span class="sidebar__section">Catalogue</span>
+      <a href="products.html" class="sidebar__link active" aria-current="page"><i class="bi bi-box-seam"></i> Products</a>
+      <a href="product-add.html" class="sidebar__link"><i class="bi bi-plus-circle"></i> Add Product</a>
+      <span class="sidebar__section">Sales</span>
+      <a href="orders.html" class="sidebar__link"><i class="bi bi-receipt"></i> Orders <span class="nav-badge">12</span></a>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="sidebar__avatar">AD</div>
+        <div>
+          <span class="sidebar__user-name">Admin Witcher</span>
+          <span class="sidebar__user-role">Administrator</span>
+        </div>
+      </div>
+      <a href="login.html" class="sidebar__link"><i class="bi bi-box-arrow-left"></i> Sign Out</a>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button class="topbar-toggle" aria-label="Toggle sidebar"><i class="bi bi-list"></i></button>
+      <div class="topbar-search">
+        <i class="bi bi-search"></i>
+        <input type="search" placeholder="Search products…" />
+      </div>
+      <div class="topbar-actions">
+        <a href="orders.html" class="topbar-btn" title="Orders"><i class="bi bi-receipt"></i><span class="notif-dot"></span></a>
+        <button class="topbar-btn" title="Notifications"><i class="bi bi-bell"></i></button>
+        <div class="topbar-avatar" title="Admin Witcher">AD</div>
+      </div>
+    </header>
+
+    <main class="admin-page">
+      <div class="page-hdr">
+        <div class="page-hdr__left">
+          <h1 class="page-hdr__title">Products</h1>
+          <p class="page-hdr__sub">1,207 products · 34 low stock · 12 limited edition</p>
+        </div>
+        <div class="page-hdr__actions">
+          <a href="product-add.html" class="btn-base btn-gold"><i class="bi bi-plus-lg"></i> Add Product</a>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card stat-card--gold">
+          <div class="stat-card__icon"><i class="bi bi-box-seam"></i></div>
+          <div class="stat-card__label">Total Products</div>
+          <div class="stat-card__value">1,207</div>
+        </div>
+        <div class="stat-card stat-card--blue">
+          <div class="stat-card__icon"><i class="bi bi-tags"></i></div>
+          <div class="stat-card__label">Categories</div>
+          <div class="stat-card__value">14</div>
+        </div>
+        <div class="stat-card stat-card--red">
+          <div class="stat-card__icon"><i class="bi bi-exclamation-triangle"></i></div>
+          <div class="stat-card__label">Out of Stock</div>
+          <div class="stat-card__value">34</div>
+        </div>
+        <div class="stat-card stat-card--green">
+          <div class="stat-card__icon"><i class="bi bi-star"></i></div>
+          <div class="stat-card__label">Limited Items</div>
+          <div class="stat-card__value">12</div>
+        </div>
+      </div>
+
+      <div class="adm-card">
+        <div class="tbl-toolbar">
+          <div class="tbl-search">
+            <i class="bi bi-search"></i>
+            <input type="search" placeholder="Search by name or SKU…" />
+          </div>
+          <select class="input-base select-arrow select-input">
+            <option value="">All Categories</option>
+            <option>Silver Swords</option>
+            <option>Steel Swords</option>
+            <option>Axes &amp; Hammers</option>
+            <option>Armor Sets</option>
+            <option>Potions &amp; Decoctions</option>
+            <option>Herbs &amp; Ingredients</option>
+            <option>Monster Parts</option>
+            <option>Gwent Cards</option>
+          </select>
+          <select class="input-base select-arrow select-input">
+            <option value="">All Rarities</option>
+            <option>Common</option>
+            <option>New</option>
+            <option>Limited</option>
+            <option>Rare</option>
+            <option>Legendary</option>
+          </select>
+          <select class="input-base select-arrow select-input ms-auto">
+            <option>Sort: Newest</option>
+            <option>Sort: Name A–Z</option>
+            <option>Sort: Price ↑</option>
+            <option>Sort: Price ↓</option>
+            <option>Sort: Stock ↑</option>
+          </select>
+        </div>
+
+        <div class="tbl-wrap">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th class="col-hide-md">Category</th>
+                <th class="col-hide-md">Price</th>
+                <th class="col-hide-sm">Stock</th>
+                <th class="col-hide-sm">Rarity</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="tbl-product">
+                    <div class="tbl-thumb"><div class="placeholder-asset">IMG</div></div>
+                    <div>
+                      <a href="product-edit.html" class="tbl-product__name tbl-link">Aerondight</a>
+                      <span class="tbl-product__cat">Wolf School</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">Silver Swords</td>
+                <td class="col-hide-md td-gold">4,500 ℂ</td>
+                <td class="col-hide-sm"><span class="stock-low td-heading">3</span></td>
+                <td class="col-hide-sm"><span class="badge badge--gold">Legendary</span></td>
+                <td>
+                  <div class="row-actions">
+                    <a href="product-edit.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="Edit"><i class="bi bi-pencil"></i></a>
+                    <button class="btn-base btn-red btn-sm btn-icon" title="Delete" data-confirm="Permanently delete Aerondight?"><i class="bi bi-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tbl-product">
+                    <div class="tbl-thumb"><div class="placeholder-asset">IMG</div></div>
+                    <div>
+                      <a href="product-edit.html" class="tbl-product__name tbl-link">Iris</a>
+                      <span class="tbl-product__cat">—</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">Silver Swords</td>
+                <td class="col-hide-md td-gold">3,200 ℂ</td>
+                <td class="col-hide-sm"><span class="stock-ok td-heading">9</span></td>
+                <td class="col-hide-sm"><span class="badge badge--orange">Rare</span></td>
+                <td>
+                  <div class="row-actions">
+                    <a href="product-edit.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="Edit"><i class="bi bi-pencil"></i></a>
+                    <button class="btn-base btn-red btn-sm btn-icon" title="Delete" data-confirm="Permanently delete Iris?"><i class="bi bi-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tbl-product">
+                    <div class="tbl-thumb"><div class="placeholder-asset">IMG</div></div>
+                    <div>
+                      <a href="product-edit.html" class="tbl-product__name tbl-link">Thunderbolt Potion</a>
+                      <span class="tbl-product__cat">Alchemy</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">Potions &amp; Decoctions</td>
+                <td class="col-hide-md td-gold">85 ℂ</td>
+                <td class="col-hide-sm"><span class="stock-none td-heading">0</span></td>
+                <td class="col-hide-sm"><span class="badge badge--grey">Common</span></td>
+                <td>
+                  <div class="row-actions">
+                    <a href="product-edit.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="Edit"><i class="bi bi-pencil"></i></a>
+                    <button class="btn-base btn-red btn-sm btn-icon" title="Delete" data-confirm="Delete Thunderbolt Potion?"><i class="bi bi-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tbl-product">
+                    <div class="tbl-thumb"><div class="placeholder-asset">IMG</div></div>
+                    <div>
+                      <a href="product-edit.html" class="tbl-product__name tbl-link">Skellige Starter Deck</a>
+                      <span class="tbl-product__cat">—</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">Gwent Cards</td>
+                <td class="col-hide-md td-gold">340 ℂ</td>
+                <td class="col-hide-sm"><span class="stock-ok td-heading">24</span></td>
+                <td class="col-hide-sm"><span class="badge badge--blue">Limited</span></td>
+                <td>
+                  <div class="row-actions">
+                    <a href="product-edit.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="Edit"><i class="bi bi-pencil"></i></a>
+                    <button class="btn-base btn-red btn-sm btn-icon" title="Delete" data-confirm="Delete Skellige Starter Deck?"><i class="bi bi-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tbl-product">
+                    <div class="tbl-thumb"><div class="placeholder-asset">IMG</div></div>
+                    <div>
+                      <a href="product-edit.html" class="tbl-product__name tbl-link">Griffin School Armor</a>
+                      <span class="tbl-product__cat">Griffin School</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">Witcher Sets</td>
+                <td class="col-hide-md td-gold">1,840 ℂ</td>
+                <td class="col-hide-sm"><span class="stock-ok td-heading">7</span></td>
+                <td class="col-hide-sm"><span class="badge badge--orange">Rare</span></td>
+                <td>
+                  <div class="row-actions">
+                    <a href="product-edit.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="Edit"><i class="bi bi-pencil"></i></a>
+                    <button class="btn-base btn-red btn-sm btn-icon" title="Delete" data-confirm="Delete Griffin School Armor?"><i class="bi bi-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tbl-product">
+                    <div class="tbl-thumb"><div class="placeholder-asset">IMG</div></div>
+                    <div>
+                      <a href="product-edit.html" class="tbl-product__name tbl-link">Basilisk Claws (Set of 4)</a>
+                      <span class="tbl-product__cat">—</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">Monster Parts</td>
+                <td class="col-hide-md td-gold">120 ℂ</td>
+                <td class="col-hide-sm"><span class="stock-ok td-heading">42</span></td>
+                <td class="col-hide-sm"><span class="badge badge--grey">New</span></td>
+                <td>
+                  <div class="row-actions">
+                    <a href="product-edit.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="Edit"><i class="bi bi-pencil"></i></a>
+                    <button class="btn-base btn-red btn-sm btn-icon" title="Delete" data-confirm="Delete Basilisk Claws?"><i class="bi bi-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-bar">
+          <span>Showing 1–6 of 1,207 products</span>
+          <div class="pagination-btns">
+            <span class="pg-disabled"><i class="bi bi-chevron-left"></i></span>
+            <span class="pg-active">1</span>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <span class="pg-ellipsis">…</span>
+            <a href="#">201</a>
+            <a href="#"><i class="bi bi-chevron-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>

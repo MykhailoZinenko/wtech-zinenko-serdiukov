@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orders — Admin — White Wolf Emporium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+<div class="sidebar-overlay"></div>
+
+<div class="admin-wrap">
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <span class="sidebar__brand-name">White Wolf Emporium</span>
+      <span class="sidebar__brand-sub">Admin Panel</span>
+    </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__section">Overview</span>
+      <a href="dashboard.html" class="sidebar__link"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <span class="sidebar__section">Catalogue</span>
+      <a href="products.html" class="sidebar__link"><i class="bi bi-box-seam"></i> Products</a>
+      <a href="product-add.html" class="sidebar__link"><i class="bi bi-plus-circle"></i> Add Product</a>
+      <span class="sidebar__section">Sales</span>
+      <a href="orders.html" class="sidebar__link active" aria-current="page"><i class="bi bi-receipt"></i> Orders <span class="nav-badge">12</span></a>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="sidebar__avatar">AD</div>
+        <div>
+          <span class="sidebar__user-name">Admin Witcher</span>
+          <span class="sidebar__user-role">Administrator</span>
+        </div>
+      </div>
+      <a href="login.html" class="sidebar__link"><i class="bi bi-box-arrow-left"></i> Sign Out</a>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button class="topbar-toggle" aria-label="Toggle sidebar"><i class="bi bi-list"></i></button>
+      <div class="topbar-search">
+        <i class="bi bi-search"></i>
+        <input type="search" placeholder="Search orders, customers…" />
+      </div>
+      <div class="topbar-actions">
+        <a href="orders.html" class="topbar-btn" title="Orders"><i class="bi bi-receipt"></i><span class="notif-dot"></span></a>
+        <button class="topbar-btn" title="Notifications"><i class="bi bi-bell"></i></button>
+        <div class="topbar-avatar" title="Admin Witcher">AD</div>
+      </div>
+    </header>
+
+    <main class="admin-page">
+      <div class="page-hdr">
+        <div class="page-hdr__left">
+          <h1 class="page-hdr__title">Orders</h1>
+          <p class="page-hdr__sub">284 orders this month · 12 pending action</p>
+        </div>
+        <div class="page-hdr__actions">
+          <button class="btn-base btn-outline-gold"><i class="bi bi-download"></i> Export</button>
+        </div>
+      </div>
+
+      <div class="adm-card">
+        <div class="status-tabs">
+          <a href="#" class="status-tab active">All <span class="tab-count">284</span></a>
+          <a href="#" class="status-tab">Pending <span class="tab-count">12</span></a>
+          <a href="#" class="status-tab">Processing <span class="tab-count">37</span></a>
+          <a href="#" class="status-tab">Shipped <span class="tab-count">84</span></a>
+          <a href="#" class="status-tab">Delivered <span class="tab-count">143</span></a>
+          <a href="#" class="status-tab">Cancelled <span class="tab-count">8</span></a>
+        </div>
+
+        <div class="tbl-toolbar">
+          <div class="tbl-search">
+            <i class="bi bi-search"></i>
+            <input type="search" placeholder="Order #, customer name…" />
+          </div>
+          <select class="input-base select-arrow select-input">
+            <option>All Time</option>
+            <option>Today</option>
+            <option>Last 7 Days</option>
+            <option>Last 30 Days</option>
+            <option>This Month</option>
+          </select>
+          <select class="input-base select-arrow select-input">
+            <option value="">All Statuses</option>
+            <option>Pending</option>
+            <option>Processing</option>
+            <option>Shipped</option>
+            <option>Delivered</option>
+            <option>Cancelled</option>
+          </select>
+          <select class="input-base select-arrow select-input ms-auto">
+            <option>Sort: Newest</option>
+            <option>Sort: Oldest</option>
+            <option>Sort: Total ↑</option>
+            <option>Sort: Total ↓</option>
+          </select>
+        </div>
+
+        <div class="tbl-wrap">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Customer</th>
+                <th class="col-hide-md">Date</th>
+                <th class="col-hide-sm">Items</th>
+                <th class="col-hide-md">Shipping</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href="order-detail.html" class="tbl-link td-num">#2841</a></td>
+                <td>
+                  <div>
+                    <span>Geralt of Rivia</span>
+                    <span class="td-sub">geralt@kaermorhen.pl</span>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">11 Mar 2026<br><span class="td-sub">14:22</span></td>
+                <td class="col-hide-sm td-dim">3</td>
+                <td class="col-hide-md td-dim">Nilfgaardian Express</td>
+                <td class="td-gold">6,750 ℂ</td>
+                <td><span class="badge status-processing">Processing</span></td>
+                <td><a href="order-detail.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="View order"><i class="bi bi-arrow-right"></i></a></td>
+              </tr>
+              <tr>
+                <td><a href="order-detail.html" class="tbl-link td-num">#2840</a></td>
+                <td>
+                  <div>
+                    <span>Yennefer of Vengerberg</span>
+                    <span class="td-sub">yen@aretusa.ac</span>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">11 Mar 2026<br><span class="td-sub">11:08</span></td>
+                <td class="col-hide-sm td-dim">1</td>
+                <td class="col-hide-md td-dim">Royal Post</td>
+                <td class="td-gold">1,200 ℂ</td>
+                <td><span class="badge status-pending">Pending</span></td>
+                <td><a href="order-detail.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="View order"><i class="bi bi-arrow-right"></i></a></td>
+              </tr>
+              <tr>
+                <td><a href="order-detail.html" class="tbl-link td-num">#2839</a></td>
+                <td>
+                  <div>
+                    <span>Triss Merigold</span>
+                    <span class="td-sub">triss@temeria.gov</span>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">10 Mar 2026<br><span class="td-sub">19:44</span></td>
+                <td class="col-hide-sm td-dim">2</td>
+                <td class="col-hide-md td-dim">Nilfgaardian Express</td>
+                <td class="td-gold">3,420 ℂ</td>
+                <td><span class="badge status-shipped">Shipped</span></td>
+                <td><a href="order-detail.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="View order"><i class="bi bi-arrow-right"></i></a></td>
+              </tr>
+              <tr>
+                <td><a href="order-detail.html" class="tbl-link td-num">#2838</a></td>
+                <td>
+                  <div>
+                    <span>Zoltan Chivay</span>
+                    <span class="td-sub">zoltan@mahakam.dw</span>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">10 Mar 2026<br><span class="td-sub">09:17</span></td>
+                <td class="col-hide-sm td-dim">5</td>
+                <td class="col-hide-md td-dim">Royal Post</td>
+                <td class="td-gold">890 ℂ</td>
+                <td><span class="badge status-delivered">Delivered</span></td>
+                <td><a href="order-detail.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="View order"><i class="bi bi-arrow-right"></i></a></td>
+              </tr>
+              <tr>
+                <td><a href="order-detail.html" class="tbl-link td-num">#2837</a></td>
+                <td>
+                  <div>
+                    <span>Dandelion</span>
+                    <span class="td-sub">dandelion@oxenfurt.edu</span>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">09 Mar 2026<br><span class="td-sub">22:05</span></td>
+                <td class="col-hide-sm td-dim">1</td>
+                <td class="col-hide-md td-dim">Royal Post</td>
+                <td class="td-gold">340 ℂ</td>
+                <td><span class="badge status-cancelled">Cancelled</span></td>
+                <td><a href="order-detail.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="View order"><i class="bi bi-arrow-right"></i></a></td>
+              </tr>
+              <tr>
+                <td><a href="order-detail.html" class="tbl-link td-num">#2836</a></td>
+                <td>
+                  <div>
+                    <span>Vesemir</span>
+                    <span class="td-sub">vesemir@kaermorhen.pl</span>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">09 Mar 2026<br><span class="td-sub">08:30</span></td>
+                <td class="col-hide-sm td-dim">4</td>
+                <td class="col-hide-md td-dim">Skellige Longship</td>
+                <td class="td-gold">12,400 ℂ</td>
+                <td><span class="badge status-delivered">Delivered</span></td>
+                <td><a href="order-detail.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="View order"><i class="bi bi-arrow-right"></i></a></td>
+              </tr>
+              <tr>
+                <td><a href="order-detail.html" class="tbl-link td-num">#2835</a></td>
+                <td>
+                  <div>
+                    <span>Ciri</span>
+                    <span class="td-sub">cirilla@cintra.rp</span>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">08 Mar 2026<br><span class="td-sub">16:51</span></td>
+                <td class="col-hide-sm td-dim">2</td>
+                <td class="col-hide-md td-dim">Nilfgaardian Express</td>
+                <td class="td-gold">5,100 ℂ</td>
+                <td><span class="badge status-shipped">Shipped</span></td>
+                <td><a href="order-detail.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="View order"><i class="bi bi-arrow-right"></i></a></td>
+              </tr>
+              <tr>
+                <td><a href="order-detail.html" class="tbl-link td-num">#2834</a></td>
+                <td>
+                  <div>
+                    <span>Lambert</span>
+                    <span class="td-sub">lambert@kaermorhen.pl</span>
+                  </div>
+                </td>
+                <td class="col-hide-md td-dim">07 Mar 2026<br><span class="td-sub">21:10</span></td>
+                <td class="col-hide-sm td-dim">1</td>
+                <td class="col-hide-md td-dim">Royal Post</td>
+                <td class="td-gold">2,200 ℂ</td>
+                <td><span class="badge status-processing">Processing</span></td>
+                <td><a href="order-detail.html" class="btn-base btn-outline-gold btn-sm btn-icon" title="View order"><i class="bi bi-arrow-right"></i></a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-bar">
+          <span>Showing 1–8 of 284 orders</span>
+          <div class="pagination-btns">
+            <span class="pg-disabled"><i class="bi bi-chevron-left"></i></span>
+            <span class="pg-active">1</span>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <span class="pg-ellipsis">…</span>
+            <a href="#">36</a>
+            <a href="#"><i class="bi bi-chevron-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>

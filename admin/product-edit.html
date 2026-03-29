@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Product — Admin — White Wolf Emporium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+<div class="sidebar-overlay"></div>
+
+<div class="admin-wrap">
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <span class="sidebar__brand-name">White Wolf Emporium</span>
+      <span class="sidebar__brand-sub">Admin Panel</span>
+    </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__section">Overview</span>
+      <a href="dashboard.html" class="sidebar__link"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <span class="sidebar__section">Catalogue</span>
+      <a href="products.html" class="sidebar__link active" aria-current="page"><i class="bi bi-box-seam"></i> Products</a>
+      <a href="product-add.html" class="sidebar__link"><i class="bi bi-plus-circle"></i> Add Product</a>
+      <span class="sidebar__section">Sales</span>
+      <a href="orders.html" class="sidebar__link"><i class="bi bi-receipt"></i> Orders <span class="nav-badge">12</span></a>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="sidebar__avatar">AD</div>
+        <div>
+          <span class="sidebar__user-name">Admin Witcher</span>
+          <span class="sidebar__user-role">Administrator</span>
+        </div>
+      </div>
+      <a href="login.html" class="sidebar__link"><i class="bi bi-box-arrow-left"></i> Sign Out</a>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button class="topbar-toggle" aria-label="Toggle sidebar"><i class="bi bi-list"></i></button>
+      <div class="topbar-search">
+        <i class="bi bi-search"></i>
+        <input type="search" placeholder="Search products…" />
+      </div>
+      <div class="topbar-actions">
+        <a href="orders.html" class="topbar-btn" title="Orders"><i class="bi bi-receipt"></i><span class="notif-dot"></span></a>
+        <button class="topbar-btn" title="Notifications"><i class="bi bi-bell"></i></button>
+        <div class="topbar-avatar" title="Admin Witcher">AD</div>
+      </div>
+    </header>
+
+    <main class="admin-page">
+      <div class="breadcrumb-adm">
+        <a href="dashboard.html">Dashboard</a>
+        <i class="bi bi-chevron-right"></i>
+        <a href="products.html">Products</a>
+        <i class="bi bi-chevron-right"></i>
+        <span class="current">Aerondight</span>
+      </div>
+
+      <div class="page-hdr">
+        <div class="page-hdr__left">
+          <h1 class="page-hdr__title">Edit Product</h1>
+          <p class="page-hdr__sub">Aerondight &nbsp;·&nbsp; <span class="badge badge--gold">Legendary</span></p>
+        </div>
+        <div class="page-hdr__actions">
+          <a href="../product.html?id=1" target="_blank" class="btn-base btn-outline-gold"><i class="bi bi-box-arrow-up-right"></i> View in Shop</a>
+          <button class="btn-base btn-red" data-confirm="Permanently delete Aerondight? This cannot be undone."><i class="bi bi-trash"></i> Delete</button>
+        </div>
+      </div>
+
+      <form action="products.html" method="post" data-toast="Changes saved successfully.">
+        <input type="hidden" name="_method" value="PUT" />
+        <input type="hidden" name="id" value="1" />
+
+        <div class="form-grid">
+          <div class="form-col">
+            <div class="form-sec">
+              <div class="form-sec__hdr">Product Info</div>
+              <div class="form-sec__body">
+                <div class="form-field">
+                  <label for="name">Name <span class="lbl-req">*</span></label>
+                  <input type="text" id="name" name="name" value="Aerondight" required />
+                </div>
+                <div class="form-field">
+                  <label for="desc-short">Short Description <span class="lbl-opt">(shown on cards)</span></label>
+                  <input type="text" id="desc-short" name="description_short" value="Legendary silver sword of the Lady of the Lake." />
+                </div>
+                <div class="form-field">
+                  <label for="desc">Full Description <span class="lbl-req">*</span></label>
+                  <textarea id="desc" name="description" rows="7" required>Forged in ages long past, Aerondight is the blade entrusted by the Lady of the Lake to only the most worthy. Its edge grows keener with each landed blow, reaching a zenith of power against fully charged foes. Witchers of the Wolf School prize it above all others — a blade that grows with its wielder, never settling for the mundane.</textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-sec">
+              <div class="form-sec__hdr">
+                Product Images
+                <span class="form-hint">3 of 5 slots used</span>
+              </div>
+              <div class="form-sec__body">
+                <p class="form-hint">Remove existing images or add new ones. First image is the main product photo.</p>
+                <div class="img-grid">
+                  <div class="img-existing">
+                    <div class="placeholder-asset">IMG 1</div>
+                    <button type="button" class="img-existing__rm" aria-label="Remove image 1"><i class="bi bi-x"></i></button>
+                  </div>
+                  <div class="img-existing">
+                    <div class="placeholder-asset">IMG 2</div>
+                    <button type="button" class="img-existing__rm" aria-label="Remove image 2"><i class="bi bi-x"></i></button>
+                  </div>
+                  <div class="img-existing">
+                    <div class="placeholder-asset">IMG 3</div>
+                    <button type="button" class="img-existing__rm" aria-label="Remove image 3"><i class="bi bi-x"></i></button>
+                  </div>
+                  <label class="img-slot">
+                    <i class="bi bi-plus-lg"></i>
+                    Add Photo
+                    <input type="file" name="images[]" accept="image/*" />
+                  </label>
+                  <label class="img-slot">
+                    <i class="bi bi-plus-lg"></i>
+                    Add Photo
+                    <input type="file" name="images[]" accept="image/*" />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-col">
+            <div class="form-sec">
+              <div class="form-sec__hdr">Pricing &amp; Inventory</div>
+              <div class="form-sec__body">
+                <div class="form-field">
+                  <label for="price">Price (Crowns) <span class="lbl-req">*</span></label>
+                  <input type="number" id="price" name="price" min="0" step="1" value="4500" required />
+                </div>
+                <div class="form-field">
+                  <label for="stock">Stock Quantity <span class="lbl-req">*</span></label>
+                  <input type="number" id="stock" name="stock" min="0" step="1" value="3" required />
+                </div>
+                <div class="form-field">
+                  <label class="form-check-wwe">
+                    <input type="checkbox" name="limited" />
+                    Mark as Limited Edition
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-sec">
+              <div class="form-sec__hdr">Category &amp; Attributes</div>
+              <div class="form-sec__body">
+                <div class="form-field">
+                  <label for="category">Category <span class="lbl-req">*</span></label>
+                  <select id="category" name="category" required>
+                    <option value="silver-swords" selected>Silver Swords</option>
+                    <option value="steel-swords">Steel Swords</option>
+                    <option value="axes">Axes &amp; Hammers</option>
+                    <option value="crossbows">Crossbows</option>
+                    <option value="light-armor">Light Armor</option>
+                    <option value="medium-armor">Medium Armor</option>
+                    <option value="heavy-armor">Heavy Armor</option>
+                    <option value="witcher-sets">Witcher Sets</option>
+                    <option value="potions">Potions &amp; Decoctions</option>
+                    <option value="oils">Blade Oils</option>
+                    <option value="bombs">Bombs</option>
+                    <option value="herbs">Herbs &amp; Ingredients</option>
+                    <option value="monster-parts">Monster Parts</option>
+                    <option value="gwent">Gwent Cards</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label for="rarity">Rarity <span class="lbl-req">*</span></label>
+                  <select id="rarity" name="rarity" required>
+                    <option value="common">Common</option>
+                    <option value="new">New</option>
+                    <option value="limited">Limited</option>
+                    <option value="rare">Rare</option>
+                    <option value="legendary" selected>Legendary</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label for="school">School / Brand <span class="lbl-opt">(optional)</span></label>
+                  <select id="school" name="school">
+                    <option value="">— None —</option>
+                    <option value="griffin">Griffin School</option>
+                    <option value="wolf" selected>Wolf School</option>
+                    <option value="cat">Cat School</option>
+                    <option value="bear">Bear School</option>
+                    <option value="viper">Viper School</option>
+                    <option value="manticore">Manticore School</option>
+                    <option value="ofieri">Ofieri</option>
+                    <option value="toussaint">Toussaint</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-sec">
+              <div class="form-sec__hdr">Visibility</div>
+              <div class="form-sec__body">
+                <div class="form-field">
+                  <label for="status">Listing Status</label>
+                  <select id="status" name="status">
+                    <option value="active" selected>Active — visible in shop</option>
+                    <option value="draft">Draft — hidden from shop</option>
+                    <option value="archived">Archived</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-base btn-gold btn-full">
+              <i class="bi bi-check-lg"></i> Save Changes
+            </button>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+</div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>

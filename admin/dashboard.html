@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Admin — White Wolf Emporium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+<div class="sidebar-overlay"></div>
+
+<div class="admin-wrap">
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <span class="sidebar__brand-name">White Wolf Emporium</span>
+      <span class="sidebar__brand-sub">Admin Panel</span>
+    </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__section">Overview</span>
+      <a href="dashboard.html" class="sidebar__link active">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </a>
+      <span class="sidebar__section">Catalogue</span>
+      <a href="products.html" class="sidebar__link">
+        <i class="bi bi-box-seam"></i> Products
+      </a>
+      <a href="product-add.html" class="sidebar__link">
+        <i class="bi bi-plus-circle"></i> Add Product
+      </a>
+      <span class="sidebar__section">Sales</span>
+      <a href="orders.html" class="sidebar__link">
+        <i class="bi bi-receipt"></i> Orders
+        <span class="nav-badge">12</span>
+      </a>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="sidebar__avatar">AD</div>
+        <div>
+          <span class="sidebar__user-name">Admin Witcher</span>
+          <span class="sidebar__user-role">Administrator</span>
+        </div>
+      </div>
+      <a href="login.html" class="sidebar__link">
+        <i class="bi bi-box-arrow-left"></i> Sign Out
+      </a>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button class="topbar-toggle" aria-label="Toggle sidebar">
+        <i class="bi bi-list"></i>
+      </button>
+      <div class="topbar-search">
+        <i class="bi bi-search"></i>
+        <input type="search" placeholder="Search products, orders…" />
+      </div>
+      <div class="topbar-actions">
+        <a href="orders.html" class="topbar-btn" title="Orders">
+          <i class="bi bi-receipt"></i>
+          <span class="notif-dot"></span>
+        </a>
+        <button class="topbar-btn" title="Notifications">
+          <i class="bi bi-bell"></i>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="topbar-avatar" title="Admin Witcher">AD</div>
+      </div>
+    </header>
+
+    <main class="admin-page">
+      <div class="page-hdr">
+        <div class="page-hdr__left">
+          <h1 class="page-hdr__title">Dashboard</h1>
+          <p class="page-hdr__sub">Welcome back — here's what's happening in the Emporium.</p>
+        </div>
+        <div class="page-hdr__actions">
+          <a href="product-add.html" class="btn-base btn-gold"><i class="bi bi-plus-lg"></i> Add Product</a>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card stat-card--gold">
+          <div class="stat-card__icon"><i class="bi bi-coin"></i></div>
+          <div class="stat-card__label">Revenue (30d)</div>
+          <div class="stat-card__value">47,320</div>
+          <div class="stat-card__delta stat-card__delta--up"><i class="bi bi-arrow-up-short"></i> +18.4% vs last month</div>
+        </div>
+        <div class="stat-card stat-card--green">
+          <div class="stat-card__icon"><i class="bi bi-receipt"></i></div>
+          <div class="stat-card__label">Orders (30d)</div>
+          <div class="stat-card__value">284</div>
+          <div class="stat-card__delta stat-card__delta--up"><i class="bi bi-arrow-up-short"></i> +9.1% vs last month</div>
+        </div>
+        <div class="stat-card stat-card--blue">
+          <div class="stat-card__icon"><i class="bi bi-box-seam"></i></div>
+          <div class="stat-card__label">Products</div>
+          <div class="stat-card__value">1,207</div>
+          <div class="stat-card__delta"><i class="bi bi-dot"></i> 34 low stock</div>
+        </div>
+        <div class="stat-card stat-card--red">
+          <div class="stat-card__icon"><i class="bi bi-people"></i></div>
+          <div class="stat-card__label">Customers</div>
+          <div class="stat-card__value">892</div>
+          <div class="stat-card__delta stat-card__delta--up"><i class="bi bi-arrow-up-short"></i> 24 new this week</div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="flex-col">
+          <div class="adm-card">
+            <div class="adm-card__hdr">
+              <span class="adm-card__title">Revenue — Last 7 Days</span>
+              <span class="chart-unit">Crowns</span>
+            </div>
+            <div class="adm-card__body">
+              <div class="chart-wrap">
+                <div class="chart-col">
+                  <div class="chart-col__bar" style="height:52%;" data-val="2,410"></div>
+                  <span class="chart-col__lbl">Mon</span>
+                </div>
+                <div class="chart-col">
+                  <div class="chart-col__bar" style="height:67%;" data-val="3,100"></div>
+                  <span class="chart-col__lbl">Tue</span>
+                </div>
+                <div class="chart-col">
+                  <div class="chart-col__bar" style="height:44%;" data-val="2,050"></div>
+                  <span class="chart-col__lbl">Wed</span>
+                </div>
+                <div class="chart-col">
+                  <div class="chart-col__bar" style="height:79%;" data-val="3,660"></div>
+                  <span class="chart-col__lbl">Thu</span>
+                </div>
+                <div class="chart-col">
+                  <div class="chart-col__bar" style="height:92%;" data-val="4,270"></div>
+                  <span class="chart-col__lbl">Fri</span>
+                </div>
+                <div class="chart-col">
+                  <div class="chart-col__bar" style="height:100%;" data-val="4,630"></div>
+                  <span class="chart-col__lbl">Sat</span>
+                </div>
+                <div class="chart-col">
+                  <div class="chart-col__bar" style="height:71%;" data-val="3,290"></div>
+                  <span class="chart-col__lbl">Sun</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="adm-card">
+            <div class="adm-card__hdr">
+              <span class="adm-card__title">Recent Orders</span>
+              <a href="orders.html" class="btn-base btn-outline-gold btn-sm">View All</a>
+            </div>
+            <div class="tbl-wrap">
+              <table class="adm-table">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Customer</th>
+                    <th class="col-hide-md">Items</th>
+                    <th class="col-hide-md">Total</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="order-detail.html" class="tbl-link td-heading">#2841</a></td>
+                    <td>Geralt of Rivia</td>
+                    <td class="col-hide-md">3</td>
+                    <td class="col-hide-md td-gold">6,750 ℂ</td>
+                    <td><span class="badge status-processing">Processing</span></td>
+                    <td><a href="order-detail.html" class="btn-base btn-outline-gold btn-sm btn-icon"><i class="bi bi-arrow-right"></i></a></td>
+                  </tr>
+                  <tr>
+                    <td><a href="order-detail.html" class="tbl-link td-heading">#2840</a></td>
+                    <td>Yennefer of Vengerberg</td>
+                    <td class="col-hide-md">1</td>
+                    <td class="col-hide-md td-gold">1,200 ℂ</td>
+                    <td><span class="badge status-pending">Pending</span></td>
+                    <td><a href="order-detail.html" class="btn-base btn-outline-gold btn-sm btn-icon"><i class="bi bi-arrow-right"></i></a></td>
+                  </tr>
+                  <tr>
+                    <td><a href="order-detail.html" class="tbl-link td-heading">#2839</a></td>
+                    <td>Triss Merigold</td>
+                    <td class="col-hide-md">2</td>
+                    <td class="col-hide-md td-gold">3,420 ℂ</td>
+                    <td><span class="badge status-shipped">Shipped</span></td>
+                    <td><a href="order-detail.html" class="btn-base btn-outline-gold btn-sm btn-icon"><i class="bi bi-arrow-right"></i></a></td>
+                  </tr>
+                  <tr>
+                    <td><a href="order-detail.html" class="tbl-link td-heading">#2838</a></td>
+                    <td>Zoltan Chivay</td>
+                    <td class="col-hide-md">5</td>
+                    <td class="col-hide-md td-gold">890 ℂ</td>
+                    <td><span class="badge status-delivered">Delivered</span></td>
+                    <td><a href="order-detail.html" class="btn-base btn-outline-gold btn-sm btn-icon"><i class="bi bi-arrow-right"></i></a></td>
+                  </tr>
+                  <tr>
+                    <td><a href="order-detail.html" class="tbl-link td-heading">#2837</a></td>
+                    <td>Dandelion</td>
+                    <td class="col-hide-md">1</td>
+                    <td class="col-hide-md td-gold">340 ℂ</td>
+                    <td><span class="badge status-cancelled">Cancelled</span></td>
+                    <td><a href="order-detail.html" class="btn-base btn-outline-gold btn-sm btn-icon"><i class="bi bi-arrow-right"></i></a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-col">
+          <div class="adm-card">
+            <div class="adm-card__hdr">
+              <span class="adm-card__title">Activity Feed</span>
+            </div>
+            <div class="adm-card__body adm-card__body--tight">
+              <div class="activity-list">
+                <div class="activity-item">
+                  <div class="activity-dot activity-dot--green"></div>
+                  <div class="activity-text">
+                    <strong>Order #2841</strong> placed by Geralt of Rivia
+                    <span class="activity-time">2 min ago</span>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot activity-dot--gold"></div>
+                  <div class="activity-text">
+                    <strong>Aerondight</strong> stock updated to 3
+                    <span class="activity-time">15 min ago</span>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot activity-dot--blue"></div>
+                  <div class="activity-text">
+                    <strong>Order #2839</strong> marked as Shipped
+                    <span class="activity-time">1 hr ago</span>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot activity-dot--red"></div>
+                  <div class="activity-text">
+                    <strong>Thunderbolt Potion</strong> is out of stock
+                    <span class="activity-time">3 hrs ago</span>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot activity-dot--green"></div>
+                  <div class="activity-text">
+                    <strong>New customer</strong> Triss Merigold registered
+                    <span class="activity-time">5 hrs ago</span>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot activity-dot--gold"></div>
+                  <div class="activity-text">
+                    <strong>Griffin Silver Sword</strong> added to catalogue
+                    <span class="activity-time">Yesterday</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="adm-card">
+            <div class="adm-card__hdr">
+              <span class="adm-card__title">Low Stock Alert</span>
+              <a href="products.html" class="btn-base btn-outline-gold btn-sm">Manage</a>
+            </div>
+            <div class="adm-card__body">
+              <table class="adm-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Stock</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Aerondight</td>
+                    <td><span class="stock-low td-heading">3</span></td>
+                  </tr>
+                  <tr>
+                    <td>Thunderbolt Potion</td>
+                    <td><span class="stock-none td-heading">0</span></td>
+                  </tr>
+                  <tr>
+                    <td>Nilfgaardian Crossbow</td>
+                    <td><span class="stock-low td-heading">2</span></td>
+                  </tr>
+                  <tr>
+                    <td>Manticore Armor Set</td>
+                    <td><span class="stock-low td-heading">1</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>

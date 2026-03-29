@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aerondight — White Wolf Emporium</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="topbar" aria-label="Promotional announcement">
+  <div class="container">
+    Free delivery on orders over <strong>500 Crowns</strong> &nbsp;|&nbsp;
+    <a href="products.html">Browse the full catalogue &rarr;</a>
+  </div>
+</div>
+
+<header class="site-header">
+  <nav class="navbar navbar-expand-lg py-2" aria-label="Main navigation">
+    <div class="container">
+
+      <a class="navbar-brand me-4" href="index.html" aria-label="White Wolf Emporium — Home">
+        <div class="logo-icon placeholder-asset" style="width:44px;height:44px;border-radius:50%;font-size:.45rem;">LOGO</div>
+        <span class="logo-text ms-2">
+          <span class="brand-name">White Wolf Emporium</span>
+          <span class="brand-sub">Novigrad's Finest Trading Post</span>
+        </span>
+      </a>
+
+      <button class="navbar-toggler border-0 ms-auto me-3" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav site-nav me-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Weapons</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="products.html?category=swords">Swords &amp; Daggers</a></li>
+              <li><a class="dropdown-item" href="products.html?category=axes">Axes &amp; Hammers</a></li>
+              <li><a class="dropdown-item" href="products.html?category=crossbows">Crossbows</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="products.html?category=weapons">All Weapons</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Armor</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="products.html?category=light-armor">Light Armor</a></li>
+              <li><a class="dropdown-item" href="products.html?category=medium-armor">Medium Armor</a></li>
+              <li><a class="dropdown-item" href="products.html?category=heavy-armor">Heavy Armor</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="products.html?category=sets">Witcher Sets</a></li>
+              <li><a class="dropdown-item" href="products.html?category=armor">All Armor</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Alchemy</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="products.html?category=potions">Potions &amp; Decoctions</a></li>
+              <li><a class="dropdown-item" href="products.html?category=oils">Blade Oils</a></li>
+              <li><a class="dropdown-item" href="products.html?category=bombs">Bombs</a></li>
+              <li><a class="dropdown-item" href="products.html?category=herbs">Herbs &amp; Ingredients</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="products.html?category=monster-parts">Monster Parts</a></li>
+          <li class="nav-item"><a class="nav-link" href="products.html?category=gwent">Gwent Cards</a></li>
+        </ul>
+
+        <form class="header-search me-3" role="search" action="products.html" method="get">
+          <label for="header-search-input" class="visually-hidden">Search products</label>
+          <input id="header-search-input" type="search" name="q" placeholder="Search the emporium…" autocomplete="off" />
+          <button type="submit" aria-label="Submit search"><i class="bi bi-search" aria-hidden="true"></i></button>
+        </form>
+
+        <div class="header-actions">
+          <a href="login.html" class="action-btn" aria-label="Log in to your account">
+            <i class="bi bi-person" aria-hidden="true"></i> Account
+          </a>
+          <a href="cart.html" class="action-btn cart-btn" aria-label="View cart, 3 items">
+            <i class="bi bi-bag" aria-hidden="true"></i>
+            <span class="cart-count" aria-hidden="true">3</span>
+            Cart
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="product-page">
+  <div class="container py-4 py-lg-5">
+
+    <nav aria-label="Breadcrumb" class="products-breadcrumb mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item"><a href="products.html?category=swords">Silver Swords</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Aerondight</li>
+      </ol>
+    </nav>
+
+    <div class="row g-4 g-lg-5">
+      <div class="col-lg-6">
+        <div class="sticky-sidebar product-gallery">
+          <div class="product-gallery__main">
+            <div class="placeholder-asset product-gallery__img" style="aspect-ratio:1;width:100%;">IMAGE: Aerondight</div>
+            <span class="product-gallery__badge product-card__badge product-card__badge--rare">Rare</span>
+          </div>
+          <div class="product-gallery__thumbs">
+            <button type="button" class="product-gallery__thumb active" aria-label="View main image">
+              <div class="placeholder-asset" style="aspect-ratio:1;width:100%;height:100%;font-size:.5rem;">1</div>
+            </button>
+            <button type="button" class="product-gallery__thumb" aria-label="View image 2">
+              <div class="placeholder-asset" style="aspect-ratio:1;width:100%;height:100%;font-size:.5rem;">2</div>
+            </button>
+            <button type="button" class="product-gallery__thumb" aria-label="View image 3">
+              <div class="placeholder-asset" style="aspect-ratio:1;width:100%;height:100%;font-size:.5rem;">3</div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="product-detail">
+          <p class="product-detail__category">Silver Swords</p>
+          <h1 class="product-detail__name">Aerondight</h1>
+          <div class="product-rating product-detail__rating" aria-label="Rating: 5 out of 5">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+            <span class="rating-count">(312 reviews)</span>
+          </div>
+
+          <div class="product-detail__price">
+            <span class="product-price__current">4 500 <span class="eyebrow product-price__unit">Crowns</span></span>
+            <span class="product-price__old">5 200 Crowns</span>
+          </div>
+
+          <p class="product-detail__desc">
+            A blade of elven origin, forged in the waters of the Lady of the Lake. Aerondight grows more powerful with each enemy slain, its edge sharpening and its enchantments strengthening in the hands of a worthy wielder. Favoured by witchers and collectors alike for its legendary status.
+          </p>
+
+          <div class="product-detail__actions">
+            <div class="product-detail__qty">
+              <label for="qty-input" class="visually-hidden">Quantity</label>
+              <input type="number" id="qty-input" min="1" max="99" value="1" class="input-base product-detail__qty-input" />
+            </div>
+            <button class="btn-base btn-gold btn-flex" aria-label="Add Aerondight to cart">
+              <i class="bi bi-bag-plus"></i> Add to Cart
+            </button>
+            <button type="button" class="wishlist-btn product-detail__wishlist" aria-label="Add to wishlist">
+              <i class="bi bi-heart"></i>
+            </button>
+          </div>
+
+          <div class="product-detail__meta">
+            <p><span class="product-detail__meta-label">SKU</span> AER-SV-001</p>
+            <p><span class="product-detail__meta-label">School</span> Generic (Elven)</p>
+            <p><span class="product-detail__meta-label">In stock</span> Yes</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="product-specs mt-5 pt-5" aria-labelledby="specs-title">
+      <h2 id="specs-title" class="card-title">Specifications</h2>
+      <div class="product-specs__grid">
+        <div class="product-specs__item">
+          <span class="product-specs__label">Type</span>
+          <span class="product-specs__value">Silver Sword</span>
+        </div>
+        <div class="product-specs__item">
+          <span class="product-specs__label">Damage</span>
+          <span class="product-specs__value">+15% vs Monsters</span>
+        </div>
+        <div class="product-specs__item">
+          <span class="product-specs__label">Rarity</span>
+          <span class="product-specs__value">Rare</span>
+        </div>
+        <div class="product-specs__item">
+          <span class="product-specs__label">Level</span>
+          <span class="product-specs__value">Scales with wielder</span>
+        </div>
+        <div class="product-specs__item">
+          <span class="product-specs__label">Material</span>
+          <span class="product-specs__value">Elven silver, tempered</span>
+        </div>
+        <div class="product-specs__item">
+          <span class="product-specs__label">Origin</span>
+          <span class="product-specs__value">Lady of the Lake</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="product-related mt-5 pt-5" aria-labelledby="related-title">
+      <h2 id="related-title" class="product-related__title">You May Also Like</h2>
+      <div class="row g-4 products-grid">
+        <div class="col-12 col-sm-6 col-lg-3">
+          <article class="card-base product-card">
+            <a href="product.html?id=2" class="product-card__img-wrap">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Iris</div>
+              <button type="button" class="wishlist-btn product-card__wishlist" aria-label="Add to wishlist" onclick="event.preventDefault();event.stopPropagation();"><i class="bi bi-heart"></i></button>
+            </a>
+            <div class="product-card__body">
+              <p class="eyebrow product-card__category">Silver Swords</p>
+              <div class="product-rating" aria-label="Rating: 4 out of 5">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+                <span class="rating-count">(89)</span>
+              </div>
+              <h3 class="product-card__name"><a href="product.html?id=2">Iris</a></h3>
+              <p class="product-card__desc">Olgierd's blade. Cursed, yet devastating.</p>
+            </div>
+            <div class="product-card__footer">
+              <div class="product-price">
+                <span class="product-price__current">3 200 <span class="eyebrow product-price__unit">Crowns</span></span>
+              </div>
+              <button class="btn-add-cart" aria-label="Add Iris to cart"><i class="bi bi-bag-plus"></i></button>
+            </div>
+          </article>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+          <article class="card-base product-card">
+            <a href="product.html?id=3" class="product-card__img-wrap">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Feline Silver Sword</div>
+              <span class="product-card__badge product-card__badge--new">New</span>
+              <button type="button" class="wishlist-btn product-card__wishlist" aria-label="Add to wishlist" onclick="event.preventDefault();event.stopPropagation();"><i class="bi bi-heart"></i></button>
+            </a>
+            <div class="product-card__body">
+              <p class="eyebrow product-card__category">Silver Swords</p>
+              <div class="product-rating" aria-label="Rating: 4.5 out of 5">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+                <span class="rating-count">(156)</span>
+              </div>
+              <h3 class="product-card__name"><a href="product.html?id=3">Feline Silver Sword</a></h3>
+              <p class="product-card__desc">Light, fast blade from the School of the Cat.</p>
+            </div>
+            <div class="product-card__footer">
+              <div class="product-price">
+                <span class="product-price__current">2 800 <span class="eyebrow product-price__unit">Crowns</span></span>
+              </div>
+              <button class="btn-add-cart" aria-label="Add Feline Silver Sword to cart"><i class="bi bi-bag-plus"></i></button>
+            </div>
+          </article>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+          <article class="card-base product-card">
+            <a href="product.html?id=4" class="product-card__img-wrap">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Griffin Silver Sword</div>
+              <button type="button" class="wishlist-btn product-card__wishlist" aria-label="Add to wishlist" onclick="event.preventDefault();event.stopPropagation();"><i class="bi bi-heart"></i></button>
+            </a>
+            <div class="product-card__body">
+              <p class="eyebrow product-card__category">Silver Swords</p>
+              <div class="product-rating" aria-label="Rating: 4 out of 5">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+                <span class="rating-count">(98)</span>
+              </div>
+              <h3 class="product-card__name"><a href="product.html?id=4">Griffin Silver Sword</a></h3>
+              <p class="product-card__desc">Balanced blade favoured by sign-users.</p>
+            </div>
+            <div class="product-card__footer">
+              <div class="product-price">
+                <span class="product-price__current">2 400 <span class="eyebrow product-price__unit">Crowns</span></span>
+              </div>
+              <button class="btn-add-cart" aria-label="Add Griffin Silver Sword to cart"><i class="bi bi-bag-plus"></i></button>
+            </div>
+          </article>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+          <article class="card-base product-card">
+            <a href="product.html?id=5" class="product-card__img-wrap">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Ursine Silver Sword</div>
+              <button type="button" class="wishlist-btn product-card__wishlist" aria-label="Add to wishlist" onclick="event.preventDefault();event.stopPropagation();"><i class="bi bi-heart"></i></button>
+            </a>
+            <div class="product-card__body">
+              <p class="eyebrow product-card__category">Silver Swords</p>
+              <div class="product-rating" aria-label="Rating: 5 out of 5">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <span class="rating-count">(124)</span>
+              </div>
+              <h3 class="product-card__name"><a href="product.html?id=5">Ursine Silver Sword</a></h3>
+              <p class="product-card__desc">Heavy blade from the School of the Bear.</p>
+            </div>
+            <div class="product-card__footer">
+              <div class="product-price">
+                <span class="product-price__current">2 650 <span class="eyebrow product-price__unit">Crowns</span></span>
+              </div>
+              <button class="btn-add-cart" aria-label="Add Ursine Silver Sword to cart"><i class="bi bi-bag-plus"></i></button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="product-reviews mt-5 pt-5" aria-labelledby="reviews-title">
+      <div class="product-reviews__header">
+        <h2 id="reviews-title" class="product-reviews__title">Customer Reviews</h2>
+        <div class="product-reviews__summary">
+          <div class="product-rating product-reviews__rating" aria-label="Rating: 5 out of 5">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <span class="product-reviews__count">312 reviews</span>
+        </div>
+      </div>
+
+      <div class="card-base review-submit">
+        <h3 class="card-title">Submit a Review</h3>
+        <form class="review-submit__form">
+          <div class="review-submit__row review-submit__row--first">
+            <div class="review-submit__field">
+              <label for="review-name" class="eyebrow review-submit__label">Name</label>
+              <input type="text" id="review-name" class="input-base review-submit__input" placeholder="Your name" required />
+            </div>
+            <div class="review-submit__field">
+              <span class="eyebrow review-submit__label">Rating</span>
+              <div class="review-submit__stars" role="group" aria-label="Rate 1 to 5 stars">
+                <button type="button" class="review-submit__star" data-rating="1" aria-label="1 star"><i class="bi bi-star"></i></button>
+                <button type="button" class="review-submit__star" data-rating="2" aria-label="2 stars"><i class="bi bi-star"></i></button>
+                <button type="button" class="review-submit__star" data-rating="3" aria-label="3 stars"><i class="bi bi-star"></i></button>
+                <button type="button" class="review-submit__star" data-rating="4" aria-label="4 stars"><i class="bi bi-star"></i></button>
+                <button type="button" class="review-submit__star" data-rating="5" aria-label="5 stars"><i class="bi bi-star"></i></button>
+              </div>
+              <input type="hidden" name="rating" id="review-rating-value" value="0" />
+            </div>
+          </div>
+          <div class="review-submit__row">
+            <label for="review-text" class="eyebrow review-submit__label">Your review</label>
+            <textarea id="review-text" class="input-base review-submit__textarea" placeholder="Share your experience…" required></textarea>
+          </div>
+          <button type="submit" class="review-submit__btn">Submit Review</button>
+        </form>
+      </div>
+
+      <div class="product-reviews__list">
+        <article class="card-base review-card">
+          <div class="review-card__meta">
+            <span class="review-card__author">Vesemir of Kaer Morhen</span>
+            <div class="product-rating review-card__rating" aria-label="Rating: 5 out of 5">
+              <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+            </div>
+            <time class="review-card__date" datetime="2025-01-15">15 Jan 2025</time>
+          </div>
+          <p class="review-card__text">The finest silver blade I&rsquo;ve wielded in decades. The enchantment holds true — each monster felled sharpens the edge. Worth every crown.</p>
+        </article>
+        <article class="card-base review-card">
+          <div class="review-card__meta">
+            <span class="review-card__author">Yennefer of Vengerberg</span>
+            <div class="product-rating review-card__rating" aria-label="Rating: 5 out of 5">
+              <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+            </div>
+            <time class="review-card__date" datetime="2025-02-03">3 Feb 2025</time>
+          </div>
+          <p class="review-card__text">Acquired as a gift. The craftsmanship is exceptional — elven work, unmistakably. The blade balances perfectly. A worthy addition to any witcher&rsquo;s arsenal.</p>
+        </article>
+        <article class="card-base review-card">
+          <div class="review-card__meta">
+            <span class="review-card__author">Hattori the Smith</span>
+            <div class="product-rating review-card__rating" aria-label="Rating: 4.5 out of 5">
+              <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+            </div>
+            <time class="review-card__date" datetime="2024-12-20">20 Dec 2024</time>
+          </div>
+          <p class="review-card__text">Studied the tempering. Masterwork. I cannot replicate the Lady&rsquo;s enchantment, but the base metalwork is exemplary. A reference piece for any serious smith.</p>
+        </article>
+        <article class="card-base review-card">
+          <div class="review-card__meta">
+            <span class="review-card__author">Triss Merigold</span>
+            <div class="product-rating review-card__rating" aria-label="Rating: 5 out of 5">
+              <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+            </div>
+            <time class="review-card__date" datetime="2024-11-08">8 Nov 2024</time>
+          </div>
+          <p class="review-card__text">Bought for a friend. He hasn&rsquo;t put it down since. The growth mechanic is real — I&rsquo;ve seen the runes glow brighter after a tough contract. Highly recommend.</p>
+        </article>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4">
+        <div class="footer-logo">
+          <span class="brand-name">White Wolf Emporium</span>
+          <span class="brand-sub">Novigrad's Finest Trading Post</span>
+        </div>
+        <p class="footer-desc">Serving witchers, soldiers, merchants and scholars since the reign of King Foltest. Quality gear and rare ingredients, delivered anywhere on the Continent.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-link" aria-label="Follow us on Twitter"><i class="bi bi-twitter-x" aria-hidden="true"></i></a>
+          <a href="#" class="social-link" aria-label="Follow us on Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
+          <a href="#" class="social-link" aria-label="Join our Discord"><i class="bi bi-discord" aria-hidden="true"></i></a>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-2">
+        <h3 class="footer-heading">Shop</h3>
+        <ul class="footer-links">
+          <li><a href="products.html?category=weapons">Weapons</a></li>
+          <li><a href="products.html?category=armor">Armor</a></li>
+          <li><a href="products.html?category=alchemy">Alchemy</a></li>
+          <li><a href="products.html?category=monster-parts">Monster Parts</a></li>
+          <li><a href="products.html?category=gwent">Gwent Cards</a></li>
+          <li><a href="products.html?category=herbs">Herbs</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6 col-lg-2">
+        <h3 class="footer-heading">Information</h3>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Merchant Contracts</a></li>
+          <li><a href="#">Delivery &amp; Couriers</a></li>
+          <li><a href="#">Returns Policy</a></li>
+          <li><a href="#">Authenticity Guarantee</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6 col-lg-2">
+        <h3 class="footer-heading">Account</h3>
+        <ul class="footer-links">
+          <li><a href="login.html">Sign In</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="cart.html">Your Cart</a></li>
+          <li><a href="#">Order History</a></li>
+          <li><a href="#">Wishlist</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6 col-lg-2">
+        <h3 class="footer-heading">Contact</h3>
+        <address>
+          <ul class="footer-links">
+            <li><a href="#"><i class="bi bi-geo-alt" aria-hidden="true"></i> 7 Hierarch Square, Novigrad</a></li>
+            <li><a href="mailto:trade@whitewolf.gg"><i class="bi bi-envelope" aria-hidden="true"></i> trade@whitewolf.gg</a></li>
+            <li><a href="#"><i class="bi bi-headset" aria-hidden="true"></i> Support Portal</a></li>
+          </ul>
+        </address>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <p class="footer-bottom-text">&copy; 2025 White Wolf Emporium. All rights reserved.</p>
+        </div>
+        <div class="col-md-6">
+          <nav class="footer-bottom-links" aria-label="Legal links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Sale</a>
+            <a href="#">Cookie Settings</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

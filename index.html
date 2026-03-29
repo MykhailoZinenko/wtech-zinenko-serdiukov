@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>White Wolf Emporium — Novigrad's Finest Trading Post</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="topbar" aria-label="Promotional announcement">
+  <div class="container">
+    Free delivery on orders over <strong>500 Crowns</strong> &nbsp;|&nbsp;
+    <a href="products.html">Browse the full catalogue &rarr;</a>
+  </div>
+</div>
+
+<header class="site-header">
+  <nav class="navbar navbar-expand-lg py-2" aria-label="Main navigation">
+    <div class="container">
+
+      <a class="navbar-brand me-4" href="index.html" aria-label="White Wolf Emporium — Home">
+        <div class="logo-icon placeholder-asset" style="width:44px;height:44px;border-radius:50%;font-size:.45rem;">LOGO</div>
+        <span class="logo-text ms-2">
+          <span class="brand-name">White Wolf Emporium</span>
+          <span class="brand-sub">Novigrad's Finest Trading Post</span>
+        </span>
+      </a>
+
+      <button class="navbar-toggler border-0 ms-auto me-3" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav site-nav me-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Weapons</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="products.html?category=swords">Swords &amp; Daggers</a></li>
+              <li><a class="dropdown-item" href="products.html?category=axes">Axes &amp; Hammers</a></li>
+              <li><a class="dropdown-item" href="products.html?category=crossbows">Crossbows</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="products.html?category=weapons">All Weapons</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Armor</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="products.html?category=light-armor">Light Armor</a></li>
+              <li><a class="dropdown-item" href="products.html?category=medium-armor">Medium Armor</a></li>
+              <li><a class="dropdown-item" href="products.html?category=heavy-armor">Heavy Armor</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="products.html?category=sets">Witcher Sets</a></li>
+              <li><a class="dropdown-item" href="products.html?category=armor">All Armor</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Alchemy</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="products.html?category=potions">Potions &amp; Decoctions</a></li>
+              <li><a class="dropdown-item" href="products.html?category=oils">Blade Oils</a></li>
+              <li><a class="dropdown-item" href="products.html?category=bombs">Bombs</a></li>
+              <li><a class="dropdown-item" href="products.html?category=herbs">Herbs &amp; Ingredients</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="products.html?category=monster-parts">Monster Parts</a></li>
+          <li class="nav-item"><a class="nav-link" href="products.html?category=gwent">Gwent Cards</a></li>
+        </ul>
+
+        <form class="header-search me-3" role="search" action="products.html" method="get">
+          <label for="header-search-input" class="visually-hidden">Search products</label>
+          <input id="header-search-input" type="search" name="q" placeholder="Search the emporium…" autocomplete="off" />
+          <button type="submit" aria-label="Submit search"><i class="bi bi-search" aria-hidden="true"></i></button>
+        </form>
+
+        <div class="header-actions">
+          <a href="login.html" class="action-btn" aria-label="Log in to your account">
+            <i class="bi bi-person" aria-hidden="true"></i>
+            Account
+          </a>
+          <a href="cart.html" class="action-btn cart-btn" aria-label="View cart, 3 items">
+            <i class="bi bi-bag" aria-hidden="true"></i>
+            <span class="cart-count" aria-hidden="true">3</span>
+            Cart
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-bg">
+      <div class="placeholder-asset" style="width:100%;height:100%;">HERO BACKGROUND IMAGE</div>
+    </div>
+    <div class="container hero-content">
+      <div class="row">
+        <div class="col-lg-7 col-xl-6">
+          <p class="eyebrow hero-eyebrow">Established in the year of the White Frost</p>
+          <h1 id="hero-title">
+            Gear Worthy of<br />
+            <em>a True Witcher</em>
+          </h1>
+          <p class="hero-desc">
+            From silver blades forged in Kaer Morhen to potions brewed by master herbalists of Skellige — everything a monster hunter, soldier, or city merchant could ever need.
+          </p>
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <span class="stat-num">1 200+</span>
+              <span class="eyebrow stat-label">Products</span>
+            </div>
+            <div class="hero-stat">
+              <span class="stat-num">6</span>
+              <span class="eyebrow stat-label">Categories</span>
+            </div>
+            <div class="hero-stat">
+              <span class="stat-num">47</span>
+              <span class="eyebrow stat-label">Regions</span>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="products.html" class="btn-base btn-gold">
+              <i class="bi bi-shop" aria-hidden="true"></i>
+              Browse the Catalogue
+            </a>
+            <a href="products.html?category=sets" class="btn-base btn-outline-gold">Witcher Sets</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a class="hero-scroll" href="#categories" aria-label="Scroll to categories">
+      <i class="bi bi-chevron-double-down"></i>
+    </a>
+  </section>
+
+  <section class="perks-strip" aria-label="Shop benefits">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-sm-6 col-lg-3">
+          <div class="perk-item">
+            <span class="perk-icon"><i class="bi bi-shield-check" aria-hidden="true"></i></span>
+            <div>
+              <h3 class="perk-title">Authentic Gear</h3>
+              <p class="perk-desc">Every item verified by Guild-certified craftsmen and witchers.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="perk-item">
+            <span class="perk-icon"><i class="bi bi-truck" aria-hidden="true"></i></span>
+            <div>
+              <h3 class="perk-title">Fast Courier</h3>
+              <p class="perk-desc">Delivered via royal post or Nilfgaardian express to all regions.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="perk-item">
+            <span class="perk-icon"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i></span>
+            <div>
+              <h3 class="perk-title">30-Day Returns</h3>
+              <p class="perk-desc">Unsatisfied? Return any unused item within 30 days, no questions asked.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="perk-item">
+            <span class="perk-icon"><i class="bi bi-lock" aria-hidden="true"></i></span>
+            <div>
+              <h3 class="perk-title">Secure Payment</h3>
+              <p class="perk-desc">Crowns, Orens or Florens — all transactions guarded by mage-level encryption.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="categories" id="categories" aria-labelledby="categories-title">
+    <div class="container">
+      <header class="section-header">
+        <span class="eyebrow section-eyebrow">What are you hunting for?</span>
+        <h2 class="section-title" id="categories-title">Shop by Category</h2>
+        <p class="section-desc">From the ancient forests of Velen to the markets of Novigrad — our wares span every corner of the Continent.</p>
+      </header>
+      <div class="row g-4">
+        <div class="col-sm-6 col-lg-4">
+          <a href="products.html?category=weapons" class="card-base category-card" aria-label="Browse Swords & Weapons">
+            <div class="category-card__img">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Swords &amp; Weapons</div>
+            </div>
+            <div class="category-card__body">
+              <h3 class="category-card__name">Swords &amp; Weapons</h3>
+              <p class="category-card__count">214 items</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-lg-4">
+          <a href="products.html?category=armor" class="card-base category-card" aria-label="Browse Armor & Gear">
+            <div class="category-card__img">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Armor &amp; Gear</div>
+            </div>
+            <div class="category-card__body">
+              <h3 class="category-card__name">Armor &amp; Gear</h3>
+              <p class="category-card__count">187 items</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-lg-4">
+          <a href="products.html?category=alchemy" class="card-base category-card" aria-label="Browse Alchemy & Potions">
+            <div class="category-card__img">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Alchemy &amp; Potions</div>
+            </div>
+            <div class="category-card__body">
+              <h3 class="category-card__name">Alchemy &amp; Potions</h3>
+              <p class="category-card__count">330 items</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-lg-4">
+          <a href="products.html?category=monster-parts" class="card-base category-card" aria-label="Browse Monster Parts & Trophies">
+            <div class="category-card__img">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Monster Parts &amp; Trophies</div>
+            </div>
+            <div class="category-card__body">
+              <h3 class="category-card__name">Monster Parts &amp; Trophies</h3>
+              <p class="category-card__count">298 items</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-lg-4">
+          <a href="products.html?category=gwent" class="card-base category-card" aria-label="Browse Gwent Cards">
+            <div class="category-card__img">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Gwent Cards</div>
+            </div>
+            <div class="category-card__body">
+              <h3 class="category-card__name">Gwent Cards</h3>
+              <p class="category-card__count">523 cards</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-lg-4">
+          <a href="products.html?category=herbs" class="card-base category-card" aria-label="Browse Herbs & Ingredients">
+            <div class="category-card__img">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Herbs &amp; Ingredients</div>
+            </div>
+            <div class="category-card__body">
+              <h3 class="category-card__name">Herbs &amp; Ingredients</h3>
+              <p class="category-card__count">441 items</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="featured-products" aria-labelledby="featured-title">
+    <div class="container">
+      <header class="section-header">
+        <span class="eyebrow section-eyebrow">Handpicked by our merchants</span>
+        <h2 class="section-title" id="featured-title">Featured Products</h2>
+        <p class="section-desc">Top picks across all categories — trusted by witchers, soldiers, and scholars throughout the Continent.</p>
+      </header>
+      <div class="row g-4">
+        <div class="col-sm-6 col-xl-3">
+          <article class="card-base product-card">
+            <a href="product.html?id=1" class="product-card__img-wrap">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Aerondight Silver Sword</div>
+              <span class="product-card__badge product-card__badge--rare">Rare</span>
+              <button type="button" class="wishlist-btn product-card__wishlist" aria-label="Add Aerondight to wishlist" onclick="event.preventDefault();event.stopPropagation();"><i class="bi bi-heart" aria-hidden="true"></i></button>
+            </a>
+            <div class="product-card__body">
+              <p class="eyebrow product-card__category">Silver Swords</p>
+              <div class="product-rating" aria-label="Rating: 5 out of 5">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <span class="rating-count">(312)</span>
+              </div>
+              <h3 class="product-card__name"><a href="product.html?id=1">Aerondight</a></h3>
+              <p class="product-card__desc">A blade of elven origin. Grows more powerful with each enemy slain.</p>
+            </div>
+            <div class="product-card__footer">
+              <div class="product-price">
+                <span class="product-price__current">4 500 <span class="eyebrow product-price__unit">Crowns</span></span>
+                <span class="product-price__old">5 200 Crowns</span>
+              </div>
+              <button class="btn-add-cart" aria-label="Add Aerondight to cart"><i class="bi bi-bag-plus" aria-hidden="true"></i></button>
+            </div>
+          </article>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+          <article class="card-base product-card">
+            <a href="product.html?id=2" class="product-card__img-wrap">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Thunderbolt Potion</div>
+              <span class="product-card__badge product-card__badge--new">New Stock</span>
+              <button type="button" class="wishlist-btn product-card__wishlist" aria-label="Add Thunderbolt to wishlist" onclick="event.preventDefault();event.stopPropagation();"><i class="bi bi-heart" aria-hidden="true"></i></button>
+            </a>
+            <div class="product-card__body">
+              <p class="eyebrow product-card__category">Potions</p>
+              <div class="product-rating" aria-label="Rating: 4 out of 5">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+                <span class="rating-count">(87)</span>
+              </div>
+              <h3 class="product-card__name"><a href="product.html?id=2">Thunderbolt</a></h3>
+              <p class="product-card__desc">Stimulates the nervous system to increase attack power. Brewed from mandrake and celandine.</p>
+            </div>
+            <div class="product-card__footer">
+              <div class="product-price">
+                <span class="product-price__current">85 <span class="eyebrow product-price__unit">Crowns</span></span>
+              </div>
+              <button class="btn-add-cart" aria-label="Add Thunderbolt to cart"><i class="bi bi-bag-plus" aria-hidden="true"></i></button>
+            </div>
+          </article>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+          <article class="card-base product-card">
+            <a href="product.html?id=3" class="product-card__img-wrap">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Griffin School Armor</div>
+              <button type="button" class="wishlist-btn product-card__wishlist" aria-label="Add Griffin Armor to wishlist" onclick="event.preventDefault();event.stopPropagation();"><i class="bi bi-heart" aria-hidden="true"></i></button>
+            </a>
+            <div class="product-card__body">
+              <p class="eyebrow product-card__category">Witcher Sets</p>
+              <div class="product-rating" aria-label="Rating: 4.5 out of 5">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+                <span class="rating-count">(204)</span>
+              </div>
+              <h3 class="product-card__name"><a href="product.html?id=3">Griffin School Armor</a></h3>
+              <p class="product-card__desc">Medium armor crafted for sign-users. Excellent protection with flexibility for combat.</p>
+            </div>
+            <div class="product-card__footer">
+              <div class="product-price">
+                <span class="product-price__current">1 840 <span class="eyebrow product-price__unit">Crowns</span></span>
+              </div>
+              <button class="btn-add-cart" aria-label="Add Griffin School Armor to cart"><i class="bi bi-bag-plus" aria-hidden="true"></i></button>
+            </div>
+          </article>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+          <article class="card-base product-card">
+            <a href="product.html?id=4" class="product-card__img-wrap">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Skellige Gwent Deck</div>
+              <span class="product-card__badge product-card__badge--limited">Limited</span>
+              <button type="button" class="wishlist-btn product-card__wishlist" aria-label="Add Skellige Deck to wishlist" onclick="event.preventDefault();event.stopPropagation();"><i class="bi bi-heart" aria-hidden="true"></i></button>
+            </a>
+            <div class="product-card__body">
+              <p class="eyebrow product-card__category">Gwent Cards</p>
+              <div class="product-rating" aria-label="Rating: 4 out of 5">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+                <span class="rating-count">(56)</span>
+              </div>
+              <h3 class="product-card__name"><a href="product.html?id=4">Skellige Starter Deck</a></h3>
+              <p class="product-card__desc">25-card Skellige deck featuring Crach an Craite and the Wild Boar of the Sea.</p>
+            </div>
+            <div class="product-card__footer">
+              <div class="product-price">
+                <span class="product-price__current">340 <span class="eyebrow product-price__unit">Crowns</span></span>
+                <span class="product-price__old">420 Crowns</span>
+              </div>
+              <button class="btn-add-cart" aria-label="Add Skellige Deck to cart"><i class="bi bi-bag-plus" aria-hidden="true"></i></button>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="text-center mt-5">
+        <a href="products.html" class="btn-base btn-outline-gold">View All Products <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="promo-banner" aria-labelledby="promo-title">
+    <div class="promo-banner__bg">
+      <div class="placeholder-asset" style="width:100%;height:100%;min-height:320px;">PROMO BANNER BACKGROUND IMAGE</div>
+    </div>
+    <div class="container promo-banner__content py-5">
+      <div class="row">
+        <div class="col-lg-7">
+          <span class="promo-tag"><i class="bi bi-lightning-fill" aria-hidden="true"></i> &nbsp;Seasonal Sale — Velen's Feast</span>
+          <h2 class="promo-banner__title" id="promo-title">Up to 40% Off<br />Select Alchemy &amp; Armor</h2>
+          <p class="promo-banner__desc">Limited time offer from Novigrad's merchant guild. Stock up before the next witcher contract season begins.</p>
+          <div class="promo-timer" role="timer" aria-label="Sale countdown">
+            <div class="timer-unit">
+              <span class="t-num" id="timer-days">03</span>
+              <span class="eyebrow t-label">Days</span>
+            </div>
+            <div class="timer-unit">
+              <span class="t-num" id="timer-hours">14</span>
+              <span class="eyebrow t-label">Hours</span>
+            </div>
+            <div class="timer-unit">
+              <span class="t-num" id="timer-mins">27</span>
+              <span class="eyebrow t-label">Mins</span>
+            </div>
+            <div class="timer-unit">
+              <span class="t-num" id="timer-secs">09</span>
+              <span class="eyebrow t-label">Secs</span>
+            </div>
+          </div>
+          <a href="products.html?sale=1" class="btn-base btn-red">
+            <i class="bi bi-tag-fill" aria-hidden="true"></i>
+            Shop the Sale
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="new-arrivals" aria-labelledby="new-arrivals-title">
+    <div class="container">
+      <header class="section-header">
+        <span class="eyebrow section-eyebrow">Just landed in Novigrad</span>
+        <h2 class="section-title" id="new-arrivals-title">New Arrivals</h2>
+      </header>
+      <div class="row g-4">
+        <div class="col-sm-6 col-lg-4">
+          <article class="card-base product-card">
+            <a href="product.html?id=5" class="product-card__img-wrap">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Basilisk Claws</div>
+              <span class="product-card__badge product-card__badge--new">New</span>
+              <button type="button" class="wishlist-btn product-card__wishlist" aria-label="Add Basilisk Claws to wishlist" onclick="event.preventDefault();event.stopPropagation();"><i class="bi bi-heart" aria-hidden="true"></i></button>
+            </a>
+            <div class="product-card__body">
+              <p class="eyebrow product-card__category">Monster Parts</p>
+              <div class="product-rating" aria-label="Rating: 4 out of 5">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+                <span class="rating-count">(29)</span>
+              </div>
+              <h3 class="product-card__name"><a href="product.html?id=5">Basilisk Claws (Set of 4)</a></h3>
+              <p class="product-card__desc">Freshly harvested basilisk claws. Essential ingredient for Killer Whale and Tawny Owl potions.</p>
+            </div>
+            <div class="product-card__footer">
+              <div class="product-price">
+                <span class="product-price__current">120 <span class="eyebrow product-price__unit">Crowns</span></span>
+              </div>
+              <button class="btn-add-cart" aria-label="Add Basilisk Claws to cart"><i class="bi bi-bag-plus" aria-hidden="true"></i></button>
+            </div>
+          </article>
+        </div>
+        <div class="col-sm-6 col-lg-4">
+          <article class="card-base product-card">
+            <a href="product.html?id=6" class="product-card__img-wrap">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Manticore School Armor</div>
+              <button type="button" class="wishlist-btn product-card__wishlist" aria-label="Add Manticore Armor to wishlist" onclick="event.preventDefault();event.stopPropagation();"><i class="bi bi-heart" aria-hidden="true"></i></button>
+            </a>
+            <div class="product-card__body">
+              <p class="eyebrow product-card__category">Witcher Sets</p>
+              <div class="product-rating" aria-label="Rating: 5 out of 5">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <span class="rating-count">(141)</span>
+              </div>
+              <h3 class="product-card__name"><a href="product.html?id=6">Manticore School Armor</a></h3>
+              <p class="product-card__desc">Legendary light armor recovered from ruins beneath Dun Tynne. Increased potion charges.</p>
+            </div>
+            <div class="product-card__footer">
+              <div class="product-price">
+                <span class="product-price__current">3 200 <span class="eyebrow product-price__unit">Crowns</span></span>
+              </div>
+              <button class="btn-add-cart" aria-label="Add Manticore Armor to cart"><i class="bi bi-bag-plus" aria-hidden="true"></i></button>
+            </div>
+          </article>
+        </div>
+        <div class="col-sm-6 col-lg-4">
+          <article class="card-base product-card">
+            <a href="product.html?id=7" class="product-card__img-wrap">
+              <div class="placeholder-asset" style="width:100%;height:100%;">IMAGE: Higher Vampire Fangs</div>
+              <button type="button" class="wishlist-btn product-card__wishlist" aria-label="Add Vampire Fangs to wishlist" onclick="event.preventDefault();event.stopPropagation();"><i class="bi bi-heart" aria-hidden="true"></i></button>
+            </a>
+            <div class="product-card__body">
+              <p class="eyebrow product-card__category">Monster Parts</p>
+              <div class="product-rating" aria-label="Rating: 4.5 out of 5">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+                <span class="rating-count">(18)</span>
+              </div>
+              <h3 class="product-card__name"><a href="product.html?id=7">Higher Vampire Fangs</a></h3>
+              <p class="product-card__desc">Extremely rare. Used in the most powerful alchemical decoctions. Source verified by Witch Hunters.</p>
+            </div>
+            <div class="product-card__footer">
+              <div class="product-price">
+                <span class="product-price__current">890 <span class="eyebrow product-price__unit">Crowns</span></span>
+              </div>
+              <button class="btn-add-cart" aria-label="Add Vampire Fangs to cart"><i class="bi bi-bag-plus" aria-hidden="true"></i></button>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="text-center mt-5">
+        <a href="products.html?sort=new" class="btn-base btn-outline-gold">View All New Arrivals <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="flavor-section" aria-label="Merchant's words">
+    <div class="container">
+      <div class="flavor-quote">
+        <blockquote>
+          Not all monsters carry blades. Some carry coin. Know your enemy — whether it stalks the forests of Velen or the counting houses of Novigrad. The well-equipped witcher survives either.
+        </blockquote>
+        <cite>— Vesemir of Kaer Morhen, Master Witcher</cite>
+      </div>
+    </div>
+  </section>
+
+  <section class="newsletter" aria-labelledby="newsletter-title">
+    <div class="container">
+      <div class="newsletter-box">
+        <h2 id="newsletter-title">Join the Witcher's Guild</h2>
+        <p>Subscribe to receive contract alerts, new stock notifications, and exclusive discounts for active witchers.</p>
+        <form class="newsletter-form" action="#" method="post" novalidate>
+          <label for="newsletter-email" class="visually-hidden">Your email address</label>
+          <input id="newsletter-email" type="email" name="email" placeholder="Enter your email address…" autocomplete="email" required />
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4">
+        <div class="footer-logo">
+          <span class="brand-name">White Wolf Emporium</span>
+          <span class="brand-sub">Novigrad's Finest Trading Post</span>
+        </div>
+        <p class="footer-desc">Serving witchers, soldiers, merchants and scholars since the reign of King Foltest. Quality gear and rare ingredients, delivered anywhere on the Continent.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-link" aria-label="Follow us on Twitter"><i class="bi bi-twitter-x" aria-hidden="true"></i></a>
+          <a href="#" class="social-link" aria-label="Follow us on Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
+          <a href="#" class="social-link" aria-label="Join our Discord"><i class="bi bi-discord" aria-hidden="true"></i></a>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-2">
+        <h3 class="footer-heading">Shop</h3>
+        <ul class="footer-links">
+          <li><a href="products.html?category=weapons">Weapons</a></li>
+          <li><a href="products.html?category=armor">Armor</a></li>
+          <li><a href="products.html?category=alchemy">Alchemy</a></li>
+          <li><a href="products.html?category=monster-parts">Monster Parts</a></li>
+          <li><a href="products.html?category=gwent">Gwent Cards</a></li>
+          <li><a href="products.html?category=herbs">Herbs</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6 col-lg-2">
+        <h3 class="footer-heading">Information</h3>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Merchant Contracts</a></li>
+          <li><a href="#">Delivery &amp; Couriers</a></li>
+          <li><a href="#">Returns Policy</a></li>
+          <li><a href="#">Authenticity Guarantee</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6 col-lg-2">
+        <h3 class="footer-heading">Account</h3>
+        <ul class="footer-links">
+          <li><a href="login.html">Sign In</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="cart.html">Your Cart</a></li>
+          <li><a href="#">Order History</a></li>
+          <li><a href="#">Wishlist</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6 col-lg-2">
+        <h3 class="footer-heading">Contact</h3>
+        <address>
+          <ul class="footer-links">
+            <li><a href="#"><i class="bi bi-geo-alt" aria-hidden="true"></i> 7 Hierarch Square, Novigrad</a></li>
+            <li><a href="mailto:trade@whitewolf.gg"><i class="bi bi-envelope" aria-hidden="true"></i> trade@whitewolf.gg</a></li>
+            <li><a href="#"><i class="bi bi-headset" aria-hidden="true"></i> Support Portal</a></li>
+          </ul>
+        </address>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <p class="footer-bottom-text">&copy; 2025 White Wolf Emporium. All rights reserved.</p>
+        </div>
+        <div class="col-md-6">
+          <nav class="footer-bottom-links" aria-label="Legal links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Sale</a>
+            <a href="#">Cookie Settings</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — White Wolf Emporium</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="topbar" aria-label="Promotional announcement">
+  <div class="container">
+    Free delivery on orders over <strong>500 Crowns</strong> &nbsp;|&nbsp;
+    <a href="products.html">Browse the full catalogue &rarr;</a>
+  </div>
+</div>
+
+<header class="site-header">
+  <nav class="navbar navbar-expand-lg py-2" aria-label="Main navigation">
+    <div class="container">
+
+      <a class="navbar-brand me-4" href="index.html" aria-label="White Wolf Emporium — Home">
+        <div class="logo-icon placeholder-asset" style="width:44px;height:44px;border-radius:50%;font-size:.45rem;">LOGO</div>
+        <span class="logo-text ms-2">
+          <span class="brand-name">White Wolf Emporium</span>
+          <span class="brand-sub">Novigrad's Finest Trading Post</span>
+        </span>
+      </a>
+
+      <button class="navbar-toggler border-0 ms-auto me-3" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav site-nav me-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Weapons</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="products.html?category=swords">Swords &amp; Daggers</a></li>
+              <li><a class="dropdown-item" href="products.html?category=axes">Axes &amp; Hammers</a></li>
+              <li><a class="dropdown-item" href="products.html?category=crossbows">Crossbows</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="products.html?category=weapons">All Weapons</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Armor</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="products.html?category=light-armor">Light Armor</a></li>
+              <li><a class="dropdown-item" href="products.html?category=medium-armor">Medium Armor</a></li>
+              <li><a class="dropdown-item" href="products.html?category=heavy-armor">Heavy Armor</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="products.html?category=sets">Witcher Sets</a></li>
+              <li><a class="dropdown-item" href="products.html?category=armor">All Armor</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Alchemy</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="products.html?category=potions">Potions &amp; Decoctions</a></li>
+              <li><a class="dropdown-item" href="products.html?category=oils">Blade Oils</a></li>
+              <li><a class="dropdown-item" href="products.html?category=bombs">Bombs</a></li>
+              <li><a class="dropdown-item" href="products.html?category=herbs">Herbs &amp; Ingredients</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="products.html?category=monster-parts">Monster Parts</a></li>
+          <li class="nav-item"><a class="nav-link" href="products.html?category=gwent">Gwent Cards</a></li>
+        </ul>
+
+        <form class="header-search me-3" role="search" action="products.html" method="get">
+          <label for="header-search-input" class="visually-hidden">Search products</label>
+          <input id="header-search-input" type="search" name="q" placeholder="Search the emporium…" autocomplete="off" />
+          <button type="submit" aria-label="Submit search"><i class="bi bi-search" aria-hidden="true"></i></button>
+        </form>
+
+        <div class="header-actions">
+          <a href="login.html" class="action-btn" aria-label="Log in to your account">
+            <i class="bi bi-person" aria-hidden="true"></i> Account
+          </a>
+          <a href="cart.html" class="action-btn cart-btn" aria-label="View cart, 3 items">
+            <i class="bi bi-bag" aria-hidden="true"></i>
+            <span class="cart-count" aria-hidden="true">3</span>
+            Cart
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="checkout-page">
+  <div class="container py-4 py-lg-5">
+
+    <nav aria-label="Breadcrumb" class="products-breadcrumb mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item"><a href="cart.html">Cart</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+      </ol>
+    </nav>
+
+    <h1 class="checkout-title">Checkout</h1>
+
+    <form action="#" method="post" novalidate>
+      <div class="row g-4">
+        <div class="col-lg-8">
+
+          <section class="card-base checkout-section" aria-labelledby="delivery-title">
+            <h2 class="eyebrow checkout-section__title" id="delivery-title">
+              <i class="bi bi-person-lines-fill" aria-hidden="true"></i>
+              Delivery Details
+            </h2>
+            <div class="form-field--row">
+              <div class="form-field">
+                <label for="co-first-name">First Name</label>
+                <input type="text" id="co-first-name" name="first_name" placeholder="Geralt" autocomplete="given-name" required />
+              </div>
+              <div class="form-field">
+                <label for="co-last-name">Last Name</label>
+                <input type="text" id="co-last-name" name="last_name" placeholder="of Rivia" autocomplete="family-name" required />
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="co-email">Email Address</label>
+              <input type="email" id="co-email" name="email" placeholder="your@email.com" autocomplete="email" required />
+            </div>
+            <div class="form-field">
+              <label for="co-phone">Phone Number</label>
+              <input type="tel" id="co-phone" name="phone" placeholder="+421 900 000 000" autocomplete="tel" />
+            </div>
+            <div class="form-field">
+              <label for="co-address">Street Address</label>
+              <input type="text" id="co-address" name="address" placeholder="7 Hierarch Square" autocomplete="street-address" required />
+            </div>
+            <div class="form-field--row">
+              <div class="form-field">
+                <label for="co-city">City</label>
+                <input type="text" id="co-city" name="city" placeholder="Novigrad" autocomplete="address-level2" required />
+              </div>
+              <div class="form-field">
+                <label for="co-postal">Postal Code</label>
+                <input type="text" id="co-postal" name="postal" placeholder="10100" autocomplete="postal-code" required />
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="co-region">Region / Kingdom</label>
+              <select id="co-region" name="region" autocomplete="address-level1" required>
+                <option value="">Select a region…</option>
+                <option value="novigrad">Free City of Novigrad</option>
+                <option value="redania">Kingdom of Redania</option>
+                <option value="temeria">Kingdom of Temeria</option>
+                <option value="nilfgaard">Nilfgaardian Empire</option>
+                <option value="skellige">Skellige Isles</option>
+                <option value="velen">Velen</option>
+                <option value="toussaint">Duchy of Toussaint</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="co-notes">Order Notes (optional)</label>
+              <textarea id="co-notes" name="notes" rows="3" placeholder="Special delivery instructions, contract notes…"></textarea>
+            </div>
+
+            <div class="form-check-wwe mt-2">
+              <input type="checkbox" id="co-guest-login" name="create_account" />
+              <label for="co-guest-login">Create an account with these details so I can track my order history.</label>
+            </div>
+          </section>
+
+          <section class="card-base checkout-section" aria-labelledby="shipping-title">
+            <h2 class="eyebrow checkout-section__title" id="shipping-title">
+              <i class="bi bi-truck" aria-hidden="true"></i>
+              Shipping Method
+            </h2>
+            <div class="shipping-options" role="radiogroup" aria-label="Select shipping method">
+              <label class="shipping-option">
+                <input type="radio" name="shipping" value="standard" checked />
+                <div class="shipping-option__info">
+                  <span class="shipping-option__name">Royal Post — Standard</span>
+                  <span class="shipping-option__desc">5–7 working days. Delivered by Crown-certified couriers.</span>
+                </div>
+                <span class="shipping-option__price">Free</span>
+              </label>
+              <label class="shipping-option">
+                <input type="radio" name="shipping" value="express" />
+                <div class="shipping-option__info">
+                  <span class="shipping-option__name">Nilfgaardian Express</span>
+                  <span class="shipping-option__desc">2–3 working days. Imperial efficiency, guaranteed.</span>
+                </div>
+                <span class="shipping-option__price">120 Crowns</span>
+              </label>
+              <label class="shipping-option">
+                <input type="radio" name="shipping" value="skellige" />
+                <div class="shipping-option__info">
+                  <span class="shipping-option__name">Skellige Longship Freight</span>
+                  <span class="shipping-option__desc">Island deliveries only. 10–14 working days, weather permitting.</span>
+                </div>
+                <span class="shipping-option__price">200 Crowns</span>
+              </label>
+            </div>
+          </section>
+
+          <section class="card-base checkout-section" aria-labelledby="payment-title">
+            <h2 class="eyebrow checkout-section__title" id="payment-title">
+              <i class="bi bi-cash-coin" aria-hidden="true"></i>
+              Payment Method
+            </h2>
+            <div class="payment-options" role="radiogroup" aria-label="Select payment method">
+              <label class="payment-option">
+                <input type="radio" name="payment" value="crowns" checked />
+                <div class="payment-option__info">
+                  <span class="payment-option__name">Crowns (Cash on Delivery)</span>
+                  <span class="payment-option__desc">Pay in gold upon receipt. Standard currency of the Continent.</span>
+                </div>
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="payment" value="guild" />
+                <div class="payment-option__info">
+                  <span class="payment-option__name">Merchant Guild Transfer</span>
+                  <span class="payment-option__desc">Secure guild-to-guild transaction. Bank details provided after order.</span>
+                </div>
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="payment" value="letter" />
+                <div class="payment-option__info">
+                  <span class="payment-option__name">Redanian Letter of Credit</span>
+                  <span class="payment-option__desc">Accepted throughout the Northern Kingdoms. Credit terms apply.</span>
+                </div>
+              </label>
+            </div>
+          </section>
+
+        </div>
+
+        <div class="col-lg-4">
+          <aside class="card-base sticky-sidebar checkout-summary" aria-label="Order summary">
+            <h2 class="card-title card-title--bordered">Order Summary</h2>
+
+            <div class="checkout-summary__items">
+              <div class="checkout-summary__item">
+                <div class="checkout-summary__item-img">
+                  <div class="placeholder-asset" style="width:100%;height:100%;">IMG</div>
+                </div>
+                <span class="checkout-summary__item-name">Aerondight &times;1</span>
+                <span class="checkout-summary__item-price">4 500 Cr</span>
+              </div>
+              <div class="checkout-summary__item">
+                <div class="checkout-summary__item-img">
+                  <div class="placeholder-asset" style="width:100%;height:100%;">IMG</div>
+                </div>
+                <span class="checkout-summary__item-name">Iris &times;1</span>
+                <span class="checkout-summary__item-price">3 200 Cr</span>
+              </div>
+              <div class="checkout-summary__item">
+                <div class="checkout-summary__item-img">
+                  <div class="placeholder-asset" style="width:100%;height:100%;">IMG</div>
+                </div>
+                <span class="checkout-summary__item-name">Thunderbolt &times;2</span>
+                <span class="checkout-summary__item-price">170 Cr</span>
+              </div>
+            </div>
+
+            <div class="checkout-summary__row">
+              <span>Subtotal</span>
+              <span>7 870 Crowns</span>
+            </div>
+            <div class="checkout-summary__row">
+              <span>Shipping</span>
+              <span>Free</span>
+            </div>
+            <div class="checkout-summary__row checkout-summary__total">
+              <span>Total</span>
+              <span>7 870 Crowns</span>
+            </div>
+
+            <button type="submit" class="btn-base btn-gold btn-full" style="margin-top:20px;">
+              <i class="bi bi-check-circle" aria-hidden="true"></i>
+              Place Order
+            </button>
+
+            <p style="text-align:center;font-size:.82rem;color:var(--clr-text-dim);margin-top:16px;">
+              <i class="bi bi-shield-lock" aria-hidden="true"></i>
+              Secured by Mage-Level Encryption
+            </p>
+          </aside>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4">
+        <div class="footer-logo">
+          <span class="brand-name">White Wolf Emporium</span>
+          <span class="brand-sub">Novigrad's Finest Trading Post</span>
+        </div>
+        <p class="footer-desc">Serving witchers, soldiers, merchants and scholars since the reign of King Foltest. Quality gear and rare ingredients, delivered anywhere on the Continent.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-link" aria-label="Follow us on Twitter"><i class="bi bi-twitter-x" aria-hidden="true"></i></a>
+          <a href="#" class="social-link" aria-label="Follow us on Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
+          <a href="#" class="social-link" aria-label="Join our Discord"><i class="bi bi-discord" aria-hidden="true"></i></a>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-2">
+        <h3 class="footer-heading">Shop</h3>
+        <ul class="footer-links">
+          <li><a href="products.html?category=weapons">Weapons</a></li>
+          <li><a href="products.html?category=armor">Armor</a></li>
+          <li><a href="products.html?category=alchemy">Alchemy</a></li>
+          <li><a href="products.html?category=monster-parts">Monster Parts</a></li>
+          <li><a href="products.html?category=gwent">Gwent Cards</a></li>
+          <li><a href="products.html?category=herbs">Herbs</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6 col-lg-2">
+        <h3 class="footer-heading">Information</h3>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Merchant Contracts</a></li>
+          <li><a href="#">Delivery &amp; Couriers</a></li>
+          <li><a href="#">Returns Policy</a></li>
+          <li><a href="#">Authenticity Guarantee</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6 col-lg-2">
+        <h3 class="footer-heading">Account</h3>
+        <ul class="footer-links">
+          <li><a href="login.html">Sign In</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="cart.html">Your Cart</a></li>
+          <li><a href="#">Order History</a></li>
+          <li><a href="#">Wishlist</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6 col-lg-2">
+        <h3 class="footer-heading">Contact</h3>
+        <address>
+          <ul class="footer-links">
+            <li><a href="#"><i class="bi bi-geo-alt" aria-hidden="true"></i> 7 Hierarch Square, Novigrad</a></li>
+            <li><a href="mailto:trade@whitewolf.gg"><i class="bi bi-envelope" aria-hidden="true"></i> trade@whitewolf.gg</a></li>
+            <li><a href="#"><i class="bi bi-headset" aria-hidden="true"></i> Support Portal</a></li>
+          </ul>
+        </address>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <p class="footer-bottom-text">&copy; 2025 White Wolf Emporium. All rights reserved.</p>
+        </div>
+        <div class="col-md-6">
+          <nav class="footer-bottom-links" aria-label="Legal links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Sale</a>
+            <a href="#">Cookie Settings</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

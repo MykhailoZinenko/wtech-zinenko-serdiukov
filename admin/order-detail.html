@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order #2841 — Admin — White Wolf Emporium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+<div class="sidebar-overlay"></div>
+
+<div class="admin-wrap">
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <span class="sidebar__brand-name">White Wolf Emporium</span>
+      <span class="sidebar__brand-sub">Admin Panel</span>
+    </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__section">Overview</span>
+      <a href="dashboard.html" class="sidebar__link"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <span class="sidebar__section">Catalogue</span>
+      <a href="products.html" class="sidebar__link"><i class="bi bi-box-seam"></i> Products</a>
+      <a href="product-add.html" class="sidebar__link"><i class="bi bi-plus-circle"></i> Add Product</a>
+      <span class="sidebar__section">Sales</span>
+      <a href="orders.html" class="sidebar__link active" aria-current="page"><i class="bi bi-receipt"></i> Orders <span class="nav-badge">12</span></a>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="sidebar__avatar">AD</div>
+        <div>
+          <span class="sidebar__user-name">Admin Witcher</span>
+          <span class="sidebar__user-role">Administrator</span>
+        </div>
+      </div>
+      <a href="login.html" class="sidebar__link"><i class="bi bi-box-arrow-left"></i> Sign Out</a>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button class="topbar-toggle" aria-label="Toggle sidebar"><i class="bi bi-list"></i></button>
+      <div class="topbar-search">
+        <i class="bi bi-search"></i>
+        <input type="search" placeholder="Search orders, customers…" />
+      </div>
+      <div class="topbar-actions">
+        <a href="orders.html" class="topbar-btn" title="Orders"><i class="bi bi-receipt"></i><span class="notif-dot"></span></a>
+        <button class="topbar-btn" title="Notifications"><i class="bi bi-bell"></i></button>
+        <div class="topbar-avatar" title="Admin Witcher">AD</div>
+      </div>
+    </header>
+
+    <main class="admin-page">
+      <div class="breadcrumb-adm">
+        <a href="dashboard.html">Dashboard</a>
+        <i class="bi bi-chevron-right"></i>
+        <a href="orders.html">Orders</a>
+        <i class="bi bi-chevron-right"></i>
+        <span class="current">#2841</span>
+      </div>
+
+      <div class="page-hdr">
+        <div class="page-hdr__left">
+          <h1 class="page-hdr__title">Order #2841 &nbsp;<span id="current-status-badge" class="badge status-processing">Processing</span></h1>
+          <p class="page-hdr__sub">Placed 11 Mar 2026 at 14:22 &nbsp;·&nbsp; Geralt of Rivia</p>
+        </div>
+        <div class="page-hdr__actions">
+          <button class="btn-base btn-outline-gold"><i class="bi bi-printer"></i> Print</button>
+          <button class="btn-base btn-outline-gold"><i class="bi bi-envelope"></i> Email Customer</button>
+        </div>
+      </div>
+
+      <div class="order-grid">
+        <div class="flex-col">
+          <div class="adm-card">
+            <div class="adm-card__hdr">
+              <span class="adm-card__title">Order Items</span>
+            </div>
+            <div class="tbl-wrap">
+              <table class="adm-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th class="col-hide-sm">Qty</th>
+                    <th class="col-hide-sm">Unit Price</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="tbl-product">
+                        <div class="tbl-thumb"><div class="placeholder-asset">IMG</div></div>
+                        <div>
+                          <a href="product-edit.html" class="tbl-product__name tbl-link">Aerondight</a>
+                          <span class="tbl-product__cat">Silver Swords · Legendary</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="col-hide-sm">1</td>
+                    <td class="td-dim col-hide-sm">4,500 ℂ</td>
+                    <td class="td-gold">4,500 ℂ</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="tbl-product">
+                        <div class="tbl-thumb"><div class="placeholder-asset">IMG</div></div>
+                        <div>
+                          <a href="product-edit.html" class="tbl-product__name tbl-link">Thunderbolt Potion</a>
+                          <span class="tbl-product__cat">Potions · Common</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="col-hide-sm">3</td>
+                    <td class="td-dim col-hide-sm">320 ℂ</td>
+                    <td class="td-gold">960 ℂ</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="tbl-product">
+                        <div class="tbl-thumb"><div class="placeholder-asset">IMG</div></div>
+                        <div>
+                          <a href="product-edit.html" class="tbl-product__name tbl-link">Draconid Oil</a>
+                          <span class="tbl-product__cat">Blade Oils · Common</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="col-hide-sm">2</td>
+                    <td class="td-dim col-hide-sm">180 ℂ</td>
+                    <td class="td-gold">360 ℂ</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="order-totals order-totals--padded">
+              <div class="total-row">
+                <span>Subtotal</span>
+                <span class="total-row__amt">5,820 ℂ</span>
+              </div>
+              <div class="total-row">
+                <span>Shipping — Nilfgaardian Express</span>
+                <span class="total-row__amt">120 ℂ</span>
+              </div>
+              <div class="total-row">
+                <span>Discount</span>
+                <span class="total-row__amt" class="td-green">— 190 ℂ</span>
+              </div>
+              <div class="total-row total-row--grand">
+                <span>Total</span>
+                <span class="total-row__amt">5,750 ℂ</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="adm-card">
+            <div class="adm-card__hdr">
+              <span class="adm-card__title">Order Timeline</span>
+            </div>
+            <div class="adm-card__body">
+              <div class="order-timeline">
+                <div class="ot-item">
+                  <div class="ot-dot ot-dot--done"><i class="bi bi-check-lg"></i></div>
+                  <div class="ot-info">
+                    <div class="ot-title">Order Placed</div>
+                    <div class="ot-time">11 Mar 2026, 14:22 — Payment confirmed via Guild Transfer</div>
+                  </div>
+                </div>
+                <div class="ot-item">
+                  <div class="ot-dot ot-dot--active"><i class="bi bi-check-lg"></i></div>
+                  <div class="ot-info">
+                    <div class="ot-title">Processing</div>
+                    <div class="ot-time">11 Mar 2026, 14:30 — Items pulled from warehouse inventory</div>
+                  </div>
+                </div>
+                <div class="ot-item">
+                  <div class="ot-dot ot-dot--pending"></div>
+                  <div class="ot-info">
+                    <div class="ot-title td-dim">Shipped</div>
+                    <div class="ot-time">Awaiting dispatch</div>
+                  </div>
+                </div>
+                <div class="ot-item">
+                  <div class="ot-dot ot-dot--pending"></div>
+                  <div class="ot-info">
+                    <div class="ot-title td-dim">Delivered</div>
+                    <div class="ot-time">Estimated 13–15 Mar 2026</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-col">
+          <div class="adm-card">
+            <div class="adm-card__hdr">
+              <span class="adm-card__title">Update Status</span>
+            </div>
+            <div class="adm-card__body">
+              <form action="#" method="post" data-toast="Order status updated.">
+                <div class="form-field">
+                  <label for="order-status-select">New Status</label>
+                  <select id="order-status-select" name="status">
+                    <option value="pending">Pending</option>
+                    <option value="processing" selected>Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label for="status-note">Internal Note <span class="lbl-opt">(optional)</span></label>
+                  <textarea id="status-note" name="note" rows="3" placeholder="e.g. Tracking number, carrier notes…"></textarea>
+                </div>
+                <div class="form-field">
+                  <label class="form-check-wwe">
+                    <input type="checkbox" name="notify_customer" checked />
+                    Notify customer by email
+                  </label>
+                </div>
+                <button type="submit" class="btn-base btn-gold btn-full" style="margin-top:4px;">
+                  <i class="bi bi-check-lg"></i> Save Status
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div class="adm-card">
+            <div class="adm-card__hdr">
+              <span class="adm-card__title">Customer</span>
+            </div>
+            <div class="adm-card__body">
+              <div class="info-rows">
+                <div class="info-row">
+                  <span class="info-row__lbl">Name</span>
+                  <span class="info-row__val">Geralt of Rivia</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-row__lbl">Email</span>
+                  <span class="info-row__val td-dim">geralt@kaermorhen.pl</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-row__lbl">Phone</span>
+                  <span class="info-row__val">+48 100 200 300</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-row__lbl">Orders</span>
+                  <span class="info-row__val">14 lifetime</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="adm-card">
+            <div class="adm-card__hdr">
+              <span class="adm-card__title">Shipping Address</span>
+            </div>
+            <div class="adm-card__body">
+              <div style="font-size:.87rem;color:var(--clr-text-dim);line-height:1.7;">
+                Geralt of Rivia<br>
+                Kaer Morhen, Western Mountains<br>
+                Kaedwen, 00-001<br>
+                Northern Kingdoms
+              </div>
+              <hr class="divider" />
+              <div class="info-rows">
+                <div class="info-row">
+                  <span class="info-row__lbl">Method</span>
+                  <span class="info-row__val">Nilfgaardian Express</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-row__lbl">Cost</span>
+                  <span class="info-row__val">120 ℂ</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-row__lbl">Tracking</span>
+                  <span class="info-row__val td-dim">Not yet assigned</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="adm-card">
+            <div class="adm-card__hdr">
+              <span class="adm-card__title">Payment</span>
+            </div>
+            <div class="adm-card__body">
+              <div class="info-rows">
+                <div class="info-row">
+                  <span class="info-row__lbl">Method</span>
+                  <span class="info-row__val">Guild Transfer</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-row__lbl">Status</span>
+                  <span class="info-row__val"><span class="badge badge--green">Paid</span></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-row__lbl">Amount</span>
+                  <span class="info-row__val td-gold">5,750 ℂ</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>
