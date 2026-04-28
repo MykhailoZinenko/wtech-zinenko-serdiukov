@@ -1,7 +1,7 @@
 <header class="site-header">
     <nav class="navbar navbar-expand-lg py-2" aria-label="Main navigation">
         <div class="container">
-            <a class="navbar-brand me-4" href="{{ url('/') }}" aria-label="{{ config('app.name') }} — Home">
+            <a class="navbar-brand me-4" href="{{ route('products.index') }}" aria-label="{{ config('app.name') }} — Home">
                 <div class="logo-icon placeholder-asset" style="width:44px;height:44px;border-radius:50%;font-size:.45rem;">LOGO</div>
                 <span class="logo-text ms-2">
                     <span class="brand-name">{{ config('app.name') }}</span>
@@ -15,43 +15,29 @@
 
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav site-nav me-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Weapons</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ url('products?category=swords') }}">Swords &amp; Daggers</a></li>
-                            <li><a class="dropdown-item" href="{{ url('products?category=axes') }}">Axes &amp; Hammers</a></li>
-                            <li><a class="dropdown-item" href="{{ url('products?category=crossbows') }}">Crossbows</a></li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li><a class="dropdown-item" href="{{ url('products?category=weapons') }}">All Weapons</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Armor</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ url('products?category=light-armor') }}">Light Armor</a></li>
-                            <li><a class="dropdown-item" href="{{ url('products?category=medium-armor') }}">Medium Armor</a></li>
-                            <li><a class="dropdown-item" href="{{ url('products?category=heavy-armor') }}">Heavy Armor</a></li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li><a class="dropdown-item" href="{{ url('products?category=sets') }}">Witcher Sets</a></li>
-                            <li><a class="dropdown-item" href="{{ url('products?category=armor') }}">All Armor</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Alchemy</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ url('products?category=potions') }}">Potions &amp; Decoctions</a></li>
-                            <li><a class="dropdown-item" href="{{ url('products?category=oils') }}">Blade Oils</a></li>
-                            <li><a class="dropdown-item" href="{{ url('products?category=bombs') }}">Bombs</a></li>
-                            <li><a class="dropdown-item" href="{{ url('products?category=herbs') }}">Herbs &amp; Ingredients</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('products?category=monster-parts') }}">Monster Parts</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('products?category=gwent') }}">Gwent Cards</a></li>
+                    @foreach (($navCategories ?? collect()) as $rootCategory)
+                        @if ($rootCategory->children->isNotEmpty())
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ $rootCategory->name }}</a>
+                                <ul class="dropdown-menu">
+                                    @foreach ($rootCategory->children as $child)
+                                        <li><a class="dropdown-item" href="{{ route('products.category', ['categorySlug' => $child->slug]) }}">{{ $child->name }}</a></li>
+                                    @endforeach
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" href="{{ route('products.category', ['categorySlug' => $rootCategory->slug]) }}">All {{ $rootCategory->name }}</a></li>
+                                </ul>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('products.category', ['categorySlug' => $rootCategory->slug]) }}">{{ $rootCategory->name }}</a>
+                            </li>
+                        @endif
+                    @endforeach
                 </ul>
 
-                <form class="header-search me-3" role="search" action="{{ url('products') }}" method="get">
+                <form class="header-search me-3" role="search" action="{{ route('products.index') }}" method="get">
                     <label for="header-search-input" class="visually-hidden">Search products</label>
-                    <input id="header-search-input" type="search" name="q" placeholder="Search the emporium…" autocomplete="off" />
+                    <input id="header-search-input" type="search" name="q" placeholder="Search the emporium…" autocomplete="off" value="{{ request('q') }}" />
                     <button type="submit" aria-label="Submit search"><i class="bi bi-search" aria-hidden="true"></i></button>
                 </form>
 
@@ -65,8 +51,9 @@
                             <i class="bi bi-person" aria-hidden="true"></i> Account
                         </a>
                     @endauth
-                    <a href="{{ url('cart') }}" class="action-btn cart-btn" aria-label="View cart">
+                    <a href="{{ route('cart.show') }}" class="action-btn cart-btn" aria-label="View cart">
                         <i class="bi bi-bag" aria-hidden="true"></i>
+                        <span id="cart-count-badge" class="cart-count" aria-hidden="true" @if (($cartCount ?? 0) === 0) hidden @endif>{{ $cartCount ?? 0 }}</span>
                         Cart
                     </a>
                 </div>

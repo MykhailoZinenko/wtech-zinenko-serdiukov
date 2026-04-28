@@ -4,3 +4,7 @@
 @import './_header.css';
 @import './_footer.css';
 @import './_auth.css';
+@import './_product-card.css';
+@import './_products.css';
+@import './_product-detail.css';
+@import './_cart.css';

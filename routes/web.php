@@ -4,10 +4,21 @@ use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/login');
+Route::redirect('/', '/shop');
+
+Route::get('shop', [ProductController::class, 'index'])->name('products.index');
+Route::get('shop/category/{categorySlug}', [ProductController::class, 'index'])->name('products.category');
+Route::get('shop/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+
+Route::get('cart', [CartController::class, 'show'])->name('cart.show');
+Route::post('cart', [CartController::class, 'add'])->name('cart.add');
+Route::patch('cart/items/{item}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('cart/items/{item}', [CartController::class, 'remove'])->name('cart.remove');
 
 Route::middleware('guest')->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');

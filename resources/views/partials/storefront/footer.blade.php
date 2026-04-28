@@ -16,12 +16,11 @@
             <div class="col-sm-6 col-lg-2">
                 <h3 class="footer-heading">Shop</h3>
                 <ul class="footer-links">
-                    <li><a href="{{ url('products?category=weapons') }}">Weapons</a></li>
-                    <li><a href="{{ url('products?category=armor') }}">Armor</a></li>
-                    <li><a href="{{ url('products?category=alchemy') }}">Alchemy</a></li>
-                    <li><a href="{{ url('products?category=monster-parts') }}">Monster Parts</a></li>
-                    <li><a href="{{ url('products?category=gwent') }}">Gwent Cards</a></li>
-                    <li><a href="{{ url('products?category=herbs') }}">Herbs</a></li>
+                    @forelse ($navCategories ?? collect() as $category)
+                        <li><a href="{{ route('products.category', ['categorySlug' => $category->slug]) }}">{{ $category->name }}</a></li>
+                    @empty
+                        <li><a href="{{ route('products.index') }}">Browse Catalogue</a></li>
+                    @endforelse
                 </ul>
             </div>
             <div class="col-sm-6 col-lg-2">
@@ -39,7 +38,7 @@
                 <ul class="footer-links">
                     <li><a href="{{ route('login') }}">Sign In</a></li>
                     <li><a href="{{ route('register') }}">Register</a></li>
-                    <li><a href="{{ url('cart') }}">Your Cart</a></li>
+                    <li><a href="{{ route('cart.show') }}">Your Cart</a></li>
                     <li><a href="#">Order History</a></li>
                     <li><a href="#">Wishlist</a></li>
                 </ul>

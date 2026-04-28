@@ -2,6 +2,55 @@ import axios from 'axios';
 window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+if (csrfToken) {
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+}
+
+function updateCartBadge(count) {
+    const badge = document.getElementById('cart-count-badge');
+    if (!badge) return;
+    badge.textContent = count;
+    if (count > 0) {
+        badge.removeAttribute('hidden');
+    } else {
+        badge.setAttribute('hidden', '');
+    }
+}
+
+function showCartToast(message) {
+    let toast = document.getElementById('cart-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'cart-toast';
+        toast.className = 'cart-toast';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add('cart-toast--show');
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => toast.classList.remove('cart-toast--show'), 2200);
+}
+
+document.addEventListener('submit', function (e) {
+    const form = e.target.closest('form[data-cart-add]');
+    if (!form) return;
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    axios.post(form.action, formData, {
+        headers: { Accept: 'application/json' },
+    })
+        .then((res) => {
+            updateCartBadge(res.data.count);
+            showCartToast(res.data.message || 'Added to cart');
+        })
+        .catch(() => {
+            // Fallback: native submit if AJAX fails for any reason.
+            form.submit();
+        });
+});
+
 (function () {
     const end = new Date(
         Date.now() + 3 * 24 * 60 * 60 * 1000 + 14 * 60 * 60 * 1000,
