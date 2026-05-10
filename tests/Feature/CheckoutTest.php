@@ -14,32 +14,28 @@ class CheckoutTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_is_redirected_to_login_before_checkout(): void
+    public function test_guest_cannot_access_checkout(): void
     {
-        $response = $this
-            ->withHeader('Accept', 'text/html')
-            ->get(route('checkout.show'));
+        $response = $this->get(route('checkout.show'));
 
-        $response->assertRedirect(route('login'));
+        $response->assertUnauthorized();
     }
 
     public function test_guest_cannot_submit_checkout(): void
     {
-        $response = $this
-            ->withHeader('Accept', 'text/html')
-            ->post(route('checkout.store'), [
-                'first_name' => 'Geralt',
-                'last_name' => 'of Rivia',
-                'email' => 'geralt@example.com',
-                'address' => 'Hierarch Square 1',
-                'city' => 'Novigrad',
-                'postal_code' => '11000',
-                'region' => 'novigrad',
-                'delivery' => 'courier',
-                'payment' => 'card',
-            ]);
+        $response = $this->post(route('checkout.store'), [
+            'first_name' => 'Geralt',
+            'last_name' => 'of Rivia',
+            'email' => 'geralt@example.com',
+            'address' => 'Hierarch Square 1',
+            'city' => 'Novigrad',
+            'postal_code' => '11000',
+            'region' => 'novigrad',
+            'delivery' => 'courier',
+            'payment' => 'card',
+        ]);
 
-        $response->assertRedirect(route('login'));
+        $response->assertUnauthorized();
         $this->assertDatabaseCount('orders', 0);
     }
 
