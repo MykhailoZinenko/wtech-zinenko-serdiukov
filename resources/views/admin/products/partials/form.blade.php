@@ -59,7 +59,7 @@
                                     <input type="radio" name="primary_image_id" value="{{ $image->id }}" @checked(old('primary_image_id', $product->primaryImage?->id) == $image->id) />
                                     Primary
                                 </label>
-                                <button type="button" class="img-existing__rm" onclick="document.getElementById('delete-image-{{ $image->id }}').submit()"><i class="bi bi-x"></i></button>
+                                <button type="button" class="img-existing__rm" onclick="sessionStorage.setItem('scrollY',String(window.scrollY));sessionStorage.setItem('scrollUrl',location.pathname+location.search);document.getElementById('delete-image-{{ $image->id }}').submit()"><i class="bi bi-x"></i></button>
                             </div>
                         @endforeach
                     @endif
