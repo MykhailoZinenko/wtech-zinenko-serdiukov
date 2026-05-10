@@ -22,7 +22,7 @@
 </div>
 
 @if (session('admin_success'))
-    <div class="admin-flash">{{ session('admin_success') }}</div>
+    <div class="form-alert form-alert--success">{{ session('admin_success') }}</div>
 @endif
 
 <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">

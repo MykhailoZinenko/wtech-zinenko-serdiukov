@@ -23,7 +23,10 @@
     <p class="cart-count-text mb-4">{{ $countLabel }}</p>
 
     @if (session('cart_success'))
-        <div class="cart-flash">{{ session('cart_success') }}</div>
+        <div class="form-alert form-alert--success">{{ session('cart_success') }}</div>
+    @endif
+    @if (session('cart_error'))
+        <div class="form-alert form-alert--error">{{ session('cart_error') }}</div>
     @endif
 
     @if ($items->isEmpty())

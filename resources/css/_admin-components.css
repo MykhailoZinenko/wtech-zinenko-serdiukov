@@ -670,15 +670,6 @@
   gap: 10px;
 }
 
-.admin-flash {
-  background: rgba(74, 156, 94, .12);
-  border: 1px solid rgba(74, 156, 94, .32);
-  color: var(--clr-green);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  margin-bottom: 18px;
-  font-size: var(--fs-sm);
-}
 
 .img-existing__rm {
   position: absolute;
