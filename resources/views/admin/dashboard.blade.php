@@ -140,6 +140,7 @@
                             <div class="activity-dot {{ $product->stock === 0 ? 'activity-dot--red' : 'activity-dot--gold' }}"></div>
                             <div class="activity-text">
                                 <strong>{{ $product->name }}</strong> {{ $product->stock === 0 ? 'is out of stock' : "stock is low ({$product->stock})" }}
+                                <span class="activity-time">{{ $product->updated_at->diffForHumans() }}</span>
                             </div>
                         </div>
                     @endforeach
