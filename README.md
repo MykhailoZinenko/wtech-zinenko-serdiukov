@@ -1,58 +1,208 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# White Wolf Emporium
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Witcher-themed e-commerce store built with Laravel 11, PostgreSQL, and Vite.
 
-## About Laravel
+## Prerequisites
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+| Tool | Version | Check |
+|------|---------|-------|
+| Docker & Docker Compose | Latest | `docker --version` |
+| — *or for native setup* — | | |
+| PHP | 8.4+ | `php -v` |
+| Composer | 2.x | `composer -V` |
+| Node.js | 22+ | `node -v` |
+| PostgreSQL | 16+ | `psql --version` |
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Quick Start (Docker) — macOS & Windows
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Docker is the recommended setup. It works identically on both platforms.
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 1. Clone and configure
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone <repo-url> white-wolf-emporium
+cd white-wolf-emporium
+cp .env.example .env
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Edit `.env` and set your database credentials (or keep the defaults):
 
-## Contributing
+```
+DB_CONNECTION=pgsql
+DB_HOST=db
+DB_PORT=5432
+DB_DATABASE=laravel
+DB_USERNAME=laravel
+DB_PASSWORD=secret
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+> **Important:** When running via Docker, set `DB_HOST=db` (the Docker service name). When running natively, set `DB_HOST=127.0.0.1`.
 
-## Code of Conduct
+### 2. Start the containers
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+docker compose up -d
+```
 
-## Security Vulnerabilities
+This starts three services:
+- **app** — PHP 8.4 on `http://localhost:8000`
+- **vite** — Vite dev server on `http://localhost:5173` (HMR)
+- **db** — PostgreSQL 16 on `localhost:5432`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+On first run, Composer and npm dependencies are installed automatically.
 
-## License
+### 3. Generate app key and run migrations
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate --seed
+docker compose exec app php artisan storage:link
+```
+
+### 4. Open the app
+
+- **Storefront:** http://localhost:8000
+- **Admin panel:** http://localhost:8000/admin/login
+
+Default admin credentials (from seeder):
+- Email: `admin@whitewolf.nv`
+- Password: `password`
+
+### Stopping
+
+```bash
+docker compose down          # stop containers (data persists)
+docker compose down -v       # stop and delete database volume
+```
+
+---
+
+## Native Setup — macOS
+
+### 1. Install dependencies
+
+```bash
+brew install php@8.4 composer node postgresql@16
+brew services start postgresql@16
+```
+
+### 2. Create database
+
+```bash
+createdb laravel
+createuser laravel -P        # enter a password when prompted
+psql -c "GRANT ALL PRIVILEGES ON DATABASE laravel TO laravel;"
+```
+
+### 3. Configure and install
+
+```bash
+cp .env.example .env
+# Edit .env: set DB_HOST=127.0.0.1, DB_DATABASE, DB_USERNAME, DB_PASSWORD
+composer install
+npm install
+php artisan key:generate
+php artisan migrate --seed
+php artisan storage:link
+```
+
+### 4. Run
+
+Open two terminal tabs:
+
+```bash
+# Tab 1 — PHP server
+php artisan serve
+
+# Tab 2 — Vite dev server
+npm run dev
+```
+
+- **Storefront:** http://localhost:8000
+- **Admin:** http://localhost:8000/admin/login
+
+---
+
+## Native Setup — Windows
+
+### 1. Install dependencies
+
+Install the following:
+- **PHP 8.4:** Download from https://windows.php.net/download — extract to `C:\php`, add to PATH. Enable these extensions in `php.ini`: `pdo_pgsql`, `pgsql`, `openssl`, `mbstring`, `fileinfo`, `curl`.
+- **Composer:** Download and run the installer from https://getcomposer.org/download/
+- **Node.js 22+:** Download from https://nodejs.org
+- **PostgreSQL 16:** Download from https://www.postgresql.org/download/windows/ — remember the password you set for the `postgres` user.
+
+### 2. Create database
+
+Open pgAdmin or a terminal:
+
+```sql
+CREATE DATABASE laravel;
+CREATE USER laravel WITH PASSWORD 'secret';
+GRANT ALL PRIVILEGES ON DATABASE laravel TO laravel;
+```
+
+### 3. Configure and install
+
+```cmd
+copy .env.example .env
+REM Edit .env: set DB_HOST=127.0.0.1, DB_DATABASE=laravel, DB_USERNAME=laravel, DB_PASSWORD=secret
+composer install
+npm install
+php artisan key:generate
+php artisan migrate --seed
+php artisan storage:link
+```
+
+### 4. Run
+
+Open two terminals:
+
+```cmd
+REM Terminal 1
+php artisan serve
+
+REM Terminal 2
+npm run dev
+```
+
+- **Storefront:** http://localhost:8000
+- **Admin:** http://localhost:8000/admin/login
+
+---
+
+## Running Tests
+
+```bash
+# Docker
+docker compose exec app php artisan test
+
+# Native
+php artisan test
+```
+
+## Project Structure
+
+```
+app/
+├── Http/Controllers/       # Request handlers
+│   ├── Admin/              # Admin product management
+│   ├── Auth/               # Login, register, admin login
+│   ├── CartController      # Shopping cart
+│   ├── CheckoutController  # Order placement
+│   └── HomeController      # Landing page
+├── Models/                 # Eloquent models
+├── Services/               # CartResolver, OrderOptionService
+└── Http/Requests/          # Form validation
+database/
+├── migrations/             # Schema
+└── seeders/                # Sample data + admin user
+resources/
+├── css/                    # Vite-processed CSS (storefront + admin)
+├── js/                     # Vite-processed JS
+└── views/                  # Blade templates
+public/
+├── css/                    # Static mockup CSS (design reference)
+└── js/                     # Static mockup JS (design reference)
+```
