@@ -26,11 +26,11 @@
             <div class="col-sm-6 col-lg-2">
                 <h3 class="footer-heading">Information</h3>
                 <ul class="footer-links">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Merchant Contracts</a></li>
-                    <li><a href="#">Delivery &amp; Couriers</a></li>
-                    <li><a href="#">Returns Policy</a></li>
-                    <li><a href="#">Authenticity Guarantee</a></li>
+                    <li><a href="{{ route('pages.about') }}">About Us</a></li>
+                    <li><a href="{{ route('pages.contracts') }}">Merchant Contracts</a></li>
+                    <li><a href="{{ route('pages.delivery') }}">Delivery &amp; Couriers</a></li>
+                    <li><a href="{{ route('pages.returns') }}">Returns Policy</a></li>
+                    <li><a href="{{ route('pages.authenticity') }}">Authenticity Guarantee</a></li>
                 </ul>
             </div>
             <div class="col-sm-6 col-lg-2">
