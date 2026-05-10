@@ -30,10 +30,9 @@
             @include('partials.account.sidebar')
         </div>
         <div class="col-lg-9">
-            <h1 class="account-content__title">Order History</h1>
-
             @if ($orders->isEmpty())
                 <div class="card-base account-empty">
+                    <h1 class="account-info__title">Order History</h1>
                     <p>You haven't placed any orders yet.</p>
                     <a href="{{ route('products.index') }}" class="btn-base btn-gold">
                         <i class="bi bi-shop" aria-hidden="true"></i> Browse the Catalogue
@@ -41,6 +40,7 @@
                 </div>
             @else
                 <div class="card-base">
+                    <h1 class="account-info__title">Order History</h1>
                     <div class="order-list">
                         @foreach ($orders as $order)
                             <div class="order-row">

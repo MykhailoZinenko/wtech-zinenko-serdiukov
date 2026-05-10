@@ -17,8 +17,8 @@
             @include('partials.account.sidebar')
         </div>
         <div class="col-lg-9">
-            <h1 class="account-content__title">Profile</h1>
             <div class="card-base account-info">
+                <h1 class="account-info__title">Profile</h1>
                 <div class="account-info__row">
                     <span class="account-info__label">Full Name</span>
                     <span class="account-info__value">{{ auth()->user()->full_name }}</span>

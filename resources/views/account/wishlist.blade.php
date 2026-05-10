@@ -18,16 +18,18 @@
             @include('partials.account.sidebar')
         </div>
         <div class="col-lg-9">
-            <h1 class="account-content__title">Wishlist</h1>
-
             @if ($items->isEmpty())
                 <div class="card-base account-empty">
+                    <h1 class="account-info__title">Wishlist</h1>
                     <p>Your wishlist is empty.</p>
                     <a href="{{ route('products.index') }}" class="btn-base btn-gold">
                         <i class="bi bi-shop" aria-hidden="true"></i> Browse the Catalogue
                     </a>
                 </div>
             @else
+                <div class="card-base account-info" style="margin-bottom:24px;">
+                    <h1 class="account-info__title" style="margin-bottom:0;">Wishlist</h1>
+                </div>
                 <div class="row g-4">
                     @foreach ($items as $wishlistItem)
                         <div class="col-sm-6 col-xl-4">
