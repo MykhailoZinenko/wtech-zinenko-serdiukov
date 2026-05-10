@@ -14,7 +14,7 @@
 
     <nav class="products-breadcrumb mb-4" aria-label="Breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Shop</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">Your Cart</li>
         </ol>
     </nav>
@@ -129,15 +129,9 @@
                         <span>Total</span>
                         <span>{{ $fmt($total) }} <span class="eyebrow product-price__unit">Crowns</span></span>
                     </div>
-                    @auth
-                        <a href="{{ route('checkout.show') }}" class="btn-base btn-gold btn-full" style="margin-top:20px;">
-                            <i class="bi bi-check-circle" aria-hidden="true"></i> Checkout
-                        </a>
-                    @else
-                        <a href="{{ route('checkout.show') }}" class="btn-base btn-gold btn-full" style="margin-top:20px;">
-                            <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Sign in to Checkout
-                        </a>
-                    @endauth
+                    <a href="{{ route('checkout.show') }}" class="btn-base btn-gold btn-full" style="margin-top:20px;">
+                        <i class="bi bi-lock" aria-hidden="true"></i> Proceed to Checkout
+                    </a>
                     <a href="{{ route('products.index') }}" class="cart-summary__continue">Continue shopping</a>
                 </aside>
             </div>

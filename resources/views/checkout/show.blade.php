@@ -13,99 +13,11 @@
     $user = auth()->user();
 @endphp
 
-@push('styles')
-<style>
-    .checkout-page .checkout-section {
-        padding: 24px;
-        margin-bottom: 24px;
-    }
-
-    .checkout-page .shipping-options,
-    .checkout-page .payment-options {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .checkout-page .shipping-option,
-    .checkout-page .payment-option {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        width: 100%;
-        padding: 14px 18px;
-        background: var(--clr-bg-2);
-        border: 1px solid var(--clr-border);
-        border-radius: var(--radius-sm);
-    }
-
-    .checkout-page .shipping-option input,
-    .checkout-page .payment-option input {
-        width: 16px;
-        height: 16px;
-        flex: 0 0 16px;
-        margin: 0;
-        accent-color: var(--clr-gold);
-    }
-
-    .checkout-page .shipping-option__info,
-    .checkout-page .payment-option__info {
-        flex: 1 1 auto;
-        min-width: 0;
-    }
-
-    .checkout-page .shipping-option__name,
-    .checkout-page .payment-option__name,
-    .checkout-page .shipping-option__desc,
-    .checkout-page .payment-option__desc {
-        display: block;
-    }
-
-    .checkout-page .shipping-option__price {
-        flex: 0 0 auto;
-        white-space: nowrap;
-    }
-
-    .checkout-page .checkout-summary__items {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-bottom: 16px;
-    }
-
-    .checkout-page .checkout-summary__item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .checkout-page .checkout-summary__item-img {
-        width: 52px;
-        height: 52px;
-        flex: 0 0 52px;
-        overflow: hidden;
-        border-radius: var(--radius-sm);
-    }
-
-    .checkout-page .checkout-summary__item-img img,
-    .checkout-page .checkout-summary__item-img .placeholder-asset {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .checkout-page .checkout-summary__item-name {
-        flex: 1 1 auto;
-        min-width: 0;
-    }
-</style>
-@endpush
-
 @section('content')
 <div class="container py-4 py-lg-5">
     <nav aria-label="Breadcrumb" class="products-breadcrumb mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Shop</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="{{ route('cart.show') }}">Cart</a></li>
             <li class="breadcrumb-item active" aria-current="page">Checkout</li>
         </ol>
@@ -195,7 +107,7 @@
                 <section class="card-base checkout-section" aria-labelledby="shipping-title">
                     <h2 class="eyebrow checkout-section__title" id="shipping-title">
                         <i class="bi bi-truck" aria-hidden="true"></i>
-                        Delivery Method
+                        Shipping Method
                     </h2>
                     <div class="shipping-options" role="radiogroup" aria-label="Select delivery method">
                         @foreach ($shippingMethods as $method)
@@ -247,7 +159,7 @@
                                         <div class="placeholder-asset">IMG</div>
                                     @endif
                                 </div>
-                                <span class="checkout-summary__item-name">{{ $product?->name ?? 'Unavailable product' }} x{{ $item->quantity }}</span>
+                                <span class="checkout-summary__item-name">{{ $product?->name ?? 'Unavailable product' }} &times;{{ $item->quantity }}</span>
                                 <span class="checkout-summary__item-price">{{ number_format($item->lineTotal, 0, ',', ' ') }} Cr</span>
                             </div>
                         @endforeach
