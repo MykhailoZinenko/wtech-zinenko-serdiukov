@@ -61,9 +61,13 @@
                     <div class="filter-group">
                         <label class="eyebrow filter-label">Price (Crowns)</label>
                         <div class="filter-price-row">
-                            <input type="number" name="min_price" placeholder="Min" min="0" step="10" class="input-base filter-input" value="{{ $filters['min_price'] }}" />
+                            <input type="number" name="min_price" id="min_price" placeholder="Min" min="0" step="10" class="input-base filter-input" value="{{ $filters['min_price'] }}" />
                             <span class="filter-sep">–</span>
-                            <input type="number" name="max_price" placeholder="Max" min="0" step="10" class="input-base filter-input" value="{{ $filters['max_price'] }}" />
+                            <input type="number" name="max_price" id="max_price" placeholder="Max" min="0" step="10" class="input-base filter-input" value="{{ $filters['max_price'] }}" />
+                        </div>
+                        <div class="filter-price-slider">
+                            <input type="range" id="price-slider-min" class="filter-range" min="0" max="10000" value="{{ $filters['min_price'] ?: 0 }}" step="50" title="Min price" />
+                            <input type="range" id="price-slider-max" class="filter-range" min="0" max="10000" value="{{ $filters['max_price'] ?: 10000 }}" step="50" title="Max price" />
                         </div>
                     </div>
 
