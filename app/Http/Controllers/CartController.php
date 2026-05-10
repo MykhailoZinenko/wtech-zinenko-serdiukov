@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateCartItemRequest;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Services\CartResolver;
+use App\Services\OrderOptionService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -16,64 +17,25 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class CartController extends Controller
 {
-    public const DELIVERY_OPTIONS = [
-        'courier' => [
-            'label' => 'Courier delivery',
-            'description' => 'Delivered to your address in 2-4 working days.',
-            'fee' => 50,
-        ],
-        'pickup' => [
-            'label' => 'Store pickup',
-            'description' => 'Collect your order at Hierarch Square.',
-            'fee' => 0,
-        ],
-        'express' => [
-            'label' => 'Express courier',
-            'description' => 'Priority delivery on the next working day.',
-            'fee' => 120,
-        ],
-    ];
-
-    public const PAYMENT_OPTIONS = [
-        'card' => [
-            'label' => 'Card payment',
-            'description' => 'Pay securely by card when submitting the order.',
-            'fee' => 0,
-        ],
-        'bank_transfer' => [
-            'label' => 'Bank transfer',
-            'description' => 'Receive payment instructions after checkout.',
-            'fee' => 0,
-        ],
-        'cash_on_delivery' => [
-            'label' => 'Cash on delivery',
-            'description' => 'Pay the courier when your package arrives.',
-            'fee' => 25,
-        ],
-    ];
-
-    public function __construct(private readonly CartResolver $resolver)
-    {
+    public function __construct(
+        private readonly CartResolver $resolver,
+        private readonly OrderOptionService $options,
+    ) {
     }
 
     public function show(): View
     {
         $cart = $this->resolver->resolve();
-        $options = $this->cartOptions();
-        $subtotal = $cart->subtotal();
-        $deliveryFee = $this->deliveryFee($options['delivery'], $subtotal);
-        $paymentFee = self::PAYMENT_OPTIONS[$options['payment']]['fee'];
+        $selected = $this->options->selectedOptions();
+        $totals = $this->options->totals($cart->subtotal(), $selected['delivery'], $selected['payment']);
 
         return view('cart.show', [
             'cart' => $cart,
-            'deliveryOptions' => self::DELIVERY_OPTIONS,
-            'paymentOptions' => self::PAYMENT_OPTIONS,
-            'selectedDelivery' => $options['delivery'],
-            'selectedPayment' => $options['payment'],
-            'subtotal' => $subtotal,
-            'deliveryFee' => $deliveryFee,
-            'paymentFee' => $paymentFee,
-            'total' => $subtotal + $deliveryFee + $paymentFee,
+            'deliveryOptions' => OrderOptionService::DELIVERY_OPTIONS,
+            'paymentOptions' => OrderOptionService::PAYMENT_OPTIONS,
+            'selectedDelivery' => $selected['delivery'],
+            'selectedPayment' => $selected['payment'],
+            ...$totals,
         ]);
     }
 
@@ -147,25 +109,5 @@ class CartController extends Controller
         if ($item->cart_id !== $cart->id) {
             throw new AccessDeniedHttpException('This cart item does not belong to your cart.');
         }
-    }
-
-    private function cartOptions(): array
-    {
-        $delivery = session('cart.delivery', 'courier');
-        $payment = session('cart.payment', 'card');
-
-        return [
-            'delivery' => array_key_exists($delivery, self::DELIVERY_OPTIONS) ? $delivery : 'courier',
-            'payment' => array_key_exists($payment, self::PAYMENT_OPTIONS) ? $payment : 'card',
-        ];
-    }
-
-    private function deliveryFee(string $delivery, float $subtotal): int
-    {
-        if ($delivery === 'courier' && $subtotal >= 500) {
-            return 0;
-        }
-
-        return self::DELIVERY_OPTIONS[$delivery]['fee'];
     }
 }

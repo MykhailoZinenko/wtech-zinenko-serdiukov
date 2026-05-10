@@ -6,6 +6,7 @@ use App\Http\Requests\CheckoutRequest;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Services\CartResolver;
+use App\Services\OrderOptionService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -14,8 +15,10 @@ use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
 {
-    public function __construct(private readonly CartResolver $cartResolver)
-    {
+    public function __construct(
+        private readonly CartResolver $cartResolver,
+        private readonly OrderOptionService $options,
+    ) {
     }
 
     public function show(): View|RedirectResponse
@@ -26,13 +29,13 @@ class CheckoutController extends Controller
             return redirect()->route('cart.show')->with('cart_success', 'Your cart is empty.');
         }
 
-        $defaults = $this->cartOptions();
-        $totals = $this->totals($cart->subtotal(), $defaults['delivery'], $defaults['payment']);
+        $defaults = $this->options->selectedOptions();
+        $totals = $this->options->totals($cart->subtotal(), $defaults['delivery'], $defaults['payment']);
 
         return view('checkout.show', [
             'cart' => $cart,
-            'deliveryOptions' => CartController::DELIVERY_OPTIONS,
-            'paymentOptions' => CartController::PAYMENT_OPTIONS,
+            'deliveryOptions' => OrderOptionService::DELIVERY_OPTIONS,
+            'paymentOptions' => OrderOptionService::PAYMENT_OPTIONS,
             'selectedDelivery' => $defaults['delivery'],
             'selectedPayment' => $defaults['payment'],
             ...$totals,
@@ -49,7 +52,7 @@ class CheckoutController extends Controller
 
         $validated = $request->validated();
         $subtotal = $cart->subtotal();
-        $totals = $this->totals($subtotal, $validated['delivery'], $validated['payment']);
+        $totals = $this->options->totals($subtotal, $validated['delivery'], $validated['payment']);
 
         $order = DB::transaction(function () use ($cart, $validated, $subtotal, $totals) {
             $order = Order::create([
@@ -93,8 +96,8 @@ class CheckoutController extends Controller
 
         return view('checkout.success', [
             'order' => $order->load('items'),
-            'deliveryOptions' => CartController::DELIVERY_OPTIONS,
-            'paymentOptions' => CartController::PAYMENT_OPTIONS,
+            'deliveryOptions' => OrderOptionService::DELIVERY_OPTIONS,
+            'paymentOptions' => OrderOptionService::PAYMENT_OPTIONS,
         ]);
     }
 
@@ -111,32 +114,6 @@ class CheckoutController extends Controller
             'unit_price' => $item->unit_price,
             'line_total' => $item->line_total,
         ]);
-    }
-
-    private function cartOptions(): array
-    {
-        $delivery = session('cart.delivery', 'courier');
-        $payment = session('cart.payment', 'card');
-
-        return [
-            'delivery' => array_key_exists($delivery, CartController::DELIVERY_OPTIONS) ? $delivery : 'courier',
-            'payment' => array_key_exists($payment, CartController::PAYMENT_OPTIONS) ? $payment : 'card',
-        ];
-    }
-
-    private function totals(float $subtotal, string $delivery, string $payment): array
-    {
-        $deliveryFee = $delivery === 'courier' && $subtotal >= 500
-            ? 0
-            : CartController::DELIVERY_OPTIONS[$delivery]['fee'];
-        $paymentFee = CartController::PAYMENT_OPTIONS[$payment]['fee'];
-
-        return [
-            'subtotal' => $subtotal,
-            'deliveryFee' => $deliveryFee,
-            'paymentFee' => $paymentFee,
-            'total' => $subtotal + $deliveryFee + $paymentFee,
-        ];
     }
 
     private function nextOrderNumber(): string
