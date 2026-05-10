@@ -10,7 +10,6 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
-use App\Http\Middleware\EnsureCheckoutAuthenticated;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -25,7 +24,7 @@ Route::patch('cart/options', [CartController::class, 'updateOptions'])->name('ca
 Route::patch('cart/items/{item}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('cart/items/{item}', [CartController::class, 'remove'])->name('cart.remove');
 
-Route::middleware(EnsureCheckoutAuthenticated::class)->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('checkout', [CheckoutController::class, 'show'])->name('checkout.show');
     Route::post('checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::get('checkout/success/{order}', [CheckoutController::class, 'success'])->name('checkout.success');
