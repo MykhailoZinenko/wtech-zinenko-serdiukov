@@ -100,7 +100,7 @@
 }
 
 .account-empty {
-  padding: 60px 24px;
+  padding: 40px 0;
   text-align: center;
   color: var(--clr-text-muted);
 }
