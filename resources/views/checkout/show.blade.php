@@ -102,6 +102,13 @@
                         <textarea id="co-notes" name="notes" rows="3" placeholder="Special delivery instructions, contract notes...">{{ old('notes') }}</textarea>
                         @error('notes') <p class="form-error">{{ $message }}</p> @enderror
                     </div>
+
+                    @guest
+                        <div class="form-check-wwe mt-2">
+                            <input type="checkbox" id="co-guest-login" name="create_account" {{ old('create_account') ? 'checked' : '' }} />
+                            <label for="co-guest-login">Create an account with these details so I can track my order history.</label>
+                        </div>
+                    @endguest
                 </section>
 
                 <section class="card-base checkout-section" aria-labelledby="shipping-title">

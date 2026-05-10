@@ -232,9 +232,13 @@
         <div class="newsletter-box">
             <h2 id="newsletter-title">Join the Witcher's Guild</h2>
             <p>Subscribe to receive contract alerts, new stock notifications, and exclusive discounts for active witchers.</p>
-            <form class="newsletter-form" action="{{ route('products.index') }}" method="get">
+            @if (session('newsletter_success'))
+                <div class="cart-flash">{{ session('newsletter_success') }}</div>
+            @endif
+            <form class="newsletter-form" action="{{ route('newsletter.store') }}" method="POST">
+                @csrf
                 <label for="newsletter-email" class="visually-hidden">Your email address</label>
-                <input id="newsletter-email" type="email" name="email" placeholder="Enter your email address..." autocomplete="email">
+                <input id="newsletter-email" type="email" name="email" placeholder="Enter your email address..." autocomplete="email" required>
                 <button type="submit">Subscribe</button>
             </form>
         </div>
