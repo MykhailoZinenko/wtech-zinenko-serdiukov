@@ -121,14 +121,12 @@ document.addEventListener('click', function (e) {
     const form = document.querySelector('[data-checkout-form]');
     if (!form) return;
 
-    const deliveryTarget = form.querySelector('[data-checkout-delivery]');
-    const paymentTarget = form.querySelector('[data-checkout-payment]');
+    const shippingTarget = form.querySelector('[data-checkout-shipping]');
     const totalTarget = form.querySelector('[data-checkout-total]');
-    if (!deliveryTarget || !paymentTarget || !totalTarget) return;
+    if (!shippingTarget || !totalTarget) return;
 
     const subtotal = Number(form.dataset.subtotal || 0);
-    const deliveryFees = JSON.parse(form.dataset.deliveryFees || '{}');
-    const paymentFees = JSON.parse(form.dataset.paymentFees || '{}');
+    const shippingCosts = JSON.parse(form.dataset.shippingCosts || '{}');
 
     function formatCrowns(value) {
         return new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 })
@@ -136,23 +134,16 @@ document.addEventListener('click', function (e) {
             .replace(/\u202f/g, ' ');
     }
 
-    function formatFee(value) {
-        return value === 0 ? 'Free' : `${formatCrowns(value)} Crowns`;
-    }
-
     function updateCheckoutTotal() {
-        const delivery = form.querySelector('input[name="delivery"]:checked')?.value;
-        const payment = form.querySelector('input[name="payment"]:checked')?.value;
-        const deliveryFee = Number(deliveryFees[delivery] || 0);
-        const paymentFee = Number(paymentFees[payment] || 0);
+        const shippingId = form.querySelector('input[name="shipping_method_id"]:checked')?.value;
+        const shippingCost = Number(shippingCosts[shippingId] || 0);
 
-        deliveryTarget.textContent = formatFee(deliveryFee);
-        paymentTarget.textContent = formatFee(paymentFee);
-        totalTarget.textContent = `${formatCrowns(subtotal + deliveryFee + paymentFee)} Crowns`;
+        shippingTarget.textContent = shippingCost === 0 ? 'Free' : `${formatCrowns(shippingCost)} Crowns`;
+        totalTarget.textContent = `${formatCrowns(subtotal + shippingCost)} Crowns`;
     }
 
     form.addEventListener('change', function (e) {
-        if (e.target.matches('input[name="delivery"], input[name="payment"]')) {
+        if (e.target.matches('input[name="shipping_method_id"], input[name="payment_method_id"]')) {
             updateCheckoutTotal();
         }
     });
