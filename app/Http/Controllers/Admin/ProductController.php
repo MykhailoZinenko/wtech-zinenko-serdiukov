@@ -144,25 +144,26 @@ class ProductController extends Controller
     private function productData(ProductRequest $request): array
     {
         $validated = $request->validated();
-        $slug = $validated['slug'] ?: Str::slug($validated['name']);
+        $slug = !empty($validated['slug']) ? $validated['slug'] : Str::slug($validated['name']);
+        $sku = !empty($validated['sku']) ? $validated['sku'] : strtoupper(Str::random(8));
 
         return [
             'category_id' => $validated['category_id'],
             'name' => $validated['name'],
             'slug' => $slug,
-            'sku' => $validated['sku'],
+            'sku' => $sku,
             'short_description' => $validated['short_description'] ?? null,
             'full_description' => $validated['full_description'] ?? '',
             'price' => $validated['price'],
             'compare_price' => $validated['compare_price'] ?? null,
             'stock' => $validated['stock'],
-            'low_stock_threshold' => $validated['low_stock_threshold'],
-            'weight' => $validated['weight'] ?? null,
+            'low_stock_threshold' => $validated['low_stock_threshold'] ?? 5,
             'status' => $validated['status'],
-            'school' => $validated['school'],
+            'school' => $validated['school'] ?: 'none',
             'rarity' => $validated['rarity'],
             'is_featured' => $request->boolean('is_featured'),
-            'published_at' => $validated['published_at'] ?? ($validated['status'] === 'active' ? now() : null),
+            'is_limited_edition' => $request->boolean('is_limited_edition'),
+            'published_at' => $validated['status'] === 'active' ? now() : null,
         ];
     }
 
