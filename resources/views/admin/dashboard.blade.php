@@ -31,11 +31,23 @@
         <div class="stat-card__icon"><i class="bi bi-coin"></i></div>
         <div class="stat-card__label">Revenue (30d)</div>
         <div class="stat-card__value">{{ $fmt($revenue) }}</div>
+        @if ($revenueDelta !== null)
+            <div class="stat-card__delta stat-card__delta--{{ $revenueDelta >= 0 ? 'up' : 'down' }}">
+                <i class="bi bi-arrow-{{ $revenueDelta >= 0 ? 'up' : 'down' }}-short"></i>
+                {{ $revenueDelta >= 0 ? '+' : '' }}{{ $revenueDelta }}% vs last month
+            </div>
+        @endif
     </div>
     <div class="stat-card stat-card--green">
         <div class="stat-card__icon"><i class="bi bi-receipt"></i></div>
         <div class="stat-card__label">Orders (30d)</div>
         <div class="stat-card__value">{{ $fmt($orderCount) }}</div>
+        @if ($orderDelta !== null)
+            <div class="stat-card__delta stat-card__delta--{{ $orderDelta >= 0 ? 'up' : 'down' }}">
+                <i class="bi bi-arrow-{{ $orderDelta >= 0 ? 'up' : 'down' }}-short"></i>
+                {{ $orderDelta >= 0 ? '+' : '' }}{{ $orderDelta }}% vs last month
+            </div>
+        @endif
     </div>
     <div class="stat-card stat-card--blue">
         <div class="stat-card__icon"><i class="bi bi-box-seam"></i></div>

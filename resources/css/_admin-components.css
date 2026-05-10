@@ -221,6 +221,10 @@
   color: var(--clr-green);
 }
 
+.stat-card__delta--down {
+  color: var(--clr-red-light);
+}
+
 .tbl-wrap {
   overflow-x: auto;
 }
