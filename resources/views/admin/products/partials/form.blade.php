@@ -1,7 +1,7 @@
 @php
     $isEdit = isset($product->id);
     $schools = [
-        '' => '— None —',
+        'none' => '— None —',
         'wolf' => 'Wolf School', 'griffin' => 'Griffin School', 'cat' => 'Cat School',
         'bear' => 'Bear School', 'viper' => 'Viper School', 'manticore' => 'Manticore School',
         'ofieri' => 'Ofieri', 'toussaint' => 'Toussaint',

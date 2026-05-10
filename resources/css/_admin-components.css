@@ -528,6 +528,11 @@
   font-size: var(--fs-2xs);
 }
 
+.lbl-req {
+  color: var(--clr-red-light);
+  font-weight: 400;
+}
+
 .lbl-opt {
   font-weight: 400;
   text-transform: none;

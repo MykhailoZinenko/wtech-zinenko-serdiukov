@@ -159,7 +159,7 @@ class ProductController extends Controller
             'stock' => $validated['stock'],
             'low_stock_threshold' => $validated['low_stock_threshold'] ?? 5,
             'status' => $validated['status'],
-            'school' => $validated['school'] ?: 'none',
+            'school' => $validated['school'] ?? 'none',
             'rarity' => $validated['rarity'],
             'is_featured' => $request->boolean('is_featured'),
             'is_limited_edition' => $request->boolean('is_limited_edition'),
