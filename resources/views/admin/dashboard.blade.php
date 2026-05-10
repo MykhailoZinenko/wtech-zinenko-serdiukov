@@ -89,7 +89,7 @@
         <div class="adm-card">
             <div class="adm-card__hdr">
                 <span class="adm-card__title">Recent Orders</span>
-                <a href="#" class="btn-base btn-outline-gold btn-sm">View All</a>
+                <a href="{{ route('admin.orders.index') }}" class="btn-base btn-outline-gold btn-sm">View All</a>
             </div>
             @if ($recentOrders->isEmpty())
                 <div class="adm-card__body">

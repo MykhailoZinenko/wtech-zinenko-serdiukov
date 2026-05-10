@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CartController;
@@ -146,4 +147,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('products', AdminProductController::class)->except('show');
     Route::post('products/{product}/images', [AdminProductController::class, 'uploadImage'])->name('products.images.upload');
     Route::delete('products/{product}/images/{image}', [AdminProductController::class, 'destroyImage'])->name('products.images.destroy');
+
+    Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order:order_number}', [AdminOrderController::class, 'show'])->name('orders.show');
+    Route::patch('orders/{order:order_number}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
 });

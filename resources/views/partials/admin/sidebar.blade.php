@@ -16,7 +16,7 @@
             <i class="bi bi-plus-circle"></i> Add Product
         </a>
         <span class="sidebar__section">Sales</span>
-        <a href="#" class="sidebar__link">
+        <a href="{{ route('admin.orders.index') }}" class="sidebar__link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
             <i class="bi bi-receipt"></i> Orders
         </a>
     </nav>

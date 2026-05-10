@@ -876,6 +876,12 @@
   padding-top: 2px;
 }
 
+.info-address {
+  font-size: var(--fs-sm);
+  color: var(--clr-text-dim);
+  line-height: 1.7;
+}
+
 .info-row__val {
   color: var(--clr-text);
   text-align: right;
