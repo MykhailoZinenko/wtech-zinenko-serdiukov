@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             ReviewSeeder::class,
             ShippingPaymentSeeder::class,
+            FakeDataSeeder::class,
         ]);
     }
 }
