@@ -97,16 +97,6 @@
                             <i class="bi bi-heart"></i>
                         </button>
                     </form>
-
-                    @if ($cartItem)
-                        <form action="{{ route('cart.remove', $cartItem) }}" method="POST" class="product-detail__remove-form">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn-base btn-red product-detail__remove" aria-label="Remove {{ $product->name }} from cart">
-                                <i class="bi bi-trash"></i> Remove from Cart
-                            </button>
-                        </form>
-                    @endif
                 </div>
 
                 <div class="product-detail__meta">
@@ -157,10 +147,6 @@
             @endif
         </div>
 
-        @if (session('review_success'))
-            <div class="cart-flash">{{ session('review_success') }}</div>
-        @endif
-
         <div class="card-base review-submit">
             <h3 class="card-title">Submit a Review</h3>
             <form action="{{ route('reviews.store', $product) }}" method="POST" class="review-submit__form">
@@ -168,14 +154,14 @@
                 @auth <input type="hidden" name="_auth" value="1" /> @endauth
                 <div class="review-submit__row review-submit__row--first">
                     @guest
-                        <div class="review-submit__field">
-                            <label for="review-name" class="eyebrow review-submit__label">Name</label>
-                            <input type="text" id="review-name" name="author_name" class="input-base review-submit__input" placeholder="Your name" value="{{ old('author_name') }}" required />
+                        <div class="form-field">
+                            <label for="review-name">Name</label>
+                            <input type="text" id="review-name" name="author_name" class="review-submit__input" placeholder="Your name" value="{{ old('author_name') }}" required />
                             @error('author_name') <p class="form-error">{{ $message }}</p> @enderror
                         </div>
                     @endguest
-                    <div class="review-submit__field">
-                        <span class="eyebrow review-submit__label">Rating</span>
+                    <div class="form-field">
+                        <label>Rating</label>
                         <div class="review-submit__stars" role="group" aria-label="Rate 1 to 5 stars">
                             @for ($s = 1; $s <= 5; $s++)
                                 <button type="button" class="review-submit__star {{ old('rating', 0) >= $s ? 'active' : '' }}" data-rating="{{ $s }}" aria-label="{{ $s }} star{{ $s > 1 ? 's' : '' }}">
@@ -187,12 +173,12 @@
                         @error('rating') <p class="form-error">{{ $message }}</p> @enderror
                     </div>
                 </div>
-                <div class="review-submit__row">
-                    <label for="review-text" class="eyebrow review-submit__label">Your review</label>
-                    <textarea id="review-text" name="body" class="input-base review-submit__textarea" placeholder="Share your experience…" required>{{ old('body') }}</textarea>
+                <div class="form-field">
+                    <label for="review-text">Your review</label>
+                    <textarea id="review-text" name="body" class="review-submit__textarea" placeholder="Share your experience…" required>{{ old('body') }}</textarea>
                     @error('body') <p class="form-error">{{ $message }}</p> @enderror
                 </div>
-                <button type="submit" class="review-submit__btn">Submit Review</button>
+                <button type="submit" class="btn-base btn-outline-gold">Submit Review</button>
             </form>
         </div>
 
