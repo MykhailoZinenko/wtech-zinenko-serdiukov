@@ -2,39 +2,143 @@
 
 @section('title', 'Dashboard')
 
+@php
+    $fmt = fn ($n) => number_format((int) $n, 0, ',', ' ');
+    $maxRevenue = count($weeklyRevenue) ? max(1, max($weeklyRevenue)) : 1;
+    $statusClass = [
+        'pending' => 'status-pending',
+        'processing' => 'status-processing',
+        'shipped' => 'status-shipped',
+        'delivered' => 'status-delivered',
+        'cancelled' => 'status-cancelled',
+        'refunded' => 'badge--grey',
+    ];
+@endphp
+
 @section('content')
 <div class="page-hdr">
     <div class="page-hdr__left">
         <h1 class="page-hdr__title">Dashboard</h1>
-        <p class="page-hdr__sub">Welcome back, {{ auth()->user()->first_name }}.</p>
+        <p class="page-hdr__sub">Welcome back — here's what's happening in the Emporium.</p>
+    </div>
+    <div class="page-hdr__actions">
+        <a href="{{ route('admin.products.create') }}" class="btn-base btn-gold"><i class="bi bi-plus-lg"></i> Add Product</a>
     </div>
 </div>
 
-<div class="adm-card">
-    <div class="adm-card__hdr">
-        <span class="adm-card__title">Account Information</span>
+<div class="stats-grid">
+    <div class="stat-card stat-card--gold">
+        <div class="stat-card__icon"><i class="bi bi-coin"></i></div>
+        <div class="stat-card__label">Revenue (30d)</div>
+        <div class="stat-card__value">{{ $fmt($revenue) }}</div>
     </div>
-    <div class="adm-card__body">
-        <table class="adm-table">
-            <tbody>
-                <tr>
-                    <td>Name</td>
-                    <td>{{ auth()->user()->full_name }}</td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td>{{ auth()->user()->email }}</td>
-                </tr>
-                <tr>
-                    <td>Role</td>
-                    <td><span class="badge badge--gold">{{ ucfirst(auth()->user()->role) }}</span></td>
-                </tr>
-                <tr>
-                    <td>Member Since</td>
-                    <td>{{ auth()->user()->created_at->format('F j, Y') }}</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="stat-card stat-card--green">
+        <div class="stat-card__icon"><i class="bi bi-receipt"></i></div>
+        <div class="stat-card__label">Orders (30d)</div>
+        <div class="stat-card__value">{{ $fmt($orderCount) }}</div>
+    </div>
+    <div class="stat-card stat-card--blue">
+        <div class="stat-card__icon"><i class="bi bi-box-seam"></i></div>
+        <div class="stat-card__label">Products</div>
+        <div class="stat-card__value">{{ $fmt($productCount) }}</div>
+        @if ($lowStockCount > 0)
+            <div class="stat-card__delta"><i class="bi bi-dot"></i> {{ $lowStockCount }} low stock</div>
+        @endif
+    </div>
+    <div class="stat-card stat-card--red">
+        <div class="stat-card__icon"><i class="bi bi-people"></i></div>
+        <div class="stat-card__label">Customers</div>
+        <div class="stat-card__value">{{ $fmt($customerCount) }}</div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <div class="flex-col">
+        <div class="adm-card">
+            <div class="adm-card__hdr">
+                <span class="adm-card__title">Revenue — Last 7 Days</span>
+                <span class="chart-unit">Crowns</span>
+            </div>
+            <div class="adm-card__body">
+                <div class="chart-wrap">
+                    @forelse ($weeklyRevenue as $day => $total)
+                        <div class="chart-col">
+                            <div class="chart-col__bar" style="height:{{ round(($total / $maxRevenue) * 100) }}%;" data-val="{{ $fmt($total) }}"></div>
+                            <span class="chart-col__lbl">{{ $day }}</span>
+                        </div>
+                    @empty
+                        <p style="color:var(--clr-text-dim);text-align:center;width:100%;padding:40px 0;">No revenue data this week.</p>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
+        <div class="adm-card">
+            <div class="adm-card__hdr">
+                <span class="adm-card__title">Recent Orders</span>
+            </div>
+            @if ($recentOrders->isEmpty())
+                <div class="adm-card__body">
+                    <p style="color:var(--clr-text-dim);">No orders yet.</p>
+                </div>
+            @else
+                <div class="tbl-wrap">
+                    <table class="adm-table">
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Customer</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($recentOrders as $order)
+                                <tr>
+                                    <td><span class="td-heading">{{ $order->order_number }}</span></td>
+                                    <td>{{ $order->ship_first_name }} {{ $order->ship_last_name }}</td>
+                                    <td class="td-gold">{{ $fmt($order->total) }} Cr</td>
+                                    <td><span class="badge {{ $statusClass[$order->status] ?? 'badge--grey' }}">{{ ucfirst($order->status) }}</span></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    <div class="flex-col">
+        <div class="adm-card">
+            <div class="adm-card__hdr">
+                <span class="adm-card__title">Low Stock Alert</span>
+                <a href="{{ route('admin.products.index') }}" class="btn-base btn-outline-gold btn-sm">Manage</a>
+            </div>
+            @if ($lowStockProducts->isEmpty())
+                <div class="adm-card__body">
+                    <p style="color:var(--clr-text-dim);">All products are well stocked.</p>
+                </div>
+            @else
+                <div class="adm-card__body">
+                    <table class="adm-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($lowStockProducts as $product)
+                                <tr>
+                                    <td>{{ $product->name }}</td>
+                                    <td><span class="{{ $product->stock === 0 ? 'stock-none' : 'stock-low' }} td-heading">{{ $product->stock }}</span></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        </div>
     </div>
 </div>
 @endsection
