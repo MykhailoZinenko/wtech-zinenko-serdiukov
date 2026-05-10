@@ -21,6 +21,14 @@
     </div>
 </div>
 
+@if ($errors->any())
+    <div class="form-alert form-alert--error">
+        @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+        @endforeach
+    </div>
+@endif
+
 <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     @include('admin.products.partials.form', ['submitLabel' => 'Save Product'])
