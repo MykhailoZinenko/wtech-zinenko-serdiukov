@@ -81,21 +81,73 @@
             <div class="col-lg-4 mt-4 mt-lg-0">
                 <aside class="card-base sticky-sidebar cart-summary">
                     <h2 class="card-title">Order Summary</h2>
+                    <form action="{{ route('cart.options.update') }}" method="POST" class="cart-options">
+                        @csrf
+                        @method('PATCH')
+
+                        <fieldset class="cart-options__group">
+                            <legend>Delivery</legend>
+                            @foreach ($deliveryOptions as $key => $option)
+                                @php
+                                    $fee = $key === 'courier' && $subtotal >= 500 ? 0 : $option['fee'];
+                                @endphp
+                                <label class="cart-option @if ($selectedDelivery === $key) active @endif">
+                                    <input type="radio" name="delivery" value="{{ $key }}" @checked($selectedDelivery === $key) onchange="this.form.submit()" />
+                                    <span class="cart-option__body">
+                                        <span class="cart-option__title">{{ $option['label'] }}</span>
+                                        <span class="cart-option__desc">{{ $option['description'] }}</span>
+                                    </span>
+                                    <span class="cart-option__price">{{ $fee === 0 ? 'Free' : $fmt($fee) . ' Crowns' }}</span>
+                                </label>
+                            @endforeach
+                            @error('delivery')
+                                <p class="form-error">{{ $message }}</p>
+                            @enderror
+                        </fieldset>
+
+                        <fieldset class="cart-options__group">
+                            <legend>Payment</legend>
+                            @foreach ($paymentOptions as $key => $option)
+                                <label class="cart-option @if ($selectedPayment === $key) active @endif">
+                                    <input type="radio" name="payment" value="{{ $key }}" @checked($selectedPayment === $key) onchange="this.form.submit()" />
+                                    <span class="cart-option__body">
+                                        <span class="cart-option__title">{{ $option['label'] }}</span>
+                                        <span class="cart-option__desc">{{ $option['description'] }}</span>
+                                    </span>
+                                    <span class="cart-option__price">{{ $option['fee'] === 0 ? 'Free' : $fmt($option['fee']) . ' Crowns' }}</span>
+                                </label>
+                            @endforeach
+                            @error('payment')
+                                <p class="form-error">{{ $message }}</p>
+                            @enderror
+                        </fieldset>
+                    </form>
+
                     <div class="cart-summary__row">
                         <span>Subtotal</span>
                         <span>{{ $fmt($subtotal) }} <span class="eyebrow product-price__unit">Crowns</span></span>
                     </div>
                     <div class="cart-summary__row">
                         <span>Delivery</span>
-                        <span>{{ $subtotal >= 500 ? 'Free' : '50 Crowns' }}</span>
+                        <span>{{ $deliveryFee === 0 ? 'Free' : $fmt($deliveryFee) . ' Crowns' }}</span>
+                    </div>
+                    <div class="cart-summary__row">
+                        <span>Payment</span>
+                        <span>{{ $paymentFee === 0 ? 'Free' : $fmt($paymentFee) . ' Crowns' }}</span>
                     </div>
                     <div class="cart-summary__row cart-summary__total">
                         <span>Total</span>
-                        <span>{{ $fmt($subtotal >= 500 ? $subtotal : $subtotal + 50) }} <span class="eyebrow product-price__unit">Crowns</span></span>
+                        <span>{{ $fmt($total) }} <span class="eyebrow product-price__unit">Crowns</span></span>
                     </div>
-                    <button type="button" class="btn-base btn-gold btn-full" style="margin-top:20px;" disabled title="Checkout coming in Phase 2">
-                        <i class="bi bi-lock" aria-hidden="true"></i> Checkout (coming soon)
-                    </button>
+                    @auth
+                        <a href="{{ route('checkout.show') }}" class="btn-base btn-gold btn-full" style="margin-top:20px;">
+                            <i class="bi bi-check-circle" aria-hidden="true"></i> Checkout
+                        </a>
+                    @else
+                        <a href="{{ route('checkout.show') }}" class="btn-base btn-gold btn-full" style="margin-top:20px;">
+                            <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Sign in to Checkout
+                        </a>
+                    @endauth
                     <a href="{{ route('products.index') }}" class="cart-summary__continue">Continue shopping</a>
                 </aside>
             </div>

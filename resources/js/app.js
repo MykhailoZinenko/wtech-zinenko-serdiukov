@@ -118,6 +118,49 @@ document.addEventListener('click', function (e) {
 });
 
 (function () {
+    const form = document.querySelector('[data-checkout-form]');
+    if (!form) return;
+
+    const deliveryTarget = form.querySelector('[data-checkout-delivery]');
+    const paymentTarget = form.querySelector('[data-checkout-payment]');
+    const totalTarget = form.querySelector('[data-checkout-total]');
+    if (!deliveryTarget || !paymentTarget || !totalTarget) return;
+
+    const subtotal = Number(form.dataset.subtotal || 0);
+    const deliveryFees = JSON.parse(form.dataset.deliveryFees || '{}');
+    const paymentFees = JSON.parse(form.dataset.paymentFees || '{}');
+
+    function formatCrowns(value) {
+        return new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 })
+            .format(value)
+            .replace(/\u202f/g, ' ');
+    }
+
+    function formatFee(value) {
+        return value === 0 ? 'Free' : `${formatCrowns(value)} Crowns`;
+    }
+
+    function updateCheckoutTotal() {
+        const delivery = form.querySelector('input[name="delivery"]:checked')?.value;
+        const payment = form.querySelector('input[name="payment"]:checked')?.value;
+        const deliveryFee = Number(deliveryFees[delivery] || 0);
+        const paymentFee = Number(paymentFees[payment] || 0);
+
+        deliveryTarget.textContent = formatFee(deliveryFee);
+        paymentTarget.textContent = formatFee(paymentFee);
+        totalTarget.textContent = `${formatCrowns(subtotal + deliveryFee + paymentFee)} Crowns`;
+    }
+
+    form.addEventListener('change', function (e) {
+        if (e.target.matches('input[name="delivery"], input[name="payment"]')) {
+            updateCheckoutTotal();
+        }
+    });
+
+    updateCheckoutTotal();
+})();
+
+(function () {
     const slider = document.querySelector('.filter-price-slider');
     if (!slider) return;
 

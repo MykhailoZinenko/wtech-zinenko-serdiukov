@@ -47,6 +47,16 @@ class CartResolver
 
     public function itemCount(): int
     {
-        return $this->resolve()->itemCount();
+        if ($user = Auth::user()) {
+            $cart = Cart::where('user_id', $user->id)->first();
+        } else {
+            $cart = Cart::where('session_id', Session::getId())->whereNull('user_id')->first();
+        }
+
+        if (!$cart) {
+            return 0;
+        }
+
+        return (int) $cart->items()->sum('quantity');
     }
 }

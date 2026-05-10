@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Models\Category;
 use App\Services\CartResolver;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,29 +19,32 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
 
-        // The header partial is rendered on every storefront page; share its data
-        // (nav categories + cart badge) only when the categories table actually exists,
-        // so artisan commands run before migrations don't blow up.
+        // The header and footer are rendered together, so keep nav data in memory
+        // for the current request instead of querying it twice.
         View::composer(['partials.storefront.header', 'partials.storefront.footer'], function ($view) {
-            $navCategories = Schema::hasTable('categories')
-                ? Category::with(['children' => fn ($q) => $q->where('is_active', true)->orderBy('sort_order')])
+            static $navCategories = null;
+
+            if ($navCategories === null) {
+                try {
+                    $navCategories = Category::with(['children' => fn ($q) => $q->where('is_active', true)->orderBy('sort_order')])
                     ->whereNull('parent_id')
                     ->where('is_active', true)
                     ->orderBy('sort_order')
-                    ->get()
-                : collect();
+                    ->get();
+                } catch (\Throwable) {
+                    $navCategories = collect();
+                }
+            }
 
             $view->with('navCategories', $navCategories);
         });
 
         View::composer('partials.storefront.header', function ($view) {
             $count = 0;
-            if (Schema::hasTable('carts')) {
-                try {
-                    $count = app(CartResolver::class)->itemCount();
-                } catch (\Throwable $e) {
-                    $count = 0;
-                }
+            try {
+                $count = app(CartResolver::class)->itemCount();
+            } catch (\Throwable) {
+                $count = 0;
             }
             $view->with('cartCount', $count);
         });

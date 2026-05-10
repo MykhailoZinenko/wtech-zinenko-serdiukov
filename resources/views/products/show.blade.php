@@ -82,20 +82,32 @@
 
                 <p class="product-detail__desc">{{ $product->description ?? $product->short_description }}</p>
 
-                <form action="{{ route('cart.add') }}" method="POST" class="product-detail__actions" data-cart-add>
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}" />
-                    <div class="product-detail__qty">
-                        <label for="qty-input" class="visually-hidden">Quantity</label>
-                        <input type="number" id="qty-input" name="quantity" min="1" max="99" value="1" class="input-base product-detail__qty-input" />
-                    </div>
-                    <button type="submit" class="btn-base btn-gold btn-flex" aria-label="Add {{ $product->name }} to cart" {{ $product->in_stock ? '' : 'disabled' }}>
-                        <i class="bi bi-bag-plus"></i> Add to Cart
-                    </button>
-                    <button type="button" class="wishlist-btn product-detail__wishlist" aria-label="Add to wishlist">
-                        <i class="bi bi-heart"></i>
-                    </button>
-                </form>
+                <div class="product-detail__actions">
+                    <form action="{{ route('cart.add') }}" method="POST" class="product-detail__add-form">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}" />
+                        <div class="product-detail__qty">
+                            <label for="qty-input" class="visually-hidden">Quantity</label>
+                            <input type="number" id="qty-input" name="quantity" min="1" max="99" value="1" class="input-base product-detail__qty-input" />
+                        </div>
+                        <button type="submit" class="btn-base btn-gold btn-flex" aria-label="Add {{ $product->name }} to cart" {{ $product->in_stock ? '' : 'disabled' }}>
+                            <i class="bi bi-bag-plus"></i> Add to Cart
+                        </button>
+                        <button type="button" class="wishlist-btn product-detail__wishlist" aria-label="Add to wishlist">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                    </form>
+
+                    @if ($cartItem)
+                        <form action="{{ route('cart.remove', $cartItem) }}" method="POST" class="product-detail__remove-form">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-base btn-red product-detail__remove" aria-label="Remove {{ $product->name }} from cart">
+                                <i class="bi bi-trash"></i> Remove from Cart
+                            </button>
+                        </form>
+                    @endif
+                </div>
 
                 <div class="product-detail__meta">
                     <p><span class="product-detail__meta-label">SKU</span> {{ $product->sku }}</p>

@@ -1,0 +1,25 @@
+@extends('layouts.admin')
+
+@section('title', 'Add Product')
+
+@section('content')
+<div class="breadcrumb-adm">
+    <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+    <i class="bi bi-chevron-right"></i>
+    <a href="{{ route('admin.products.index') }}">Products</a>
+    <i class="bi bi-chevron-right"></i>
+    <span class="bc-current">Add Product</span>
+</div>
+
+<div class="page-hdr">
+    <div class="page-hdr__left">
+        <h1 class="page-hdr__title">Add Product</h1>
+        <p class="page-hdr__sub">Create a catalogue item with category, stock and images.</p>
+    </div>
+</div>
+
+<form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    @include('admin.products.partials.form', ['submitLabel' => 'Create Product'])
+</form>
+@endsection

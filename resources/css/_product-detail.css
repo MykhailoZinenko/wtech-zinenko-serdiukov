@@ -115,6 +115,22 @@
   margin-bottom: 24px;
 }
 
+.product-detail__add-form {
+  display: flex;
+  flex: 1 1 320px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.product-detail__remove-form {
+  flex: 0 1 auto;
+}
+
+.product-detail__remove {
+  min-height: 44px;
+}
+
 .product-detail__qty {
   flex-shrink: 0;
 }

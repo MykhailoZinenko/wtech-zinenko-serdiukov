@@ -9,10 +9,10 @@
             <i class="bi bi-speedometer2"></i> Dashboard
         </a>
         <span class="sidebar__section">Catalogue</span>
-        <a href="#" class="sidebar__link">
+        <a href="{{ route('admin.products.index') }}" class="sidebar__link {{ request()->routeIs('admin.products.index', 'admin.products.edit') ? 'active' : '' }}">
             <i class="bi bi-box-seam"></i> Products
         </a>
-        <a href="#" class="sidebar__link">
+        <a href="{{ route('admin.products.create') }}" class="sidebar__link {{ request()->routeIs('admin.products.create') ? 'active' : '' }}">
             <i class="bi bi-plus-circle"></i> Add Product
         </a>
         <span class="sidebar__section">Sales</span>

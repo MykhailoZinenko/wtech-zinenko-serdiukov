@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductIndexRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\CartResolver;
 use Illuminate\Contracts\View\View;
 
 class ProductController extends Controller
 {
+    public function __construct(private readonly CartResolver $cartResolver)
+    {
+    }
+
     public function index(ProductIndexRequest $request, ?string $categorySlug = null): View
     {
         $category = $categorySlug
@@ -42,6 +47,10 @@ class ProductController extends Controller
         abort_if($product->status !== 'active', 404);
 
         $product->load(['images', 'specifications', 'category', 'reviews.user']);
+        $cartItem = $this->cartResolver
+            ->resolve()
+            ->items
+            ->firstWhere('product_id', $product->id);
 
         $related = Product::query()
             ->active()
@@ -54,6 +63,7 @@ class ProductController extends Controller
         return view('products.show', [
             'product' => $product,
             'related' => $related,
+            'cartItem' => $cartItem,
         ]);
     }
 }

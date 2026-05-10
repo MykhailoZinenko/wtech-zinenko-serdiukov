@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css'])
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     @stack('styles')
 </head>
 <body>
