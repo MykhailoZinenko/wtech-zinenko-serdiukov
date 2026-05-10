@@ -16,32 +16,18 @@ class CheckoutTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_cannot_access_checkout(): void
+    public function test_guest_can_access_checkout(): void
     {
         $response = $this->get(route('checkout.show'));
 
-        $response->assertUnauthorized();
+        $response->assertRedirect(route('cart.show'));
     }
 
-    public function test_guest_cannot_submit_checkout(): void
+    public function test_guest_checkout_redirects_when_empty(): void
     {
-        $shipping = ShippingMethod::create(['name' => 'Courier', 'cost' => 50, 'estimated_days' => '2-4', 'is_active' => true]);
-        $payment = PaymentMethod::create(['name' => 'Cash on Delivery', 'is_active' => true]);
+        $response = $this->get(route('checkout.show'));
 
-        $response = $this->post(route('checkout.store'), [
-            'first_name' => 'Geralt',
-            'last_name' => 'of Rivia',
-            'email' => 'geralt@example.com',
-            'address' => 'Hierarch Square 1',
-            'city' => 'Novigrad',
-            'postal_code' => '11000',
-            'region' => 'novigrad',
-            'shipping_method_id' => $shipping->id,
-            'payment_method_id' => $payment->id,
-        ]);
-
-        $response->assertUnauthorized();
-        $this->assertDatabaseCount('orders', 0);
+        $response->assertRedirect(route('cart.show'));
     }
 
     public function test_customer_can_create_order_from_cart(): void

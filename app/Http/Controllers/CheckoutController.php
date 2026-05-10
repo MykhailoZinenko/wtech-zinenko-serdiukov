@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CheckoutRequest;
 use App\Models\CartItem;
 use App\Models\Order;
+use App\Models\PaymentMethod;
+use App\Models\ShippingMethod;
 use App\Services\CartResolver;
-use App\Services\OrderOptionService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,6 @@ class CheckoutController extends Controller
 {
     public function __construct(
         private readonly CartResolver $cartResolver,
-        private readonly OrderOptionService $options,
     ) {
     }
 
@@ -29,17 +29,21 @@ class CheckoutController extends Controller
             return redirect()->route('cart.show')->with('cart_success', 'Your cart is empty.');
         }
 
-        $defaults = $this->options->selectedOptions();
+        $shippingMethods = ShippingMethod::where('is_active', true)->orderBy('sort_order')->get();
+        $paymentMethods = PaymentMethod::where('is_active', true)->orderBy('sort_order')->get();
+
+        $selectedShippingMethodId = session('cart.shipping_method_id', $shippingMethods->first()?->id);
+        $selectedPaymentMethodId = session('cart.payment_method_id', $paymentMethods->first()?->id);
+
         $subtotal = $this->cartResolver->subtotal();
-        $totals = $this->options->totals($subtotal, $defaults['delivery'], $defaults['payment']);
 
         return view('checkout.show', [
             'items' => $items,
-            'deliveryOptions' => OrderOptionService::DELIVERY_OPTIONS,
-            'paymentOptions' => OrderOptionService::PAYMENT_OPTIONS,
-            'selectedDelivery' => $defaults['delivery'],
-            'selectedPayment' => $defaults['payment'],
-            ...$totals,
+            'shippingMethods' => $shippingMethods,
+            'paymentMethods' => $paymentMethods,
+            'selectedShippingMethodId' => $selectedShippingMethodId,
+            'selectedPaymentMethodId' => $selectedPaymentMethodId,
+            'subtotal' => $subtotal,
         ]);
     }
 
@@ -109,9 +113,7 @@ class CheckoutController extends Controller
         abort_unless($this->canSeeOrder($order), 404);
 
         return view('checkout.success', [
-            'order' => $order->load('items'),
-            'deliveryOptions' => OrderOptionService::DELIVERY_OPTIONS,
-            'paymentOptions' => OrderOptionService::PAYMENT_OPTIONS,
+            'order' => $order->load(['items', 'shippingMethod', 'paymentMethod']),
         ]);
     }
 
@@ -136,7 +138,10 @@ class CheckoutController extends Controller
 
     private function canSeeOrder(Order $order): bool
     {
-        return Auth::check()
-            && (Auth::id() === $order->user_id || Auth::user()->isAdmin());
+        if (Auth::check()) {
+            return Auth::id() === $order->user_id || Auth::user()->isAdmin();
+        }
+
+        return $order->user_id === null;
     }
 }

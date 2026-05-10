@@ -23,11 +23,9 @@ Route::post('cart', [CartController::class, 'add'])->name('cart.add');
 Route::patch('cart/items/{item}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('cart/items/{item}', [CartController::class, 'remove'])->name('cart.remove');
 
-Route::middleware('auth')->group(function () {
-    Route::get('checkout', [CheckoutController::class, 'show'])->name('checkout.show');
-    Route::post('checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-    Route::get('checkout/success/{order:order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
-});
+Route::get('checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+Route::post('checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::get('checkout/success/{order:order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
 
 Route::middleware('guest')->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
