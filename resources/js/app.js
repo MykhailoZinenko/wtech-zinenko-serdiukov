@@ -201,6 +201,8 @@ document.addEventListener('click', function (e) {
     }
     slider.addEventListener('mousemove', updateZIndex);
     slider.addEventListener('mouseenter', updateZIndex);
+
+    syncToSliders();
 })();
 
 document.addEventListener('click', function (e) {
