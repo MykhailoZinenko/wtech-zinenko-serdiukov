@@ -4,7 +4,7 @@
 
 @php
     $fmt = fn ($n) => number_format((int) $n, 0, ',', ' ');
-    $maxRevenue = count($weeklyRevenue) ? max(1, max($weeklyRevenue)) : 1;
+    $maxRevenue = count($weeklyRevenue) ? max(1, max(array_values($weeklyRevenue))) : 1;
     $statusClass = [
         'pending' => 'status-pending',
         'processing' => 'status-processing',
@@ -49,6 +49,9 @@
         <div class="stat-card__icon"><i class="bi bi-people"></i></div>
         <div class="stat-card__label">Customers</div>
         <div class="stat-card__value">{{ $fmt($customerCount) }}</div>
+        @if ($newCustomersThisWeek > 0)
+            <div class="stat-card__delta stat-card__delta--up"><i class="bi bi-arrow-up-short"></i> {{ $newCustomersThisWeek }} new this week</div>
+        @endif
     </div>
 </div>
 
@@ -61,14 +64,12 @@
             </div>
             <div class="adm-card__body">
                 <div class="chart-wrap">
-                    @forelse ($weeklyRevenue as $day => $total)
+                    @foreach ($weeklyRevenue as $day => $total)
                         <div class="chart-col">
-                            <div class="chart-col__bar" style="height:{{ round(($total / $maxRevenue) * 100) }}%;" data-val="{{ $fmt($total) }}"></div>
+                            <div class="chart-col__bar" style="height:{{ $maxRevenue > 0 ? round(($total / $maxRevenue) * 100) : 0 }}%;" data-val="{{ $fmt($total) }}"></div>
                             <span class="chart-col__lbl">{{ $day }}</span>
                         </div>
-                    @empty
-                        <p style="color:var(--clr-text-dim);text-align:center;width:100%;padding:40px 0;">No revenue data this week.</p>
-                    @endforelse
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -88,7 +89,8 @@
                             <tr>
                                 <th>Order</th>
                                 <th>Customer</th>
-                                <th>Total</th>
+                                <th class="col-hide-md">Items</th>
+                                <th class="col-hide-md">Total</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -97,7 +99,8 @@
                                 <tr>
                                     <td><span class="td-heading">{{ $order->order_number }}</span></td>
                                     <td>{{ $order->ship_first_name }} {{ $order->ship_last_name }}</td>
-                                    <td class="td-gold">{{ $fmt($order->total) }} Cr</td>
+                                    <td class="col-hide-md">{{ $order->items_count ?? $order->items()->count() }}</td>
+                                    <td class="col-hide-md td-gold">{{ $fmt($order->total) }} Cr</td>
                                     <td><span class="badge {{ $statusClass[$order->status] ?? 'badge--grey' }}">{{ ucfirst($order->status) }}</span></td>
                                 </tr>
                             @endforeach
@@ -109,6 +112,38 @@
     </div>
 
     <div class="flex-col">
+        <div class="adm-card">
+            <div class="adm-card__hdr">
+                <span class="adm-card__title">Activity Feed</span>
+            </div>
+            <div class="adm-card__body adm-card__body--tight">
+                <div class="activity-list">
+                    @forelse ($recentOrders->take(3) as $order)
+                        <div class="activity-item">
+                            <div class="activity-dot activity-dot--green"></div>
+                            <div class="activity-text">
+                                <strong>Order {{ $order->order_number }}</strong> placed by {{ $order->ship_first_name }} {{ $order->ship_last_name }}
+                                <span class="activity-time">{{ $order->created_at->diffForHumans() }}</span>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="activity-item">
+                            <div class="activity-dot activity-dot--gold"></div>
+                            <div class="activity-text">No recent activity.</div>
+                        </div>
+                    @endforelse
+                    @foreach ($lowStockProducts->take(2) as $product)
+                        <div class="activity-item">
+                            <div class="activity-dot {{ $product->stock === 0 ? 'activity-dot--red' : 'activity-dot--gold' }}"></div>
+                            <div class="activity-text">
+                                <strong>{{ $product->name }}</strong> {{ $product->stock === 0 ? 'is out of stock' : "stock is low ({$product->stock})" }}
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
         <div class="adm-card">
             <div class="adm-card__hdr">
                 <span class="adm-card__title">Low Stock Alert</span>
