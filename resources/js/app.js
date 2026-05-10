@@ -2,6 +2,18 @@ import axios from 'axios';
 window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+(function () {
+    var key = 'scrollY';
+    var saved = sessionStorage.getItem(key);
+    if (saved !== null) {
+        sessionStorage.removeItem(key);
+        window.scrollTo(0, parseInt(saved, 10));
+    }
+    document.addEventListener('submit', function () {
+        sessionStorage.setItem(key, String(window.scrollY));
+    });
+})();
+
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
 if (csrfToken) {
     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
@@ -105,16 +117,21 @@ document.addEventListener('click', function (e) {
 });
 
 document.addEventListener('click', function (e) {
-    const btn = e.target.closest('.product-card__wishlist');
+    const btn = e.target.closest('[data-wishlist-toggle]');
     if (!btn) return;
 
+    const productId = btn.dataset.wishlistToggle;
     const icon = btn.querySelector('i');
-    if (!icon) return;
+    if (!icon || !productId) return;
 
-    const active = icon.classList.contains('bi-heart-fill');
-    icon.className = active ? 'bi bi-heart' : 'bi bi-heart-fill';
-    btn.style.color = active ? '' : 'var(--clr-red-light)';
-    btn.style.borderColor = active ? '' : 'var(--clr-red)';
+    axios.post(`/wishlist/toggle/${productId}`)
+        .then(function (res) {
+            const wishlisted = res.data.wishlisted;
+            icon.className = wishlisted ? 'bi bi-heart-fill' : 'bi bi-heart';
+            btn.style.color = wishlisted ? 'var(--clr-red-light)' : '';
+            btn.style.borderColor = wishlisted ? 'var(--clr-red)' : '';
+        })
+        .catch(function () {});
 });
 
 (function () {
