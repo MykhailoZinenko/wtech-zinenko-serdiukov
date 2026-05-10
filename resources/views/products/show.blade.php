@@ -157,9 +157,46 @@
             @endif
         </div>
 
-        @if ($product->reviews->isEmpty())
-            <p class="text-muted">No reviews yet. Be the first to share your experience.</p>
-        @else
+        @if (session('review_success'))
+            <div class="cart-flash">{{ session('review_success') }}</div>
+        @endif
+
+        <div class="card-base review-submit">
+            <h3 class="card-title">Submit a Review</h3>
+            <form action="{{ route('reviews.store', $product) }}" method="POST" class="review-submit__form">
+                @csrf
+                @auth <input type="hidden" name="_auth" value="1" /> @endauth
+                <div class="review-submit__row review-submit__row--first">
+                    @guest
+                        <div class="review-submit__field">
+                            <label for="review-name" class="eyebrow review-submit__label">Name</label>
+                            <input type="text" id="review-name" name="author_name" class="input-base review-submit__input" placeholder="Your name" value="{{ old('author_name') }}" required />
+                            @error('author_name') <p class="form-error">{{ $message }}</p> @enderror
+                        </div>
+                    @endguest
+                    <div class="review-submit__field">
+                        <span class="eyebrow review-submit__label">Rating</span>
+                        <div class="review-submit__stars" role="group" aria-label="Rate 1 to 5 stars">
+                            @for ($s = 1; $s <= 5; $s++)
+                                <button type="button" class="review-submit__star {{ old('rating', 0) >= $s ? 'active' : '' }}" data-rating="{{ $s }}" aria-label="{{ $s }} star{{ $s > 1 ? 's' : '' }}">
+                                    <i class="bi {{ old('rating', 0) >= $s ? 'bi-star-fill' : 'bi-star' }}"></i>
+                                </button>
+                            @endfor
+                        </div>
+                        <input type="hidden" name="rating" id="review-rating-value" value="{{ old('rating', '') }}" />
+                        @error('rating') <p class="form-error">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+                <div class="review-submit__row">
+                    <label for="review-text" class="eyebrow review-submit__label">Your review</label>
+                    <textarea id="review-text" name="body" class="input-base review-submit__textarea" placeholder="Share your experience…" required>{{ old('body') }}</textarea>
+                    @error('body') <p class="form-error">{{ $message }}</p> @enderror
+                </div>
+                <button type="submit" class="review-submit__btn">Submit Review</button>
+            </form>
+        </div>
+
+        @if ($product->reviews->isNotEmpty())
             <div class="product-reviews__list">
                 @foreach ($product->reviews as $review)
                     <article class="card-base review-card">

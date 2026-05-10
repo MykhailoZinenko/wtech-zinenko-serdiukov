@@ -10,6 +10,8 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -17,6 +19,8 @@ Route::get('/', HomeController::class)->name('home');
 Route::get('shop', [ProductController::class, 'index'])->name('products.index');
 Route::get('shop/category/{categorySlug}', [ProductController::class, 'index'])->name('products.category');
 Route::get('shop/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+
+Route::post('shop/{product:slug}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
 Route::get('cart', [CartController::class, 'show'])->name('cart.show');
 Route::post('cart', [CartController::class, 'add'])->name('cart.add');
@@ -39,6 +43,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('wishlist/toggle/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
