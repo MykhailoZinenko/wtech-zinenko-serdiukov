@@ -3,16 +3,6 @@
 @section('title', "Novigrad's Finest Trading Post")
 @section('main-class', 'home-page')
 
-@php
-    $categoryBlurbs = [
-        'weapons' => 'Silver, steel, crossbows and tools for serious contracts.',
-        'armor' => 'Light, medium and heavy gear for every school.',
-        'alchemy' => 'Potions, oils, bombs and ingredients for the road.',
-        'monster-parts' => 'Rare trophies and components from verified sources.',
-        'gwent' => 'Cards, decks and collector pieces from across the Continent.',
-    ];
-@endphp
-
 @section('content')
 <section class="hero" aria-labelledby="hero-title">
     <div class="hero-bg">
@@ -27,12 +17,12 @@
                     <em>a True Witcher</em>
                 </h1>
                 <p class="hero-desc">
-                    From silver blades forged in Kaer Morhen to potions brewed by master herbalists of Skellige, everything a monster hunter, soldier, or city merchant could ever need.
+                    From silver blades forged in Kaer Morhen to potions brewed by master herbalists of Skellige — everything a monster hunter, soldier, or city merchant could ever need.
                 </p>
                 <div class="hero-stats">
                     <div class="hero-stat">
-                        <span class="stat-num">{{ number_format($featuredProducts->count() + $newArrivals->count(), 0, ',', ' ') }}+</span>
-                        <span class="eyebrow stat-label">Highlights</span>
+                        <span class="stat-num">1 200+</span>
+                        <span class="eyebrow stat-label">Products</span>
                     </div>
                     <div class="hero-stat">
                         <span class="stat-num">{{ $categories->count() }}</span>
@@ -66,7 +56,7 @@
                     <span class="perk-icon"><i class="bi bi-shield-check" aria-hidden="true"></i></span>
                     <div>
                         <h3 class="perk-title">Authentic Gear</h3>
-                        <p class="perk-desc">Every item verified by guild-certified craftsmen and witchers.</p>
+                        <p class="perk-desc">Every item verified by Guild-certified craftsmen and witchers.</p>
                     </div>
                 </div>
             </div>
@@ -75,7 +65,7 @@
                     <span class="perk-icon"><i class="bi bi-truck" aria-hidden="true"></i></span>
                     <div>
                         <h3 class="perk-title">Fast Courier</h3>
-                        <p class="perk-desc">Delivered via royal post or express courier to all regions.</p>
+                        <p class="perk-desc">Delivered via royal post or Nilfgaardian express to all regions.</p>
                     </div>
                 </div>
             </div>
@@ -84,7 +74,7 @@
                     <span class="perk-icon"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i></span>
                     <div>
                         <h3 class="perk-title">30-Day Returns</h3>
-                        <p class="perk-desc">Return any unused item within 30 days.</p>
+                        <p class="perk-desc">Unsatisfied? Return any unused item within 30 days, no questions asked.</p>
                     </div>
                 </div>
             </div>
@@ -93,7 +83,7 @@
                     <span class="perk-icon"><i class="bi bi-lock" aria-hidden="true"></i></span>
                     <div>
                         <h3 class="perk-title">Secure Payment</h3>
-                        <p class="perk-desc">Card, bank transfer, or cash on delivery.</p>
+                        <p class="perk-desc">Crowns, Orens or Florens — all transactions guarded by mage-level encryption.</p>
                     </div>
                 </div>
             </div>
@@ -124,7 +114,6 @@
                             <p class="category-card__count">
                                 {{ $category->display_product_count }} {{ $category->display_product_count === 1 ? 'item' : 'items' }}
                             </p>
-                            <p class="product-card__desc">{{ $categoryBlurbs[$category->slug] ?? 'Browse selected goods from this catalogue section.' }}</p>
                         </div>
                     </a>
                 </div>
@@ -231,9 +220,9 @@
     <div class="container">
         <div class="flavor-quote">
             <blockquote>
-                Not all monsters carry blades. Some carry coin. Know your enemy, whether it stalks the forests of Velen or the counting houses of Novigrad.
+                Not all monsters carry blades. Some carry coin. Know your enemy — whether it stalks the forests of Velen or the counting houses of Novigrad. The well-equipped witcher survives either.
             </blockquote>
-            <cite>Vesemir of Kaer Morhen, Master Witcher</cite>
+            <cite>— Vesemir of Kaer Morhen, Master Witcher</cite>
         </div>
     </div>
 </section>
