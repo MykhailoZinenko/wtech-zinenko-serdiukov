@@ -126,6 +126,9 @@ document.addEventListener('click', function (e) {
     const btn = e.target.closest('[data-wishlist-toggle]');
     if (!btn) return;
 
+    e.preventDefault();
+    e.stopPropagation();
+
     const productId = btn.dataset.wishlistToggle;
     const icon = btn.querySelector('i');
     if (!icon || !productId) return;

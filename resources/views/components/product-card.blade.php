@@ -33,7 +33,6 @@
                 class="wishlist-btn product-card__wishlist"
                 data-wishlist-toggle="{{ $product->id }}"
                 aria-label="{{ $isWishlisted ? 'Remove' : 'Add' }} {{ $product->name }} {{ $isWishlisted ? 'from' : 'to' }} wishlist"
-                onclick="event.preventDefault();event.stopPropagation();"
                 @if($isWishlisted) style="color:var(--clr-red-light);border-color:var(--clr-red);" @endif>
                 <i class="bi {{ $isWishlisted ? 'bi-heart-fill' : 'bi-heart' }}"></i>
             </button>
