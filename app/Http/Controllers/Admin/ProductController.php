@@ -126,6 +126,27 @@ class ProductController extends Controller
             ->with('admin_success', 'Product deleted.');
     }
 
+    public function uploadImage(Request $request, Product $product): \Illuminate\Http\JsonResponse
+    {
+        $request->validate(['image' => ['required', 'image', 'max:4096']]);
+
+        $file = $request->file('image');
+        $path = $file->store('products', 'public');
+
+        $image = $product->images()->create([
+            'path' => Storage::url($path),
+            'alt_text' => $product->name,
+            'sort_order' => (int) $product->images()->max('sort_order') + 1,
+            'is_main' => $product->images()->doesntExist(),
+        ]);
+
+        return response()->json([
+            'id' => $image->id,
+            'path' => $image->path,
+            'is_main' => $image->is_main,
+        ]);
+    }
+
     public function destroyImage(Product $product, ProductImage $image): RedirectResponse
     {
         abort_unless($image->product_id === $product->id, 404);

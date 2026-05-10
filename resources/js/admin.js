@@ -48,6 +48,66 @@ document.querySelectorAll('.img-existing__rm').forEach(function (btn) {
     });
 });
 
+(function () {
+    var grid = document.getElementById('image-grid');
+    if (!grid) return;
+
+    var uploadUrl = grid.dataset.uploadUrl;
+    var csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
+    grid.addEventListener('change', function (e) {
+        var input = e.target;
+        if (input.type !== 'file' || !input.files.length) return;
+
+        var slot = input.closest('.img-slot');
+        if (!slot) return;
+
+        var file = input.files[0];
+
+        if (uploadUrl && csrfToken) {
+            slot.innerHTML = '<div class="img-slot__spinner"><i class="bi bi-arrow-repeat"></i></div>';
+            slot.classList.add('img-slot--loading');
+
+            var formData = new FormData();
+            formData.append('image', file);
+
+            fetch(uploadUrl, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
+                body: formData,
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                var div = document.createElement('div');
+                div.className = 'img-existing';
+                div.innerHTML =
+                    '<img src="' + data.path + '" alt="" />' +
+                    '<label class="img-existing__primary">' +
+                        '<input type="radio" name="primary_image_id" value="' + data.id + '"' + (data.is_main ? ' checked' : '') + ' /> Primary' +
+                    '</label>';
+                slot.replaceWith(div);
+            })
+            .catch(function () {
+                slot.classList.remove('img-slot--loading');
+                slot.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Failed';
+            });
+        } else {
+            var reader = new FileReader();
+            reader.onload = function (ev) {
+                slot.innerHTML = '<img src="' + ev.target.result + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius-sm);" />';
+                var newInput = document.createElement('input');
+                newInput.type = 'file';
+                newInput.name = 'images[]';
+                newInput.accept = 'image/*';
+                newInput.style.display = 'none';
+                newInput.files = input.files;
+                slot.appendChild(newInput);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+})();
+
 document.querySelectorAll('[data-confirm]').forEach(function (el) {
     el.addEventListener('click', function (e) {
         if (!confirm(this.dataset.confirm)) e.preventDefault();

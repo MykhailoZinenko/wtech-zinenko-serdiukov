@@ -604,6 +604,22 @@
   font-size: 1.3rem;
 }
 
+.img-slot--loading {
+  pointer-events: none;
+  border-style: solid;
+  border-color: var(--clr-gold-dim);
+}
+
+.img-slot__spinner {
+  font-size: 1.6rem;
+  color: var(--clr-gold);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 .img-slot:hover {
   border-color: var(--clr-gold-dim);
   background: rgba(201, 168, 76, .05);

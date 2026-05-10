@@ -50,7 +50,7 @@
                 <p class="form-hint">Upload images. First image is the main photo on product cards.</p>
 
                 @php $slotsUsed = $isEdit ? $product->images->count() : 0; @endphp
-                <div class="img-grid">
+                <div class="img-grid" id="image-grid" @if($isEdit) data-upload-url="{{ route('admin.products.images.upload', $product) }}" @endif>
                     @if ($isEdit)
                         @foreach ($product->images as $image)
                             <div class="img-existing">

@@ -144,5 +144,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('logout', [AdminLoginController::class, 'logout'])->name('logout');
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('products', AdminProductController::class)->except('show');
+    Route::post('products/{product}/images', [AdminProductController::class, 'uploadImage'])->name('products.images.upload');
     Route::delete('products/{product}/images/{image}', [AdminProductController::class, 'destroyImage'])->name('products.images.destroy');
 });
