@@ -2,6 +2,13 @@
 
 @section('title', 'Edit Product')
 
+@php
+    $rarityBadge = [
+        'common' => 'badge--grey', 'new' => 'badge--grey', 'limited' => 'badge--blue',
+        'rare' => 'badge--orange', 'legendary' => 'badge--gold',
+    ];
+@endphp
+
 @section('content')
 <div class="breadcrumb-adm">
     <a href="{{ route('admin.dashboard') }}">Dashboard</a>
@@ -14,10 +21,15 @@
 <div class="page-hdr">
     <div class="page-hdr__left">
         <h1 class="page-hdr__title">Edit Product</h1>
-        <p class="page-hdr__sub">{{ $product->sku }} · {{ $product->images->count() }} images</p>
+        <p class="page-hdr__sub">{{ $product->name }} &nbsp;·&nbsp; <span class="badge {{ $rarityBadge[$product->rarity] ?? 'badge--grey' }}">{{ ucfirst($product->rarity) }}</span></p>
     </div>
     <div class="page-hdr__actions">
-        <a href="{{ route('products.show', $product) }}" class="btn-base btn-outline-gold" target="_blank"><i class="bi bi-box-arrow-up-right"></i> View</a>
+        <a href="{{ route('products.show', $product) }}" target="_blank" class="btn-base btn-outline-gold"><i class="bi bi-box-arrow-up-right"></i> View in Shop</a>
+        <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="d-inline">
+            @csrf
+            @method('DELETE')
+            <button class="btn-base btn-red" data-confirm="Permanently delete {{ $product->name }}? This cannot be undone."><i class="bi bi-trash"></i> Delete</button>
+        </form>
     </div>
 </div>
 

@@ -28,6 +28,7 @@
                     <input type="checkbox" name="remember" style="accent-color:var(--clr-gold);" {{ old('remember') ? 'checked' : '' }} />
                     Remember me
                 </label>
+                <a href="#">Forgot password?</a>
             </div>
 
             <button type="submit" class="btn-base btn-gold btn-full">
@@ -40,6 +41,9 @@
 
         <p class="auth-card__footer">
             No account yet? <a href="{{ route('register') }}">Register here</a>
+        </p>
+        <p class="auth-card__footer">
+            <a href="{{ route('cart.show') }}">Continue as guest <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </p>
     </div>
 </div>

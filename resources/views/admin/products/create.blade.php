@@ -14,12 +14,15 @@
 <div class="page-hdr">
     <div class="page-hdr__left">
         <h1 class="page-hdr__title">Add Product</h1>
-        <p class="page-hdr__sub">Create a catalogue item with category, stock and images.</p>
+        <p class="page-hdr__sub">Create a new listing in the Emporium catalogue.</p>
+    </div>
+    <div class="page-hdr__actions">
+        <a href="{{ route('admin.products.index') }}" class="btn-base btn-outline-gold"><i class="bi bi-arrow-left"></i> Cancel</a>
     </div>
 </div>
 
 <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
-    @include('admin.products.partials.form', ['submitLabel' => 'Create Product'])
+    @include('admin.products.partials.form', ['submitLabel' => 'Save Product'])
 </form>
 @endsection

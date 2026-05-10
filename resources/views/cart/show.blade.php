@@ -94,7 +94,7 @@
                         <span>Total</span>
                         <span>{{ $fmt($subtotal) }} <span class="eyebrow product-price__unit">Crowns</span></span>
                     </div>
-                    <a href="{{ route('checkout.show') }}" class="btn-base btn-gold btn-full" style="margin-top:20px;">
+                    <a href="{{ route('checkout.show') }}" class="btn-base btn-gold btn-full mt-4">
                         <i class="bi bi-lock" aria-hidden="true"></i> Proceed to Checkout
                     </a>
                     <a href="{{ route('products.index') }}" class="cart-summary__continue">Continue shopping</a>

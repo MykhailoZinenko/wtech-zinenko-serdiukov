@@ -18,7 +18,7 @@ class AccountTest extends TestCase
 
     public function test_guest_cannot_access_account(): void
     {
-        $this->get(route('account.profile'))->assertUnauthorized();
+        $this->get(route('account.profile'))->assertRedirect(route('login'));
     }
 
     public function test_user_can_view_profile(): void

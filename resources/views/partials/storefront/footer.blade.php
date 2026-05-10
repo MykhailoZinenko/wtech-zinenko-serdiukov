@@ -39,8 +39,8 @@
                     <li><a href="{{ route('login') }}">Sign In</a></li>
                     <li><a href="{{ route('register') }}">Register</a></li>
                     <li><a href="{{ route('cart.show') }}">Your Cart</a></li>
-                    <li><a href="#">Order History</a></li>
-                    <li><a href="#">Wishlist</a></li>
+                    <li><a href="{{ route('account.orders') }}">Order History</a></li>
+                    <li><a href="{{ route('account.wishlist') }}">Wishlist</a></li>
                 </ul>
             </div>
             <div class="col-sm-6 col-lg-2">

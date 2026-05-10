@@ -20,35 +20,47 @@ class ProductController extends Controller
     {
         $search = trim((string) $request->input('q'));
         $categoryId = $request->input('category_id');
-        $status = $request->input('status');
         $rarity = $request->input('rarity');
+        $sort = $request->input('sort', 'newest');
 
         $query = Product::query()
             ->with(['category', 'primaryImage'])
-            ->withCount('images')
             ->when($search !== '', function ($q) use ($search) {
                 $like = '%' . $search . '%';
                 $q->where(function ($inner) use ($like) {
-                    $inner->where('name', 'like', $like)
-                        ->orWhere('sku', 'like', $like);
+                    $inner->where('name', 'ilike', $like)
+                        ->orWhere('sku', 'ilike', $like);
                 });
             })
             ->when($categoryId, fn ($q) => $q->where('category_id', $categoryId))
-            ->when($status, fn ($q) => $q->where('status', $status))
             ->when($rarity, fn ($q) => $q->where('rarity', $rarity));
 
-        $products = $query->latest('updated_at')->paginate(15)->withQueryString();
+        $query = match ($sort) {
+            'name_asc' => $query->orderBy('name'),
+            'price_asc' => $query->orderBy('price'),
+            'price_desc' => $query->orderByDesc('price'),
+            'stock_asc' => $query->orderBy('stock'),
+            default => $query->latest('updated_at'),
+        };
+
+        $products = $query->paginate(15)->withQueryString();
+
+        $totalProducts = Product::count();
+        $lowStockCount = Product::whereColumn('stock', '<=', 'low_stock_threshold')->count();
+        $limitedCount = Product::where('is_limited_edition', true)->count();
 
         return view('admin.products.index', [
             'products' => $products,
             'categories' => Category::orderBy('name')->get(),
             'stats' => [
-                'total' => Product::count(),
+                'total' => $totalProducts,
                 'categories' => Category::count(),
                 'outOfStock' => Product::where('stock', 0)->count(),
-                'featured' => Product::where('is_featured', true)->count(),
+                'limited' => $limitedCount,
             ],
-            'filters' => compact('search', 'categoryId', 'status', 'rarity'),
+            'lowStockCount' => $lowStockCount,
+            'limitedCount' => $limitedCount,
+            'filters' => compact('search', 'categoryId', 'rarity', 'sort'),
         ]);
     }
 
@@ -132,25 +144,26 @@ class ProductController extends Controller
     private function productData(ProductRequest $request): array
     {
         $validated = $request->validated();
-        $slug = $validated['slug'] ?: Str::slug($validated['name']);
+        $slug = !empty($validated['slug']) ? $validated['slug'] : Str::slug($validated['name']);
+        $sku = !empty($validated['sku']) ? $validated['sku'] : strtoupper(Str::random(8));
 
         return [
             'category_id' => $validated['category_id'],
             'name' => $validated['name'],
             'slug' => $slug,
-            'sku' => $validated['sku'],
+            'sku' => $sku,
             'short_description' => $validated['short_description'] ?? null,
             'full_description' => $validated['full_description'] ?? '',
             'price' => $validated['price'],
             'compare_price' => $validated['compare_price'] ?? null,
             'stock' => $validated['stock'],
-            'low_stock_threshold' => $validated['low_stock_threshold'],
-            'weight' => $validated['weight'] ?? null,
+            'low_stock_threshold' => $validated['low_stock_threshold'] ?? 5,
             'status' => $validated['status'],
-            'school' => $validated['school'],
+            'school' => $validated['school'] ?? 'none',
             'rarity' => $validated['rarity'],
             'is_featured' => $request->boolean('is_featured'),
-            'published_at' => $validated['published_at'] ?? ($validated['status'] === 'active' ? now() : null),
+            'is_limited_edition' => $request->boolean('is_limited_edition'),
+            'published_at' => $validated['status'] === 'active' ? now() : null,
         ];
     }
 

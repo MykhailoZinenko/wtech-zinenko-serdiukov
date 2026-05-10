@@ -10,6 +10,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WishlistController;
@@ -22,6 +23,7 @@ Route::get('shop/category/{categorySlug}', [ProductController::class, 'index'])-
 Route::get('shop/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 
 Route::post('shop/{product:slug}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::post('newsletter', [NewsletterController::class, 'store'])->name('newsletter.store');
 
 Route::get('about-us', fn () => view('pages.info', [
     'title' => 'About Us',

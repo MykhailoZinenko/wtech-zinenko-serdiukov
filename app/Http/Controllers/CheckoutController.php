@@ -7,11 +7,13 @@ use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\ShippingMethod;
+use App\Models\User;
 use App\Services\CartResolver;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
@@ -70,6 +72,18 @@ class CheckoutController extends Controller
         $shippingMethod = \App\Models\ShippingMethod::findOrFail($validated['shipping_method_id']);
         $shippingCost = $shippingMethod->cost;
         $total = $subtotal + $shippingCost;
+
+        if (!Auth::check() && $request->boolean('create_account') && !User::where('email', $validated['email'])->exists()) {
+            $user = User::create([
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'] ?? null,
+                'password' => Hash::make(Str::random(16)),
+                'role' => 'customer',
+            ]);
+            Auth::login($user);
+        }
 
         $order = retry(3, fn () => DB::transaction(function () use ($items, $validated, $subtotal, $shippingCost, $total) {
             $order = Order::create([
