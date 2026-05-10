@@ -27,7 +27,7 @@ Route::delete('cart/items/{item}', [CartController::class, 'remove'])->name('car
 Route::middleware('auth')->group(function () {
     Route::get('checkout', [CheckoutController::class, 'show'])->name('checkout.show');
     Route::post('checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-    Route::get('checkout/success/{order}', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('checkout/success/{order:number}', [CheckoutController::class, 'success'])->name('checkout.success');
 });
 
 Route::middleware('guest')->group(function () {
