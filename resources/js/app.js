@@ -139,6 +139,22 @@ document.addEventListener('click', function (e) {
             icon.className = wishlisted ? 'bi bi-heart-fill' : 'bi bi-heart';
             btn.style.color = wishlisted ? 'var(--clr-red-light)' : '';
             btn.style.borderColor = wishlisted ? 'var(--clr-red)' : '';
+
+            if (!wishlisted) {
+                const card = btn.closest('.col-sm-6, .col-xl-4, .col-xl-3');
+                if (card && card.closest('.account-page')) {
+                    card.style.transition = 'opacity .3s ease, transform .3s ease';
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(.95)';
+                    setTimeout(function () {
+                        card.remove();
+                        var grid = document.querySelector('.account-page .row.g-4');
+                        if (grid && !grid.children.length) {
+                            location.reload();
+                        }
+                    }, 300);
+                }
+            }
         })
         .catch(function () {});
 });
