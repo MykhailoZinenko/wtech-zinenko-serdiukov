@@ -85,13 +85,17 @@ class CheckoutController extends Controller
             Auth::login($user);
         }
 
-        $order = retry(3, fn () => DB::transaction(function () use ($items, $validated, $subtotal, $shippingCost, $total) {
+        $paymentMethod = PaymentMethod::findOrFail($validated['payment_method_id']);
+        $isCash = str_contains(strtolower($paymentMethod->name), 'cash');
+        $paymentStatus = $isCash ? 'pending' : 'paid';
+
+        $order = retry(3, fn () => DB::transaction(function () use ($items, $validated, $subtotal, $shippingCost, $total, $paymentStatus) {
             $order = Order::create([
                 'order_number' => $this->nextOrderNumber(),
                 'user_id' => Auth::id(),
                 'shipping_method_id' => $validated['shipping_method_id'],
                 'payment_method_id' => $validated['payment_method_id'],
-                'status' => 'pending',
+                'status' => 'processing',
                 'ship_first_name' => $validated['first_name'],
                 'ship_last_name' => $validated['last_name'],
                 'ship_street' => $validated['address'],
@@ -105,7 +109,8 @@ class CheckoutController extends Controller
                 'shipping_cost' => $shippingCost,
                 'discount' => 0,
                 'total' => $total,
-                'payment_status' => 'pending',
+                'payment_status' => $paymentStatus,
+                'paid_at' => $paymentStatus === 'paid' ? now() : null,
             ]);
 
             foreach ($items as $item) {
