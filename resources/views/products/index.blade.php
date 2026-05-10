@@ -50,7 +50,7 @@
         <aside class="col-lg-3 mb-4 mb-lg-0">
             <div class="card-base sticky-sidebar products-filters">
                 <h2 class="eyebrow filters-title">Filters</h2>
-                <form class="filters-form" method="get" id="filtersForm">
+                <form class="filters-form" method="get" id="filtersForm" action="{{ $category ? route('products.category', ['categorySlug' => $category->slug]) : route('products.index') }}">
                     @if ($searchTerm)
                         <input type="hidden" name="q" value="{{ $searchTerm }}" />
                     @endif
@@ -61,13 +61,13 @@
                     <div class="filter-group">
                         <label class="eyebrow filter-label">Price (Crowns)</label>
                         <div class="filter-price-row">
-                            <input type="number" name="min_price" id="min_price" placeholder="Min" min="0" step="10" class="input-base filter-input" value="{{ $filters['min_price'] }}" />
+                            <input type="number" name="min_price" id="min_price" placeholder="Min" min="0" step="10" class="input-base filter-input" value="{{ request('min_price', $filters['min_price']) }}" />
                             <span class="filter-sep">–</span>
-                            <input type="number" name="max_price" id="max_price" placeholder="Max" min="0" step="10" class="input-base filter-input" value="{{ $filters['max_price'] }}" />
+                            <input type="number" name="max_price" id="max_price" placeholder="Max" min="0" step="10" class="input-base filter-input" value="{{ request('max_price', $filters['max_price']) }}" />
                         </div>
                         <div class="filter-price-slider">
-                            <input type="range" id="price-slider-min" class="filter-range" min="0" max="10000" value="{{ $filters['min_price'] ?: 0 }}" step="50" title="Min price" />
-                            <input type="range" id="price-slider-max" class="filter-range" min="0" max="10000" value="{{ $filters['max_price'] ?: 10000 }}" step="50" title="Max price" />
+                            <input type="range" id="price-slider-min" class="filter-range" min="0" max="10000" value="{{ request('min_price', $filters['min_price']) ?: 0 }}" step="50" title="Min price" />
+                            <input type="range" id="price-slider-max" class="filter-range" min="0" max="10000" value="{{ request('max_price', $filters['max_price']) ?: 10000 }}" step="50" title="Max price" />
                         </div>
                     </div>
 
@@ -75,13 +75,16 @@
                         <label class="eyebrow filter-label">School / Brand</label>
                         <select name="school" class="input-base select-arrow filter-select">
                             <option value="">All</option>
-                            <option value="wolf" @selected($filters['school'] === 'wolf')>School of the Wolf</option>
-                            <option value="griffin" @selected($filters['school'] === 'griffin')>School of the Griffin</option>
-                            <option value="bear" @selected($filters['school'] === 'bear')>School of the Bear</option>
-                            <option value="cat" @selected($filters['school'] === 'cat')>School of the Cat</option>
-                            <option value="manticore" @selected($filters['school'] === 'manticore')>School of the Manticore</option>
-                            <option value="viper" @selected($filters['school'] === 'viper')>School of the Viper</option>
-                            <option value="generic" @selected($filters['school'] === 'generic')>Generic</option>
+                            @php $school = request('school', $filters['school']); @endphp
+                            <option value="wolf" @selected($school === 'wolf')>School of the Wolf</option>
+                            <option value="griffin" @selected($school === 'griffin')>School of the Griffin</option>
+                            <option value="cat" @selected($school === 'cat')>School of the Cat</option>
+                            <option value="bear" @selected($school === 'bear')>School of the Bear</option>
+                            <option value="viper" @selected($school === 'viper')>School of the Viper</option>
+                            <option value="manticore" @selected($school === 'manticore')>School of the Manticore</option>
+                            <option value="ofieri" @selected($school === 'ofieri')>Ofieri</option>
+                            <option value="toussaint" @selected($school === 'toussaint')>Toussaint</option>
+                            <option value="none" @selected($school === 'none')>Other</option>
                         </select>
                     </div>
 
@@ -89,10 +92,12 @@
                         <label class="eyebrow filter-label">Rarity</label>
                         <select name="rarity" class="input-base select-arrow filter-select">
                             <option value="">All</option>
-                            <option value="common" @selected($filters['rarity'] === 'common')>Common</option>
-                            <option value="uncommon" @selected($filters['rarity'] === 'uncommon')>Uncommon</option>
-                            <option value="rare" @selected($filters['rarity'] === 'rare')>Rare</option>
-                            <option value="legendary" @selected($filters['rarity'] === 'legendary')>Legendary</option>
+                            @php $rarity = request('rarity', $filters['rarity']); @endphp
+                            <option value="common" @selected($rarity === 'common')>Common</option>
+                            <option value="new" @selected($rarity === 'new')>New</option>
+                            <option value="limited" @selected($rarity === 'limited')>Limited</option>
+                            <option value="rare" @selected($rarity === 'rare')>Rare</option>
+                            <option value="legendary" @selected($rarity === 'legendary')>Legendary</option>
                         </select>
                     </div>
 
