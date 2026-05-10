@@ -138,10 +138,7 @@ class CheckoutController extends Controller
 
     private function canSeeOrder(Order $order): bool
     {
-        if ($order->user_id) {
-            return Auth::id() === $order->user_id || Auth::user()?->isAdmin();
-        }
-
-        return true;
+        return Auth::check()
+            && (Auth::id() === $order->user_id || Auth::user()->isAdmin());
     }
 }
