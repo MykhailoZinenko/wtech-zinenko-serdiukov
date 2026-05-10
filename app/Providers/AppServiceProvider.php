@@ -48,5 +48,21 @@ class AppServiceProvider extends ServiceProvider
             }
             $view->with('cartCount', $count);
         });
+
+        View::composer('components.product-card', function ($view) {
+            static $wishlistedIds = null;
+
+            if ($wishlistedIds === null) {
+                if ($user = auth()->user()) {
+                    $wishlistedIds = \App\Models\Wishlist::where('user_id', $user->id)
+                        ->pluck('product_id')
+                        ->all();
+                } else {
+                    $wishlistedIds = [];
+                }
+            }
+
+            $view->with('wishlistedIds', $wishlistedIds);
+        });
     }
 }
