@@ -20,35 +20,47 @@ class ProductController extends Controller
     {
         $search = trim((string) $request->input('q'));
         $categoryId = $request->input('category_id');
-        $status = $request->input('status');
         $rarity = $request->input('rarity');
+        $sort = $request->input('sort', 'newest');
 
         $query = Product::query()
             ->with(['category', 'primaryImage'])
-            ->withCount('images')
             ->when($search !== '', function ($q) use ($search) {
                 $like = '%' . $search . '%';
                 $q->where(function ($inner) use ($like) {
-                    $inner->where('name', 'like', $like)
-                        ->orWhere('sku', 'like', $like);
+                    $inner->where('name', 'ilike', $like)
+                        ->orWhere('sku', 'ilike', $like);
                 });
             })
             ->when($categoryId, fn ($q) => $q->where('category_id', $categoryId))
-            ->when($status, fn ($q) => $q->where('status', $status))
             ->when($rarity, fn ($q) => $q->where('rarity', $rarity));
 
-        $products = $query->latest('updated_at')->paginate(15)->withQueryString();
+        $query = match ($sort) {
+            'name_asc' => $query->orderBy('name'),
+            'price_asc' => $query->orderBy('price'),
+            'price_desc' => $query->orderByDesc('price'),
+            'stock_asc' => $query->orderBy('stock'),
+            default => $query->latest('updated_at'),
+        };
+
+        $products = $query->paginate(15)->withQueryString();
+
+        $totalProducts = Product::count();
+        $lowStockCount = Product::whereColumn('stock', '<=', 'low_stock_threshold')->count();
+        $limitedCount = Product::where('is_limited_edition', true)->count();
 
         return view('admin.products.index', [
             'products' => $products,
             'categories' => Category::orderBy('name')->get(),
             'stats' => [
-                'total' => Product::count(),
+                'total' => $totalProducts,
                 'categories' => Category::count(),
                 'outOfStock' => Product::where('stock', 0)->count(),
-                'featured' => Product::where('is_featured', true)->count(),
+                'limited' => $limitedCount,
             ],
-            'filters' => compact('search', 'categoryId', 'status', 'rarity'),
+            'lowStockCount' => $lowStockCount,
+            'limitedCount' => $limitedCount,
+            'filters' => compact('search', 'categoryId', 'rarity', 'sort'),
         ]);
     }
 

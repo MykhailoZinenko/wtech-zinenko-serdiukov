@@ -3,16 +3,26 @@
 @section('title', 'Products')
 
 @php
-    $fmt = fn ($n) => number_format((float) $n, 0, ',', ' ');
-    $statuses = ['active' => 'Active', 'draft' => 'Draft', 'archived' => 'Archived'];
-    $rarities = ['common' => 'Common', 'uncommon' => 'Uncommon', 'rare' => 'Rare', 'legendary' => 'Legendary'];
+    $fmt = fn ($n) => number_format((int) $n, 0, ',', ' ');
+    $rarityBadge = [
+        'common' => 'badge--grey',
+        'new' => 'badge--grey',
+        'limited' => 'badge--blue',
+        'rare' => 'badge--orange',
+        'legendary' => 'badge--gold',
+    ];
+    $schoolLabels = [
+        'wolf' => 'Wolf School', 'griffin' => 'Griffin School', 'cat' => 'Cat School',
+        'bear' => 'Bear School', 'viper' => 'Viper School', 'manticore' => 'Manticore School',
+        'ofieri' => 'Ofieri', 'toussaint' => 'Toussaint', 'none' => '—',
+    ];
 @endphp
 
 @section('content')
 <div class="page-hdr">
     <div class="page-hdr__left">
         <h1 class="page-hdr__title">Products</h1>
-        <p class="page-hdr__sub">{{ $stats['total'] }} products · {{ $stats['outOfStock'] }} out of stock · {{ $stats['featured'] }} featured</p>
+        <p class="page-hdr__sub">{{ $fmt($stats['total']) }} products · {{ $lowStockCount }} low stock · {{ $limitedCount }} limited edition</p>
     </div>
     <div class="page-hdr__actions">
         <a href="{{ route('admin.products.create') }}" class="btn-base btn-gold"><i class="bi bi-plus-lg"></i> Add Product</a>
@@ -27,22 +37,22 @@
     <div class="stat-card stat-card--gold">
         <div class="stat-card__icon"><i class="bi bi-box-seam"></i></div>
         <div class="stat-card__label">Total Products</div>
-        <div class="stat-card__value">{{ $stats['total'] }}</div>
+        <div class="stat-card__value">{{ $fmt($stats['total']) }}</div>
     </div>
     <div class="stat-card stat-card--blue">
         <div class="stat-card__icon"><i class="bi bi-tags"></i></div>
         <div class="stat-card__label">Categories</div>
-        <div class="stat-card__value">{{ $stats['categories'] }}</div>
+        <div class="stat-card__value">{{ $fmt($stats['categories']) }}</div>
     </div>
     <div class="stat-card stat-card--red">
         <div class="stat-card__icon"><i class="bi bi-exclamation-triangle"></i></div>
         <div class="stat-card__label">Out of Stock</div>
-        <div class="stat-card__value">{{ $stats['outOfStock'] }}</div>
+        <div class="stat-card__value">{{ $fmt($stats['outOfStock']) }}</div>
     </div>
     <div class="stat-card stat-card--green">
         <div class="stat-card__icon"><i class="bi bi-star"></i></div>
-        <div class="stat-card__label">Featured</div>
-        <div class="stat-card__value">{{ $stats['featured'] }}</div>
+        <div class="stat-card__label">Limited Items</div>
+        <div class="stat-card__value">{{ $fmt($stats['limited']) }}</div>
     </div>
 </div>
 
@@ -50,27 +60,29 @@
     <form class="tbl-toolbar" method="GET">
         <div class="tbl-search">
             <i class="bi bi-search"></i>
-            <input type="search" name="q" value="{{ $filters['search'] }}" placeholder="Search by name or SKU..." />
+            <input type="search" name="q" value="{{ $filters['search'] }}" placeholder="Search by name or SKU…" />
         </div>
-        <select name="category_id" class="input-base select-arrow select-input">
+        <select name="category_id" class="input-base select-arrow select-input" onchange="this.form.submit()">
             <option value="">All Categories</option>
             @foreach ($categories as $category)
                 <option value="{{ $category->id }}" @selected((string) $filters['categoryId'] === (string) $category->id)>{{ $category->name }}</option>
             @endforeach
         </select>
-        <select name="status" class="input-base select-arrow select-input">
-            <option value="">All Statuses</option>
-            @foreach ($statuses as $key => $label)
-                <option value="{{ $key }}" @selected($filters['status'] === $key)>{{ $label }}</option>
-            @endforeach
-        </select>
-        <select name="rarity" class="input-base select-arrow select-input">
+        <select name="rarity" class="input-base select-arrow select-input" onchange="this.form.submit()">
             <option value="">All Rarities</option>
-            @foreach ($rarities as $key => $label)
-                <option value="{{ $key }}" @selected($filters['rarity'] === $key)>{{ $label }}</option>
-            @endforeach
+            <option value="common" @selected($filters['rarity'] === 'common')>Common</option>
+            <option value="new" @selected($filters['rarity'] === 'new')>New</option>
+            <option value="limited" @selected($filters['rarity'] === 'limited')>Limited</option>
+            <option value="rare" @selected($filters['rarity'] === 'rare')>Rare</option>
+            <option value="legendary" @selected($filters['rarity'] === 'legendary')>Legendary</option>
         </select>
-        <button class="btn-base btn-outline-gold btn-sm" type="submit"><i class="bi bi-funnel"></i> Filter</button>
+        <select name="sort" class="input-base select-arrow select-input ms-auto" onchange="this.form.submit()">
+            <option value="newest" @selected($filters['sort'] === 'newest')>Sort: Newest</option>
+            <option value="name_asc" @selected($filters['sort'] === 'name_asc')>Sort: Name A–Z</option>
+            <option value="price_asc" @selected($filters['sort'] === 'price_asc')>Sort: Price ↑</option>
+            <option value="price_desc" @selected($filters['sort'] === 'price_desc')>Sort: Price ↓</option>
+            <option value="stock_asc" @selected($filters['sort'] === 'stock_asc')>Sort: Stock ↑</option>
+        </select>
     </form>
 
     <div class="tbl-wrap">
@@ -99,16 +111,16 @@
                                 </div>
                                 <div>
                                     <a href="{{ route('admin.products.edit', $product) }}" class="tbl-product__name tbl-link">{{ $product->name }}</a>
-                                    <span class="tbl-product__cat">{{ $product->sku }} · {{ $statuses[$product->status] ?? $product->status }}</span>
+                                    <span class="tbl-product__cat">{{ $schoolLabels[$product->school] ?? $product->school }}</span>
                                 </div>
                             </div>
                         </td>
                         <td class="col-hide-md td-dim">{{ $product->category?->name }}</td>
-                        <td class="col-hide-md td-gold">{{ $fmt($product->price) }} Cr</td>
+                        <td class="col-hide-md td-gold">{{ $fmt($product->price) }} ℂ</td>
                         <td class="col-hide-sm">
                             <span class="{{ $product->stock === 0 ? 'stock-none' : ($product->stock <= $product->low_stock_threshold ? 'stock-low' : 'stock-ok') }} td-heading">{{ $product->stock }}</span>
                         </td>
-                        <td class="col-hide-sm"><span class="badge badge--{{ $product->rarity === 'legendary' ? 'gold' : ($product->rarity === 'rare' ? 'orange' : 'grey') }}">{{ $rarities[$product->rarity] ?? $product->rarity }}</span></td>
+                        <td class="col-hide-sm"><span class="badge {{ $rarityBadge[$product->rarity] ?? 'badge--grey' }}">{{ ucfirst($product->rarity) }}</span></td>
                         <td>
                             <div class="row-actions">
                                 <a href="{{ route('admin.products.edit', $product) }}" class="btn-base btn-outline-gold btn-sm btn-icon" title="Edit"><i class="bi bi-pencil"></i></a>
@@ -122,7 +134,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="td-dim">No products found.</td>
+                        <td colspan="6" class="td-dim" style="text-align:center;padding:40px;">No products found.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -131,14 +143,27 @@
 
     @if ($products->hasPages())
         <div class="pagination-bar">
-            <span>Showing {{ $products->firstItem() }}-{{ $products->lastItem() }} of {{ $products->total() }}</span>
+            <span>Showing {{ $products->firstItem() }}–{{ $products->lastItem() }} of {{ $fmt($products->total()) }} products</span>
             <div class="pagination-btns">
                 @if ($products->onFirstPage())
                     <span class="pg-disabled"><i class="bi bi-chevron-left"></i></span>
                 @else
                     <a href="{{ $products->previousPageUrl() }}"><i class="bi bi-chevron-left"></i></a>
                 @endif
-                <span class="pg-active">{{ $products->currentPage() }}</span>
+
+                @foreach ($products->getUrlRange(max(1, $products->currentPage() - 2), min($products->lastPage(), $products->currentPage() + 2)) as $page => $url)
+                    @if ($page === $products->currentPage())
+                        <span class="pg-active">{{ $page }}</span>
+                    @else
+                        <a href="{{ $url }}">{{ $page }}</a>
+                    @endif
+                @endforeach
+
+                @if ($products->currentPage() + 2 < $products->lastPage())
+                    <span class="pg-ellipsis">…</span>
+                    <a href="{{ $products->url($products->lastPage()) }}">{{ $products->lastPage() }}</a>
+                @endif
+
                 @if ($products->hasMorePages())
                     <a href="{{ $products->nextPageUrl() }}"><i class="bi bi-chevron-right"></i></a>
                 @else
