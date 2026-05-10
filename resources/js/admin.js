@@ -1,6 +1,92 @@
 'use strict';
 
 (function () {
+    var wrap = document.querySelector('.topbar-search[data-search-url]');
+    if (!wrap) return;
+
+    var input = wrap.querySelector('input');
+    var popover = document.getElementById('search-popover');
+    var url = wrap.dataset.searchUrl;
+    var debounce = null;
+    var activeIdx = -1;
+    var csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
+    function renderResults(items) {
+        if (!items.length) {
+            popover.innerHTML = '<div class="search-popover__empty">No results found</div>';
+            popover.removeAttribute('hidden');
+            return;
+        }
+        popover.innerHTML = items.map(function (item, i) {
+            var icon = item.image
+                ? '<img src="' + item.image + '" alt="" />'
+                : '<i class="bi ' + (item.type === 'order' ? 'bi-receipt' : 'bi-box-seam') + '"></i>';
+            return '<a href="' + item.url + '" class="search-popover__item" data-idx="' + i + '">' +
+                '<div class="search-popover__icon">' + icon + '</div>' +
+                '<span class="search-popover__label">' + item.label + '</span>' +
+                '<span class="search-popover__type">' + item.type + '</span>' +
+                '<span class="search-popover__sub">' + item.sub + '</span>' +
+            '</a>';
+        }).join('');
+        popover.removeAttribute('hidden');
+        activeIdx = -1;
+    }
+
+    function doSearch() {
+        var q = input.value.trim();
+        if (q.length < 2) {
+            popover.setAttribute('hidden', '');
+            return;
+        }
+        fetch(url + '?q=' + encodeURIComponent(q), {
+            headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken || '' },
+        })
+        .then(function (r) { return r.json(); })
+        .then(renderResults)
+        .catch(function () { popover.setAttribute('hidden', ''); });
+    }
+
+    input.addEventListener('input', function () {
+        clearTimeout(debounce);
+        debounce = setTimeout(doSearch, 250);
+    });
+
+    input.addEventListener('keydown', function (e) {
+        var items = popover.querySelectorAll('.search-popover__item');
+        if (!items.length || popover.hidden) return;
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            activeIdx = Math.min(activeIdx + 1, items.length - 1);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            activeIdx = Math.max(activeIdx - 1, 0);
+        } else if (e.key === 'Enter' && activeIdx >= 0) {
+            e.preventDefault();
+            items[activeIdx].click();
+            return;
+        } else if (e.key === 'Escape') {
+            popover.setAttribute('hidden', '');
+            activeIdx = -1;
+            return;
+        } else {
+            return;
+        }
+
+        items.forEach(function (el, i) {
+            el.classList.toggle('is-active', i === activeIdx);
+        });
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!wrap.contains(e.target)) {
+            popover.setAttribute('hidden', '');
+            activeIdx = -1;
+        }
+    });
+})();
+
+(function () {
     var scrollKey = 'scrollY';
     var urlKey = 'scrollUrl';
     var saved = sessionStorage.getItem(scrollKey);
