@@ -6,7 +6,11 @@
 @section('content')
 <section class="hero" aria-labelledby="hero-title">
     <div class="hero-bg">
-        <div class="placeholder-asset">HERO BACKGROUND IMAGE</div>
+        @if (file_exists(public_path('images/hero-witcher-battle.png')))
+            <img src="{{ asset('images/hero-witcher-battle.png') }}" alt="" aria-hidden="true" />
+        @else
+            <div class="placeholder-asset">Missing: public/images/hero-witcher-battle.png</div>
+        @endif
     </div>
     <div class="container hero-content">
         <div class="row">
