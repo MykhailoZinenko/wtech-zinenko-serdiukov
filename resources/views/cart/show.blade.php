@@ -56,7 +56,7 @@
                             <div class="cart-item__body">
                                 <h3 class="cart-item__name"><a href="{{ $product ? route('products.show', $product) : '#' }}">{{ $product?->name ?? 'Unavailable product' }}</a></h3>
                                 <p class="cart-item__meta">{{ $product?->category?->name }}</p>
-                                <div class="cart-item__price">{{ number_format($item->product->price, 0, ',', ' ') }} <span class="eyebrow product-price__unit">Crowns</span></div>
+                                <div class="cart-item__price">{{ number_format($item->product?->price ?? 0, 0, ',', ' ') }} <span class="eyebrow product-price__unit">Crowns</span></div>
                             </div>
                             <div class="cart-item__qty">
                                 <form action="{{ route('cart.update', $item) }}" method="POST" data-cart-update>

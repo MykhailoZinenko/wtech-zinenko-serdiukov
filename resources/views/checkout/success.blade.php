@@ -39,8 +39,8 @@
                 <div class="checkout-summary__item">
                     <div>
                         <span class="checkout-summary__item-name">{{ $item->product_name }} x{{ $item->quantity }}</span>
-                        @if ($item->sku)
-                            <span class="checkout-success__sku">{{ $item->sku }}</span>
+                        @if ($item->product_sku)
+                            <span class="checkout-success__sku">{{ $item->product_sku }}</span>
                         @endif
                     </div>
                     <span class="checkout-summary__item-price">{{ $fmt($item->line_total) }} Cr</span>

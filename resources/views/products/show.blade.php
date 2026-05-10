@@ -8,7 +8,7 @@
     $primary = $product->primaryImage ?? $images->first();
     $stockLabel = $product->in_stock ? 'Yes' : 'Out of stock';
     $rarityLabel = ucfirst($product->rarity);
-    $schoolLabel = $product->school === 'generic' ? 'Generic' : 'School of the ' . ucfirst($product->school);
+    $schoolLabel = $product->school === 'none' ? 'Generic' : 'School of the ' . ucfirst($product->school);
 
     $badgeText = null;
     $badgeClass = null;
@@ -34,6 +34,9 @@
 
     @if (session('cart_success'))
         <div class="cart-flash">{{ session('cart_success') }}</div>
+    @endif
+    @if (session('review_success'))
+        <div class="cart-flash">{{ session('review_success') }}</div>
     @endif
 
     <div class="row g-4 g-lg-5">
@@ -122,7 +125,7 @@
             <div class="product-specs__grid">
                 @foreach ($product->specifications as $spec)
                     <div class="product-specs__item">
-                        <span class="product-specs__label">{{ $spec->key }}</span>
+                        <span class="product-specs__label">{{ $spec->label }}</span>
                         <span class="product-specs__value">{{ $spec->value }}</span>
                     </div>
                 @endforeach
