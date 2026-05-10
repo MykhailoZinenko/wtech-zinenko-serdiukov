@@ -64,7 +64,7 @@ class CheckoutController extends Controller
         $subtotal = $cart->subtotal();
         $totals = $this->options->totals($subtotal, $validated['delivery'], $validated['payment']);
 
-        $order = DB::transaction(function () use ($cart, $validated, $subtotal, $totals) {
+        $order = retry(3, fn () => DB::transaction(function () use ($cart, $validated, $subtotal, $totals) {
             $order = Order::create([
                 'number' => $this->nextOrderNumber(),
                 'user_id' => Auth::id(),
@@ -96,7 +96,7 @@ class CheckoutController extends Controller
             session()->forget(['cart.delivery', 'cart.payment']);
 
             return $order;
-        });
+        }), when: fn ($e) => str_contains($e->getMessage(), 'orders_number_unique'));
 
         return redirect()->route('checkout.success', $order);
     }
@@ -129,11 +129,7 @@ class CheckoutController extends Controller
 
     private function nextOrderNumber(): string
     {
-        do {
-            $number = 'WWE-' . now()->format('Ymd') . '-' . Str::upper(Str::random(6));
-        } while (Order::where('number', $number)->exists());
-
-        return $number;
+        return 'WWE-' . now()->format('Ymd') . '-' . Str::upper(Str::random(6));
     }
 
     private function canSeeOrder(Order $order): bool
