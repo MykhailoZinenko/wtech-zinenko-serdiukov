@@ -230,3 +230,22 @@ document.addEventListener('click', function (e) {
 
     if (hidden) hidden.value = rating;
 });
+
+document.addEventListener('click', function (e) {
+    const thumb = e.target.closest('.product-gallery__thumb');
+    if (!thumb) return;
+
+    const thumbImg = thumb.querySelector('img');
+    if (!thumbImg) return;
+
+    const mainImg = document.querySelector('.product-gallery__img');
+    if (!mainImg) return;
+
+    mainImg.src = thumbImg.src;
+    mainImg.alt = thumbImg.alt || mainImg.alt;
+
+    thumb.closest('.product-gallery__thumbs')
+        .querySelectorAll('.product-gallery__thumb')
+        .forEach(function (t) { t.classList.remove('active'); });
+    thumb.classList.add('active');
+});
