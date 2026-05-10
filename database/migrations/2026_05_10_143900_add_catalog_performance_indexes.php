@@ -20,5 +20,6 @@ return new class extends Migration
         DB::statement('DROP INDEX IF EXISTS products_status_rarity_index');
         DB::statement('DROP INDEX IF EXISTS products_status_school_index');
         DB::statement('DROP INDEX IF EXISTS products_status_price_index');
+        DB::statement('DROP INDEX IF EXISTS products_status_category_id_index');
     }
 };
