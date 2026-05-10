@@ -134,7 +134,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="td-dim" style="text-align:center;padding:40px;">No products found.</td>
+                        <td colspan="6" class="td-dim">No products found.</td>
                     </tr>
                 @endforelse
             </tbody>

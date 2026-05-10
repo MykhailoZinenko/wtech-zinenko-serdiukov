@@ -81,7 +81,7 @@
             </div>
             @if ($recentOrders->isEmpty())
                 <div class="adm-card__body">
-                    <p style="color:var(--clr-text-dim);">No orders yet.</p>
+                    <p class="td-dim">No orders yet.</p>
                 </div>
             @else
                 <div class="tbl-wrap">
@@ -155,7 +155,7 @@
             </div>
             @if ($lowStockProducts->isEmpty())
                 <div class="adm-card__body">
-                    <p style="color:var(--clr-text-dim);">All products are well stocked.</p>
+                    <p class="td-dim">All products are well stocked.</p>
                 </div>
             @else
                 <div class="adm-card__body">

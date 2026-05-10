@@ -14,7 +14,7 @@
         @if ($errors->any())
             <div class="form-alert form-alert--error">
                 @foreach ($errors->all() as $error)
-                    <p style="margin:0;">{{ $error }}</p>
+                    <p>{{ $error }}</p>
                 @endforeach
             </div>
         @endif
