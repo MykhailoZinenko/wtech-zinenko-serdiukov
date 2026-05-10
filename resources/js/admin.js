@@ -78,13 +78,25 @@ document.querySelectorAll('.img-existing__rm').forEach(function (btn) {
             })
             .then(function (r) { return r.json(); })
             .then(function (data) {
+                var deleteUrl = uploadUrl + '/' + data.id;
+                var formId = 'delete-image-' + data.id;
+
+                var delForm = document.createElement('form');
+                delForm.id = formId;
+                delForm.action = deleteUrl;
+                delForm.method = 'POST';
+                delForm.innerHTML = '<input type="hidden" name="_token" value="' + csrfToken + '" />' +
+                    '<input type="hidden" name="_method" value="DELETE" />';
+                document.body.appendChild(delForm);
+
                 var div = document.createElement('div');
                 div.className = 'img-existing';
                 div.innerHTML =
                     '<img src="' + data.path + '" alt="" />' +
                     '<label class="img-existing__primary">' +
                         '<input type="radio" name="primary_image_id" value="' + data.id + '"' + (data.is_main ? ' checked' : '') + ' /> Primary' +
-                    '</label>';
+                    '</label>' +
+                    '<button type="button" class="img-existing__rm" onclick="sessionStorage.setItem(\'scrollY\',String(window.scrollY));sessionStorage.setItem(\'scrollUrl\',location.pathname+location.search);document.getElementById(\'' + formId + '\').submit()"><i class="bi bi-x"></i></button>';
                 slot.replaceWith(div);
             })
             .catch(function () {
