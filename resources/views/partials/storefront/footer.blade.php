@@ -16,7 +16,7 @@
             <div class="col-sm-6 col-lg-2">
                 <h3 class="footer-heading">Shop</h3>
                 <ul class="footer-links">
-                    @forelse ($navCategories ?? collect() as $category)
+                    @forelse (($navCategories ?? collect()) as $category)
                         <li><a href="{{ route('products.category', ['categorySlug' => $category->slug]) }}">{{ $category->name }}</a></li>
                     @empty
                         <li><a href="{{ route('products.index') }}">Browse Catalogue</a></li>

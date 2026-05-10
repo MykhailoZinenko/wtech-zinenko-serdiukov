@@ -1,7 +1,7 @@
 <header class="site-header">
     <nav class="navbar navbar-expand-lg py-2" aria-label="Main navigation">
         <div class="container">
-            <a class="navbar-brand me-4" href="{{ route('products.index') }}" aria-label="{{ config('app.name') }} — Home">
+            <a class="navbar-brand me-4" href="{{ route('home') }}" aria-label="{{ config('app.name') }} Home">
                 <div class="logo-icon placeholder-asset" style="width:44px;height:44px;border-radius:50%;font-size:.45rem;">LOGO</div>
                 <span class="logo-text ms-2">
                     <span class="brand-name">{{ config('app.name') }}</span>

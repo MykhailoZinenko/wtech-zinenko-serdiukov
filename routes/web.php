@@ -8,11 +8,12 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\EnsureCheckoutAuthenticated;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/shop');
+Route::get('/', HomeController::class)->name('home');
 
 Route::get('shop', [ProductController::class, 'index'])->name('products.index');
 Route::get('shop/category/{categorySlug}', [ProductController::class, 'index'])->name('products.category');
