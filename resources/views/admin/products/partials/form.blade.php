@@ -49,8 +49,9 @@
             <div class="form-sec__body">
                 <p class="form-hint">Upload images. First image is the main photo on product cards.</p>
 
-                @if ($isEdit && $product->images->isNotEmpty())
-                    <div class="img-grid admin-img-grid">
+                @php $slotsUsed = $isEdit ? $product->images->count() : 0; @endphp
+                <div class="img-grid">
+                    @if ($isEdit)
                         @foreach ($product->images as $image)
                             <div class="img-existing">
                                 <img src="{{ $image->path }}" alt="{{ $image->alt_text ?? $product->name }}" />
@@ -61,11 +62,7 @@
                                 <button type="submit" form="delete-image-{{ $image->id }}" class="img-existing__rm" data-confirm="Remove this image?"><i class="bi bi-x"></i></button>
                             </div>
                         @endforeach
-                    </div>
-                @endif
-
-                <div class="img-grid">
-                    @php $slotsUsed = $isEdit ? $product->images->count() : 0; @endphp
+                    @endif
                     @for ($i = $slotsUsed; $i < 5; $i++)
                         <label class="img-slot">
                             <i class="bi {{ $i === 0 && $slotsUsed === 0 ? 'bi-camera-fill' : 'bi-plus-lg' }}"></i>
