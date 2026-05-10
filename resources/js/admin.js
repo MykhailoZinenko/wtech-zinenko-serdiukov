@@ -1,6 +1,24 @@
 'use strict';
 
 (function () {
+    var scrollKey = 'scrollY';
+    var urlKey = 'scrollUrl';
+    var saved = sessionStorage.getItem(scrollKey);
+    var savedUrl = sessionStorage.getItem(urlKey);
+    sessionStorage.removeItem(scrollKey);
+    sessionStorage.removeItem(urlKey);
+    if (saved !== null && savedUrl === location.pathname + location.search) {
+        document.documentElement.style.scrollBehavior = 'auto';
+        window.scrollTo(0, parseInt(saved, 10));
+        document.documentElement.style.scrollBehavior = '';
+    }
+    document.addEventListener('submit', function () {
+        sessionStorage.setItem(scrollKey, String(window.scrollY));
+        sessionStorage.setItem(urlKey, location.pathname + location.search);
+    });
+})();
+
+(function () {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.querySelector('.sidebar-overlay');
     const toggle = document.querySelector('.topbar-toggle');
