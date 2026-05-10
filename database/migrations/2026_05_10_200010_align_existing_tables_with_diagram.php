@@ -107,7 +107,7 @@ return new class extends Migration
             $table->foreignId('payment_method_id')->constrained()->restrictOnDelete();
             $table->foreignId('coupon_id')->nullable()->constrained()->nullOnDelete();
             $table->string('order_number')->unique();
-            $table->string('status')->default('pending');
+            $table->enum('status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded'])->default('pending');
             $table->string('ship_first_name');
             $table->string('ship_last_name');
             $table->string('ship_street');
@@ -122,7 +122,7 @@ return new class extends Migration
             $table->integer('discount')->default(0);
             $table->integer('total');
             $table->string('tracking_number')->nullable();
-            $table->string('payment_status')->default('pending');
+            $table->enum('payment_status', ['pending', 'paid', 'failed', 'refunded'])->default('pending');
             $table->timestamp('paid_at')->nullable();
             $table->timestamp('shipped_at')->nullable();
             $table->timestamp('delivered_at')->nullable();

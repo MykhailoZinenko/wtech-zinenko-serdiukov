@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->text('description')->nullable();
-            $table->string('type'); // 'fixed' or 'percentage'
+            $table->enum('type', ['fixed', 'percentage']);
             $table->integer('value');
             $table->integer('min_order_value')->nullable();
             $table->integer('max_uses')->nullable();
