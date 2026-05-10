@@ -1,6 +1,6 @@
 # White Wolf Emporium
 
-A Witcher-themed e-commerce store built with Laravel 11, PostgreSQL, and Vite.
+A Witcher-themed e-commerce store built with Laravel 13, PostgreSQL, and Vite.
 
 ## Prerequisites
 
@@ -52,7 +52,7 @@ This starts three services:
 On first run, the app container automatically:
 1. Installs Composer dependencies
 2. Generates the application key
-3. Runs migrations and seeders
+3. Runs migrations and seeders (including fake data for 4 months of orders, reviews, users)
 4. Creates the storage symlink
 
 Just wait for the containers to be ready (check with `docker compose logs -f app`).
@@ -178,29 +178,4 @@ docker compose exec app php artisan test
 
 # Native
 php artisan test
-```
-
-## Project Structure
-
-```
-app/
-├── Http/Controllers/       # Request handlers
-│   ├── Admin/              # Admin product management
-│   ├── Auth/               # Login, register, admin login
-│   ├── CartController      # Shopping cart
-│   ├── CheckoutController  # Order placement
-│   └── HomeController      # Landing page
-├── Models/                 # Eloquent models
-├── Services/               # CartResolver, OrderOptionService
-└── Http/Requests/          # Form validation
-database/
-├── migrations/             # Schema
-└── seeders/                # Sample data + admin user
-resources/
-├── css/                    # Vite-processed CSS (storefront + admin)
-├── js/                     # Vite-processed JS
-└── views/                  # Blade templates
-public/
-├── css/                    # Static mockup CSS (design reference)
-└── js/                     # Static mockup JS (design reference)
 ```
