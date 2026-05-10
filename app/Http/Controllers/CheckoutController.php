@@ -50,6 +50,16 @@ class CheckoutController extends Controller
             return redirect()->route('cart.show')->with('cart_success', 'Your cart is empty.');
         }
 
+        foreach ($cart->items as $item) {
+            if (! $item->product || $item->quantity > $item->product->stock_quantity) {
+                $name = $item->product?->name ?? 'a product';
+                return redirect()->route('cart.show')->with(
+                    'cart_error',
+                    "Insufficient stock for {$name}."
+                );
+            }
+        }
+
         $validated = $request->validated();
         $subtotal = $cart->subtotal();
         $totals = $this->options->totals($subtotal, $validated['delivery'], $validated['payment']);
@@ -79,6 +89,7 @@ class CheckoutController extends Controller
 
             foreach ($cart->items as $item) {
                 $this->createOrderItem($order, $item);
+                $item->product->decrement('stock_quantity', $item->quantity);
             }
 
             $cart->items()->delete();
