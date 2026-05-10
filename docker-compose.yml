@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile
     working_dir: /var/www/html
+    environment:
+      DB_HOST: db
     volumes:
       - .:/var/www/html
       - vendor:/var/www/html/vendor
@@ -29,15 +31,15 @@ services:
   db:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: laravel
-      POSTGRES_USER: laravel
-      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: ${DB_DATABASE:-laravel}
+      POSTGRES_USER: ${DB_USERNAME:-laravel}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U laravel -d laravel"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-laravel} -d ${DB_DATABASE:-laravel}"]
       interval: 5s
       timeout: 5s
       retries: 10
