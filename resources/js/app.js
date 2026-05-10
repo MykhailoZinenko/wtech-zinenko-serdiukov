@@ -3,16 +3,20 @@ window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 (function () {
-    var key = 'scrollY';
-    var saved = sessionStorage.getItem(key);
-    if (saved !== null) {
-        sessionStorage.removeItem(key);
+    var scrollKey = 'scrollY';
+    var urlKey = 'scrollUrl';
+    var saved = sessionStorage.getItem(scrollKey);
+    var savedUrl = sessionStorage.getItem(urlKey);
+    sessionStorage.removeItem(scrollKey);
+    sessionStorage.removeItem(urlKey);
+    if (saved !== null && savedUrl === location.pathname + location.search) {
         document.documentElement.style.scrollBehavior = 'auto';
         window.scrollTo(0, parseInt(saved, 10));
         document.documentElement.style.scrollBehavior = '';
     }
     document.addEventListener('submit', function () {
-        sessionStorage.setItem(key, String(window.scrollY));
+        sessionStorage.setItem(scrollKey, String(window.scrollY));
+        sessionStorage.setItem(urlKey, location.pathname + location.search);
     });
 })();
 
