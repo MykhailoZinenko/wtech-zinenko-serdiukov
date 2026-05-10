@@ -30,7 +30,7 @@
         </div>
         <form action="{{ route('admin.logout') }}" method="POST">
             @csrf
-            <button type="submit" class="sidebar__link" style="width:100%;border:none;background:none;text-align:left;cursor:pointer;">
+            <button type="submit" class="sidebar__link">
                 <i class="bi bi-box-arrow-left"></i> Sign Out
             </button>
         </form>

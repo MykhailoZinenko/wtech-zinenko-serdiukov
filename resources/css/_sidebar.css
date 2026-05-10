@@ -80,6 +80,14 @@
   transition: all var(--transition);
 }
 
+button.sidebar__link {
+  width: 100%;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
 .sidebar__link:hover {
   color: var(--clr-text);
   background: rgba(201, 168, 76, .05);
