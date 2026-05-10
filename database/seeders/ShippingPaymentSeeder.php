@@ -10,6 +10,10 @@ class ShippingPaymentSeeder extends Seeder
 {
     public function run(): void
     {
+        if (ShippingMethod::exists()) {
+            return;
+        }
+
         ShippingMethod::insert([
             [
                 'name' => 'Courier delivery',
