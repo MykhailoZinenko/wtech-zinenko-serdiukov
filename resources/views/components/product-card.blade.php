@@ -27,9 +27,17 @@
         @if ($badgeText)
             <span class="product-card__badge {{ $badgeClass }}">{{ $badgeText }}</span>
         @endif
-        <button type="button" class="wishlist-btn product-card__wishlist" aria-label="Add {{ $product->name }} to wishlist" onclick="event.preventDefault();event.stopPropagation();">
-            <i class="bi bi-heart"></i>
-        </button>
+        @auth
+            @php $isWishlisted = in_array($product->id, $wishlistedIds ?? []); @endphp
+            <button type="button"
+                class="wishlist-btn product-card__wishlist"
+                data-wishlist-toggle="{{ $product->id }}"
+                aria-label="{{ $isWishlisted ? 'Remove' : 'Add' }} {{ $product->name }} {{ $isWishlisted ? 'from' : 'to' }} wishlist"
+                onclick="event.preventDefault();event.stopPropagation();"
+                @if($isWishlisted) style="color:var(--clr-red-light);border-color:var(--clr-red);" @endif>
+                <i class="bi {{ $isWishlisted ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+            </button>
+        @endauth
     </a>
     <div class="product-card__body">
         @if ($product->category)
