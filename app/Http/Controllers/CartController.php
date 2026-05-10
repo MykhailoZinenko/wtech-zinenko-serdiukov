@@ -25,12 +25,13 @@ class CartController extends Controller
 
     public function show(): View
     {
-        $cart = $this->resolver->resolve();
+        $items = $this->resolver->items();
         $selected = $this->options->selectedOptions();
-        $totals = $this->options->totals($cart->subtotal(), $selected['delivery'], $selected['payment']);
+        $subtotal = $this->resolver->subtotal();
+        $totals = $this->options->totals($subtotal, $selected['delivery'], $selected['payment']);
 
         return view('cart.show', [
-            'cart' => $cart,
+            'items' => $items,
             'deliveryOptions' => OrderOptionService::DELIVERY_OPTIONS,
             'paymentOptions' => OrderOptionService::PAYMENT_OPTIONS,
             'selectedDelivery' => $selected['delivery'],
@@ -44,8 +45,7 @@ class CartController extends Controller
         $product = Product::findOrFail($request->integer('product_id'));
         abort_if($product->status !== 'active', 404);
 
-        $cart = $this->resolver->resolve();
-        $cart->addProduct($product, $request->quantityValue());
+        $this->resolver->addProduct($product, $request->quantityValue());
 
         $message = "Added {$product->name} to your cart.";
 
@@ -94,20 +94,25 @@ class CartController extends Controller
 
     private function cartJson(string $message): JsonResponse
     {
-        $cart = $this->resolver->resolve();
+        $subtotal = $this->resolver->subtotal();
         return response()->json([
             'message' => $message,
-            'count' => $cart->itemCount(),
-            'subtotal' => $cart->subtotal(),
-            'subtotal_formatted' => number_format($cart->subtotal(), 0, ',', ' '),
+            'count' => $this->resolver->itemCount(),
+            'subtotal' => $subtotal,
+            'subtotal_formatted' => number_format($subtotal, 0, ',', ' '),
         ]);
     }
 
     private function authorizeOwnership(CartItem $item): void
     {
-        $cart = $this->resolver->resolve();
-        if ($item->cart_id !== $cart->id) {
-            throw new AccessDeniedHttpException('This cart item does not belong to your cart.');
+        if ($user = auth()->user()) {
+            if ($item->user_id !== $user->id) {
+                throw new AccessDeniedHttpException('This cart item does not belong to your cart.');
+            }
+        } else {
+            if ($item->session_id !== session()->getId() || $item->user_id !== null) {
+                throw new AccessDeniedHttpException('This cart item does not belong to your cart.');
+            }
         }
     }
 }

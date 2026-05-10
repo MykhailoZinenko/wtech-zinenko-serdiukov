@@ -24,9 +24,9 @@ return new class extends Migration
             $table->unsignedInteger('stock_quantity')->default(0);
             $table->unsignedInteger('low_stock_threshold')->default(5);
             $table->decimal('weight', 8, 2)->nullable();
-            $table->enum('status', ['active', 'draft', 'archived', 'out_of_stock'])->default('active');
-            $table->enum('school', ['wolf', 'griffin', 'bear', 'cat', 'manticore', 'viper', 'generic'])->default('generic');
-            $table->enum('rarity', ['common', 'uncommon', 'rare', 'legendary'])->default('common');
+            $table->enum('status', ['active', 'draft', 'archived'])->default('draft');
+            $table->enum('school', ['wolf', 'griffin', 'cat', 'bear', 'viper', 'manticore', 'ofieri', 'toussaint', 'none'])->default('none');
+            $table->enum('rarity', ['common', 'new', 'limited', 'rare', 'legendary'])->default('common');
             $table->boolean('is_featured')->default(false);
             $table->decimal('average_rating', 3, 2)->default(0);
             $table->unsignedInteger('total_reviews')->default(0);

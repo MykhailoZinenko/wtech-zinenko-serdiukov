@@ -45,7 +45,7 @@ class ProductController extends Controller
             'stats' => [
                 'total' => Product::count(),
                 'categories' => Category::count(),
-                'outOfStock' => Product::where('stock_quantity', 0)->count(),
+                'outOfStock' => Product::where('stock', 0)->count(),
                 'featured' => Product::where('is_featured', true)->count(),
             ],
             'filters' => compact('search', 'categoryId', 'status', 'rarity'),
@@ -57,9 +57,9 @@ class ProductController extends Controller
         return view('admin.products.create', [
             'product' => new Product([
                 'status' => 'draft',
-                'school' => 'generic',
+                'school' => 'none',
                 'rarity' => 'common',
-                'stock_quantity' => 0,
+                'stock' => 0,
                 'low_stock_threshold' => 5,
             ]),
             'categories' => Category::orderBy('name')->get(),
@@ -118,12 +118,12 @@ class ProductController extends Controller
     {
         abort_unless($image->product_id === $product->id, 404);
 
-        $wasPrimary = $image->is_primary;
+        $wasMain = $image->is_main;
         $this->deleteImage($image);
 
-        if ($wasPrimary) {
+        if ($wasMain) {
             $next = $product->images()->oldest('sort_order')->first();
-            $next?->update(['is_primary' => true]);
+            $next?->update(['is_main' => true]);
         }
 
         return back()->with('admin_success', 'Image removed.');
@@ -140,10 +140,10 @@ class ProductController extends Controller
             'slug' => $slug,
             'sku' => $validated['sku'],
             'short_description' => $validated['short_description'] ?? null,
-            'description' => $validated['description'] ?? null,
+            'full_description' => $validated['full_description'] ?? '',
             'price' => $validated['price'],
             'compare_price' => $validated['compare_price'] ?? null,
-            'stock_quantity' => $validated['stock_quantity'],
+            'stock' => $validated['stock'],
             'low_stock_threshold' => $validated['low_stock_threshold'],
             'weight' => $validated['weight'] ?? null,
             'status' => $validated['status'],
@@ -160,10 +160,10 @@ class ProductController extends Controller
             $path = $file->store('products', 'public');
 
             $product->images()->create([
-                'url' => Storage::url($path),
+                'path' => Storage::url($path),
                 'alt_text' => $product->name,
                 'sort_order' => (int) $product->images()->max('sort_order') + 1,
-                'is_primary' => $product->images()->doesntExist(),
+                'is_main' => $product->images()->doesntExist(),
             ]);
         }
     }
@@ -179,14 +179,14 @@ class ProductController extends Controller
             return;
         }
 
-        $product->images()->update(['is_primary' => false]);
-        $image->update(['is_primary' => true]);
+        $product->images()->update(['is_main' => false]);
+        $image->update(['is_main' => true]);
     }
 
     private function deleteImage(ProductImage $image): void
     {
-        if (str_starts_with($image->url, '/storage/')) {
-            Storage::disk('public')->delete(Str::after($image->url, '/storage/'));
+        if (str_starts_with($image->path, '/storage/')) {
+            Storage::disk('public')->delete(Str::after($image->path, '/storage/'));
         }
 
         $image->delete();

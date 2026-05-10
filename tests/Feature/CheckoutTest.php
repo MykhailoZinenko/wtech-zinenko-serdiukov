@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Category;
 use App\Models\Order;
+use App\Models\PaymentMethod;
 use App\Models\Product;
+use App\Models\ShippingMethod;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,6 +25,9 @@ class CheckoutTest extends TestCase
 
     public function test_guest_cannot_submit_checkout(): void
     {
+        $shipping = ShippingMethod::create(['name' => 'Courier', 'cost' => 50, 'estimated_days' => '2-4', 'is_active' => true]);
+        $payment = PaymentMethod::create(['name' => 'Cash on Delivery', 'is_active' => true]);
+
         $response = $this->post(route('checkout.store'), [
             'first_name' => 'Geralt',
             'last_name' => 'of Rivia',
@@ -31,8 +36,8 @@ class CheckoutTest extends TestCase
             'city' => 'Novigrad',
             'postal_code' => '11000',
             'region' => 'novigrad',
-            'delivery' => 'courier',
-            'payment' => 'card',
+            'shipping_method_id' => $shipping->id,
+            'payment_method_id' => $payment->id,
         ]);
 
         $response->assertUnauthorized();
@@ -52,18 +57,17 @@ class CheckoutTest extends TestCase
             'slug' => 'silver-sword',
             'sku' => 'SW-001',
             'price' => 200,
-            'stock_quantity' => 10,
+            'stock' => 10,
             'status' => 'active',
             'school' => 'wolf',
             'rarity' => 'rare',
             'published_at' => now(),
         ]);
 
-        $cart = Cart::create([
-            'user_id' => $user->id,
-            'currency' => 'Crowns',
-        ]);
-        $cart->addProduct($product, 2);
+        $shipping = ShippingMethod::create(['name' => 'Courier', 'cost' => 50, 'estimated_days' => '2-4', 'is_active' => true]);
+        $payment = PaymentMethod::create(['name' => 'Cash on Delivery', 'is_active' => true]);
+
+        CartItem::create(['user_id' => $user->id, 'product_id' => $product->id, 'quantity' => 2]);
 
         $response = $this->actingAs($user)->post(route('checkout.store'), [
             'first_name' => 'Geralt',
@@ -75,8 +79,8 @@ class CheckoutTest extends TestCase
             'postal_code' => '11000',
             'region' => 'novigrad',
             'notes' => 'No portals.',
-            'delivery' => 'courier',
-            'payment' => 'cash_on_delivery',
+            'shipping_method_id' => $shipping->id,
+            'payment_method_id' => $payment->id,
         ]);
 
         $order = Order::firstOrFail();
@@ -85,13 +89,12 @@ class CheckoutTest extends TestCase
         $this->assertDatabaseHas('orders', [
             'id' => $order->id,
             'user_id' => $user->id,
-            'email' => 'geralt@example.com',
-            'delivery_method' => 'courier',
-            'payment_method' => 'cash_on_delivery',
+            'customer_email' => 'geralt@example.com',
+            'shipping_method_id' => $shipping->id,
+            'payment_method_id' => $payment->id,
             'subtotal' => 400,
-            'delivery_fee' => 50,
-            'payment_fee' => 25,
-            'total' => 475,
+            'shipping_cost' => 50,
+            'total' => 450,
         ]);
         $this->assertDatabaseHas('order_items', [
             'order_id' => $order->id,
@@ -101,7 +104,7 @@ class CheckoutTest extends TestCase
             'unit_price' => 200,
             'line_total' => 400,
         ]);
-        $this->assertSame(0, $cart->items()->count());
+        $this->assertDatabaseCount('cart_items', 0);
     }
 
     public function test_checkout_decrements_product_stock(): void
@@ -114,15 +117,17 @@ class CheckoutTest extends TestCase
             'slug' => 'swallow-potion',
             'sku' => 'POT-001',
             'price' => 50,
-            'stock_quantity' => 10,
+            'stock' => 10,
             'status' => 'active',
-            'school' => 'generic',
+            'school' => 'none',
             'rarity' => 'common',
             'published_at' => now(),
         ]);
 
-        $cart = Cart::create(['user_id' => $user->id, 'currency' => 'Crowns']);
-        $cart->addProduct($product, 3);
+        $shipping = ShippingMethod::create(['name' => 'Pickup', 'cost' => 0, 'estimated_days' => '1-2', 'is_active' => true]);
+        $payment = PaymentMethod::create(['name' => 'Card', 'is_active' => true]);
+
+        CartItem::create(['user_id' => $user->id, 'product_id' => $product->id, 'quantity' => 3]);
 
         $this->actingAs($user)->post(route('checkout.store'), [
             'first_name' => 'Yennefer',
@@ -132,13 +137,13 @@ class CheckoutTest extends TestCase
             'city' => 'Gors Velen',
             'postal_code' => '20000',
             'region' => 'temeria',
-            'delivery' => 'pickup',
-            'payment' => 'card',
+            'shipping_method_id' => $shipping->id,
+            'payment_method_id' => $payment->id,
         ]);
 
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
-            'stock_quantity' => 7,
+            'stock' => 7,
         ]);
     }
 
@@ -152,15 +157,17 @@ class CheckoutTest extends TestCase
             'slug' => 'grapeshot',
             'sku' => 'BOM-001',
             'price' => 30,
-            'stock_quantity' => 1,
+            'stock' => 1,
             'status' => 'active',
-            'school' => 'generic',
-            'rarity' => 'uncommon',
+            'school' => 'none',
+            'rarity' => 'new',
             'published_at' => now(),
         ]);
 
-        $cart = Cart::create(['user_id' => $user->id, 'currency' => 'Crowns']);
-        $cart->addProduct($product, 5);
+        $shipping = ShippingMethod::create(['name' => 'Courier', 'cost' => 50, 'estimated_days' => '2-4', 'is_active' => true]);
+        $payment = PaymentMethod::create(['name' => 'Card', 'is_active' => true]);
+
+        CartItem::create(['user_id' => $user->id, 'product_id' => $product->id, 'quantity' => 5]);
 
         $response = $this->actingAs($user)->post(route('checkout.store'), [
             'first_name' => 'Triss',
@@ -170,15 +177,15 @@ class CheckoutTest extends TestCase
             'city' => 'Novigrad',
             'postal_code' => '11000',
             'region' => 'novigrad',
-            'delivery' => 'courier',
-            'payment' => 'card',
+            'shipping_method_id' => $shipping->id,
+            'payment_method_id' => $payment->id,
         ]);
 
         $response->assertRedirect(route('cart.show'));
         $this->assertDatabaseCount('orders', 0);
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
-            'stock_quantity' => 1,
+            'stock' => 1,
         ]);
     }
 }

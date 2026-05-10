@@ -47,9 +47,7 @@ class ProductController extends Controller
         abort_if($product->status !== 'active', 404);
 
         $product->load(['images', 'specifications', 'category', 'reviews.user']);
-        $cartItem = $this->cartResolver
-            ->resolve()
-            ->items
+        $cartItem = $this->cartResolver->items()
             ->firstWhere('product_id', $product->id);
 
         $related = Product::query()

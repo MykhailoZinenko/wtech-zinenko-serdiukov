@@ -14,8 +14,8 @@ class Product extends Model
 {
     use SoftDeletes;
 
-    public const SCHOOLS = ['wolf', 'griffin', 'bear', 'cat', 'manticore', 'viper', 'generic'];
-    public const RARITIES = ['common', 'uncommon', 'rare', 'legendary'];
+    public const SCHOOLS = ['wolf', 'griffin', 'cat', 'bear', 'viper', 'manticore', 'ofieri', 'toussaint', 'none'];
+    public const RARITIES = ['common', 'new', 'limited', 'rare', 'legendary'];
 
     protected $fillable = [
         'category_id',
@@ -23,29 +23,32 @@ class Product extends Model
         'slug',
         'sku',
         'short_description',
-        'description',
+        'full_description',
         'price',
         'compare_price',
-        'stock_quantity',
+        'stock',
         'low_stock_threshold',
         'weight',
         'status',
         'school',
         'rarity',
         'is_featured',
-        'average_rating',
-        'total_reviews',
+        'is_limited_edition',
+        'avg_rating',
+        'review_count',
         'published_at',
     ];
 
     protected function casts(): array
     {
         return [
-            'price' => 'decimal:2',
-            'compare_price' => 'decimal:2',
+            'price' => 'integer',
+            'compare_price' => 'integer',
             'weight' => 'decimal:2',
-            'average_rating' => 'decimal:2',
+            'avg_rating' => 'decimal:2',
+            'review_count' => 'integer',
             'is_featured' => 'boolean',
+            'is_limited_edition' => 'boolean',
             'published_at' => 'datetime',
         ];
     }
@@ -67,7 +70,7 @@ class Product extends Model
 
     public function primaryImage(): HasOne
     {
-        return $this->hasOne(ProductImage::class)->where('is_primary', true);
+        return $this->hasOne(ProductImage::class)->where('is_main', true);
     }
 
     public function specifications(): HasMany
@@ -77,7 +80,7 @@ class Product extends Model
 
     public function reviews(): HasMany
     {
-        return $this->hasMany(Review::class)->where('status', 'approved')->latest();
+        return $this->hasMany(Review::class)->where('is_approved', true)->latest();
     }
 
     public function cartItems(): HasMany
@@ -99,7 +102,7 @@ class Product extends Model
 
     protected function isOnSale(): Attribute
     {
-        return Attribute::get(fn () => $this->compare_price !== null && (float) $this->compare_price > (float) $this->price);
+        return Attribute::get(fn () => $this->compare_price !== null && (int) $this->compare_price > (int) $this->price);
     }
 
     protected function isNew(): Attribute
@@ -109,7 +112,7 @@ class Product extends Model
 
     protected function inStock(): Attribute
     {
-        return Attribute::get(fn () => $this->stock_quantity > 0 && $this->status === 'active');
+        return Attribute::get(fn () => $this->stock > 0 && $this->status === 'active');
     }
 
     protected function displayImageUrl(): Attribute
@@ -117,10 +120,10 @@ class Product extends Model
         return Attribute::get(function () {
             $img = $this->relationLoaded('primaryImage') ? $this->primaryImage : $this->primaryImage()->first();
             if ($img) {
-                return $img->url;
+                return $img->path;
             }
             $first = $this->relationLoaded('images') ? $this->images->first() : $this->images()->first();
-            return $first?->url;
+            return $first?->path;
         });
     }
 
@@ -129,7 +132,7 @@ class Product extends Model
         if ($value === null) {
             return '0';
         }
-        return number_format((float) $value, 0, ',', ' ');
+        return number_format((int) $value, 0, ',', ' ');
     }
 
     /* ---------- Scopes ---------- */
@@ -175,7 +178,7 @@ class Product extends Model
         return $query->where(function (Builder $q) use ($like) {
             $q->where('name', 'ilike', $like)
               ->orWhere('short_description', 'ilike', $like)
-              ->orWhere('description', 'ilike', $like)
+              ->orWhere('full_description', 'ilike', $like)
               ->orWhere('sku', 'ilike', $like);
         });
     }

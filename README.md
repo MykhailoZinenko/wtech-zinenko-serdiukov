@@ -49,17 +49,15 @@ This starts three services:
 - **vite** — Vite dev server on `http://localhost:5173` (HMR)
 - **db** — PostgreSQL 16 on `localhost:5432`
 
-On first run, Composer and npm dependencies are installed automatically.
+On first run, the app container automatically:
+1. Installs Composer dependencies
+2. Generates the application key
+3. Runs migrations and seeders
+4. Creates the storage symlink
 
-### 3. Generate app key and run migrations
+Just wait for the containers to be ready (check with `docker compose logs -f app`).
 
-```bash
-docker compose exec app php artisan key:generate
-docker compose exec app php artisan migrate --seed
-docker compose exec app php artisan storage:link
-```
-
-### 4. Open the app
+### 3. Open the app
 
 - **Storefront:** http://localhost:8000
 - **Admin panel:** http://localhost:8000/admin/login

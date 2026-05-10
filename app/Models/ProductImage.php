@@ -7,18 +7,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductImage extends Model
 {
+    public $timestamps = false;
+
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = null;
+
     protected $fillable = [
         'product_id',
-        'url',
+        'path',
         'alt_text',
         'sort_order',
-        'is_primary',
+        'is_main',
     ];
 
     protected function casts(): array
     {
         return [
-            'is_primary' => 'boolean',
+            'is_main' => 'boolean',
             'sort_order' => 'integer',
         ];
     }

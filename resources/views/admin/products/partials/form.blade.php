@@ -1,5 +1,5 @@
 @php
-    $statuses = ['active' => 'Active', 'draft' => 'Draft', 'archived' => 'Archived', 'out_of_stock' => 'Out of stock'];
+    $statuses = ['active' => 'Active', 'draft' => 'Draft', 'archived' => 'Archived'];
     $schools = ['wolf' => 'School of the Wolf', 'griffin' => 'School of the Griffin', 'bear' => 'School of the Bear', 'cat' => 'School of the Cat', 'manticore' => 'School of the Manticore', 'viper' => 'School of the Viper', 'generic' => 'Generic'];
     $rarities = ['common' => 'Common', 'uncommon' => 'Uncommon', 'rare' => 'Rare', 'legendary' => 'Legendary'];
 @endphp
@@ -32,9 +32,9 @@
                     @error('short_description') <p class="form-error">{{ $message }}</p> @enderror
                 </div>
                 <div class="form-field">
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" rows="7">{{ old('description', $product->description) }}</textarea>
-                    @error('description') <p class="form-error">{{ $message }}</p> @enderror
+                    <label for="full_description">Description</label>
+                    <textarea id="full_description" name="full_description" rows="7">{{ old('full_description', $product->full_description) }}</textarea>
+                    @error('full_description') <p class="form-error">{{ $message }}</p> @enderror
                 </div>
             </div>
         </section>
@@ -47,7 +47,7 @@
                         <div class="img-grid admin-img-grid">
                             @foreach ($product->images as $image)
                                 <div class="img-existing">
-                                    <img src="{{ $image->url }}" alt="{{ $image->alt_text ?? $product->name }}" />
+                                    <img src="{{ $image->path }}" alt="{{ $image->alt_text ?? $product->name }}" />
                                     <label class="img-existing__primary">
                                         <input type="radio" name="primary_image_id" value="{{ $image->id }}" @checked(old('primary_image_id', $product->primaryImage?->id) == $image->id) />
                                         Primary
@@ -146,9 +146,9 @@
                 </div>
                 <div class="form-field--row">
                     <div class="form-field">
-                        <label for="stock_quantity">Stock</label>
-                        <input id="stock_quantity" name="stock_quantity" type="number" min="0" value="{{ old('stock_quantity', $product->stock_quantity) }}" required />
-                        @error('stock_quantity') <p class="form-error">{{ $message }}</p> @enderror
+                        <label for="stock">Stock</label>
+                        <input id="stock" name="stock" type="number" min="0" value="{{ old('stock', $product->stock) }}" required />
+                        @error('stock') <p class="form-error">{{ $message }}</p> @enderror
                     </div>
                     <div class="form-field">
                         <label for="low_stock_threshold">Low Stock</label>

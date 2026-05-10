@@ -10,14 +10,14 @@ use Illuminate\Database\Seeder;
 class ReviewSeeder extends Seeder
 {
     private const SAMPLES = [
-        ['rating' => 5, 'title' => 'Worth every crown', 'body' => 'Slew a fiend on the way home from picking it up. Speaks for itself.'],
-        ['rating' => 4, 'title' => 'Solid craft', 'body' => 'Balance is true and the leather wrap fits the hand well. Edge held against three drowner skulls.'],
-        ['rating' => 5, 'title' => 'A craftsman\'s work', 'body' => 'Better than the dwarven smith in Vergen, and that\'s saying something. Will be back.'],
-        ['rating' => 3, 'title' => 'Decent enough', 'body' => 'Not legendary, but does the job. Wished the guard was a touch sturdier.'],
-        ['rating' => 5, 'title' => 'Saved my hide', 'body' => 'Used it against a pack of nekkers near White Orchard. Walked away with all my limbs.'],
-        ['rating' => 4, 'title' => 'As described', 'body' => 'Arrived in Novigrad in good order. Packaging was discreet — appreciated, given the contents.'],
-        ['rating' => 2, 'title' => 'Disappointed', 'body' => 'The blade arrived nicked and the scabbard was missing a stud. Returning for refund.'],
-        ['rating' => 5, 'title' => 'Geralt himself would approve', 'body' => 'Or so my brother-in-law (who once met a witcher) tells me. Either way, magnificent piece.'],
+        ['rating' => 5, 'body' => 'Slew a fiend on the way home from picking it up. Speaks for itself.'],
+        ['rating' => 4, 'body' => 'Balance is true and the leather wrap fits the hand well. Edge held against three drowner skulls.'],
+        ['rating' => 5, 'body' => 'Better than the dwarven smith in Vergen, and that\'s saying something. Will be back.'],
+        ['rating' => 3, 'body' => 'Not legendary, but does the job. Wished the guard was a touch sturdier.'],
+        ['rating' => 5, 'body' => 'Used it against a pack of nekkers near White Orchard. Walked away with all my limbs.'],
+        ['rating' => 4, 'body' => 'Arrived in Novigrad in good order. Packaging was discreet — appreciated, given the contents.'],
+        ['rating' => 2, 'body' => 'The blade arrived nicked and the scabbard was missing a stud. Returning for refund.'],
+        ['rating' => 5, 'body' => 'Or so my brother-in-law (who once met a witcher) tells me. Either way, magnificent piece.'],
     ];
 
     public function run(): void
@@ -44,18 +44,17 @@ class ReviewSeeder extends Seeder
                         'user_id' => $reviewers[$i]->id,
                         'product_id' => $product->id,
                         'rating' => $sample['rating'],
-                        'title' => $sample['title'],
                         'body' => $sample['body'],
-                        'is_verified' => (bool) random_int(0, 1),
-                        'status' => 'approved',
+                        'author_name' => $reviewers[$i]->first_name . ' ' . $reviewers[$i]->last_name,
+                        'is_approved' => true,
                     ]);
                 }
 
                 $avg = $product->reviews()->avg('rating');
                 $total = $product->reviews()->count();
                 $product->update([
-                    'average_rating' => round((float) $avg, 2),
-                    'total_reviews' => $total,
+                    'avg_rating' => round((float) $avg, 2),
+                    'review_count' => $total,
                 ]);
             }
         });

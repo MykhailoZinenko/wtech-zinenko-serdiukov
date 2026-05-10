@@ -9,23 +9,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class CartItem extends Model
 {
     protected $fillable = [
-        'cart_id',
+        'user_id',
+        'session_id',
         'product_id',
         'quantity',
-        'unit_price',
     ];
 
     protected function casts(): array
     {
         return [
             'quantity' => 'integer',
-            'unit_price' => 'decimal:2',
         ];
     }
 
-    public function cart(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Cart::class);
+        return $this->belongsTo(User::class);
     }
 
     public function product(): BelongsTo
@@ -35,16 +34,11 @@ class CartItem extends Model
 
     protected function lineTotal(): Attribute
     {
-        return Attribute::get(fn () => (float) $this->unit_price * (int) $this->quantity);
+        return Attribute::get(fn () => $this->product?->price * $this->quantity);
     }
 
     protected function formattedLineTotal(): Attribute
     {
         return Attribute::get(fn () => number_format($this->lineTotal, 0, ',', ' '));
-    }
-
-    protected function formattedUnitPrice(): Attribute
-    {
-        return Attribute::get(fn () => number_format((float) $this->unit_price, 0, ',', ' '));
     }
 }

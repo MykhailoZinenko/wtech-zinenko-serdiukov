@@ -4,27 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Review extends Model
+class Wishlist extends Model
 {
-    use SoftDeletes;
+    public $timestamps = false;
+    const UPDATED_AT = null;
 
-    protected $fillable = [
-        'user_id',
-        'product_id',
-        'rating',
-        'body',
-        'author_name',
-        'is_approved',
-    ];
+    protected $fillable = ['user_id', 'product_id', 'created_at'];
 
     protected function casts(): array
     {
-        return [
-            'rating' => 'integer',
-            'is_approved' => 'boolean',
-        ];
+        return ['created_at' => 'datetime'];
     }
 
     public function user(): BelongsTo

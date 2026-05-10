@@ -40,8 +40,8 @@
         <div class="col-lg-6">
             <div class="sticky-sidebar product-gallery">
                 <div class="product-gallery__main">
-                    @if ($primary && $primary->url)
-                        <img src="{{ $primary->url }}" alt="{{ $primary->alt_text ?? $product->name }}" class="product-gallery__img" />
+                    @if ($primary && $primary->path)
+                        <img src="{{ $primary->path }}" alt="{{ $primary->alt_text ?? $product->name }}" class="product-gallery__img" />
                     @else
                         <div class="placeholder-asset product-gallery__img">IMAGE: {{ $product->name }}</div>
                     @endif
@@ -53,8 +53,8 @@
                     <div class="product-gallery__thumbs">
                         @foreach ($images as $i => $image)
                             <button type="button" class="product-gallery__thumb {{ $i === 0 ? 'active' : '' }}" aria-label="View image {{ $i + 1 }}">
-                                @if ($image->url)
-                                    <img src="{{ $image->url }}" alt="" />
+                                @if ($image->path)
+                                    <img src="{{ $image->path }}" alt="" />
                                 @else
                                     <div class="placeholder-asset">{{ $i + 1 }}</div>
                                 @endif
@@ -71,7 +71,7 @@
                     <p class="product-detail__category">{{ $product->category->name }}</p>
                 @endif
                 <h1 class="product-detail__name">{{ $product->name }}</h1>
-                <x-product-rating :rating="$product->average_rating" :count="$product->total_reviews . ' reviews'" class="product-rating product-detail__rating" />
+                <x-product-rating :rating="$product->avg_rating" :count="$product->review_count . ' reviews'" class="product-rating product-detail__rating" />
 
                 <div class="product-detail__price">
                     <span class="product-price__current">{{ $product->formatted_price }} <span class="eyebrow product-price__unit">Crowns</span></span>
@@ -80,7 +80,7 @@
                     @endif
                 </div>
 
-                <p class="product-detail__desc">{{ $product->description ?? $product->short_description }}</p>
+                <p class="product-detail__desc">{{ $product->full_description ?? $product->short_description }}</p>
 
                 <div class="product-detail__actions">
                     <form action="{{ route('cart.add') }}" method="POST" class="product-detail__add-form">
@@ -149,10 +149,10 @@
     <section class="product-reviews mt-5 pt-5" aria-labelledby="reviews-title">
         <div class="product-reviews__header">
             <h2 id="reviews-title" class="product-reviews__title">Customer Reviews</h2>
-            @if ($product->total_reviews > 0)
+            @if ($product->review_count > 0)
                 <div class="product-reviews__summary">
-                    <x-product-rating :rating="$product->average_rating" :show-count="false" class="product-rating product-reviews__rating" />
-                    <span class="product-reviews__count">{{ $product->total_reviews }} {{ $product->total_reviews === 1 ? 'review' : 'reviews' }}</span>
+                    <x-product-rating :rating="$product->avg_rating" :show-count="false" class="product-rating product-reviews__rating" />
+                    <span class="product-reviews__count">{{ $product->review_count }} {{ $product->review_count === 1 ? 'review' : 'reviews' }}</span>
                 </div>
             @endif
         </div>
@@ -164,13 +164,10 @@
                 @foreach ($product->reviews as $review)
                     <article class="card-base review-card">
                         <div class="review-card__meta">
-                            <span class="review-card__author">{{ $review->user?->full_name ?? 'Anonymous' }}</span>
+                            <span class="review-card__author">{{ $review->author_name ?? $review->user?->full_name ?? 'Anonymous' }}</span>
                             <x-product-rating :rating="$review->rating" :show-count="false" class="product-rating review-card__rating" />
                             <time class="review-card__date" datetime="{{ $review->created_at->toIso8601String() }}">{{ $review->created_at->format('j M Y') }}</time>
                         </div>
-                        @if ($review->title)
-                            <strong style="display:block;color:var(--clr-gold-light);margin-bottom:6px;">{{ $review->title }}</strong>
-                        @endif
                         <p class="review-card__text">{{ $review->body }}</p>
                     </article>
                 @endforeach

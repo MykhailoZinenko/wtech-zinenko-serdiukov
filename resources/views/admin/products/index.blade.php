@@ -4,7 +4,7 @@
 
 @php
     $fmt = fn ($n) => number_format((float) $n, 0, ',', ' ');
-    $statuses = ['active' => 'Active', 'draft' => 'Draft', 'archived' => 'Archived', 'out_of_stock' => 'Out of stock'];
+    $statuses = ['active' => 'Active', 'draft' => 'Draft', 'archived' => 'Archived'];
     $rarities = ['common' => 'Common', 'uncommon' => 'Uncommon', 'rare' => 'Rare', 'legendary' => 'Legendary'];
 @endphp
 
@@ -106,7 +106,7 @@
                         <td class="col-hide-md td-dim">{{ $product->category?->name }}</td>
                         <td class="col-hide-md td-gold">{{ $fmt($product->price) }} Cr</td>
                         <td class="col-hide-sm">
-                            <span class="{{ $product->stock_quantity === 0 ? 'stock-none' : ($product->stock_quantity <= $product->low_stock_threshold ? 'stock-low' : 'stock-ok') }} td-heading">{{ $product->stock_quantity }}</span>
+                            <span class="{{ $product->stock === 0 ? 'stock-none' : ($product->stock <= $product->low_stock_threshold ? 'stock-low' : 'stock-ok') }} td-heading">{{ $product->stock }}</span>
                         </td>
                         <td class="col-hide-sm"><span class="badge badge--{{ $product->rarity === 'legendary' ? 'gold' : ($product->rarity === 'rare' ? 'orange' : 'grey') }}">{{ $rarities[$product->rarity] ?? $product->rarity }}</span></td>
                         <td>

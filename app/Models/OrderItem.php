@@ -7,14 +7,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrderItem extends Model
 {
+    public $timestamps = false;
+
     protected $fillable = [
         'order_id',
         'product_id',
         'product_name',
-        'product_slug',
-        'sku',
-        'quantity',
+        'product_sku',
         'unit_price',
+        'quantity',
         'line_total',
     ];
 
@@ -22,8 +23,8 @@ class OrderItem extends Model
     {
         return [
             'quantity' => 'integer',
-            'unit_price' => 'decimal:2',
-            'line_total' => 'decimal:2',
+            'unit_price' => 'integer',
+            'line_total' => 'integer',
         ];
     }
 

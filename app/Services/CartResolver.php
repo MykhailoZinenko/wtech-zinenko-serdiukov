@@ -2,61 +2,107 @@
 
 namespace App\Services;
 
-use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class CartResolver
 {
-    /**
-     * Return (creating if needed) the active cart for the current request.
-     * Auth users get a user-scoped cart; guests get a session-scoped one.
-     */
-    public function resolve(): Cart
+    public function items(): Collection
     {
         if ($user = Auth::user()) {
-            $cart = Cart::firstOrCreate(['user_id' => $user->id]);
-            return $cart->load('items.product.primaryImage');
+            return CartItem::where('user_id', $user->id)
+                ->with('product.primaryImage')
+                ->get();
         }
 
-        $sessionId = Session::getId();
-        $cart = Cart::firstOrCreate(['session_id' => $sessionId, 'user_id' => null]);
-
-        return $cart->load('items.product.primaryImage');
+        return CartItem::where('session_id', Session::getId())
+            ->whereNull('user_id')
+            ->with('product.primaryImage')
+            ->get();
     }
 
-    /**
-     * Move a guest cart (identified by the previous session id) onto a logged-in user.
-     * Called from LoginController/RegisterController right after auth.
-     */
+    public function addProduct(\App\Models\Product $product, int $quantity = 1): CartItem
+    {
+        $quantity = max(1, $quantity);
+        $conditions = $this->ownerConditions();
+
+        $item = CartItem::where($conditions)
+            ->where('product_id', $product->id)
+            ->first();
+
+        if ($item) {
+            $item->quantity = min(99, $item->quantity + $quantity);
+            $item->save();
+            return $item;
+        }
+
+        return CartItem::create([
+            ...$conditions,
+            'product_id' => $product->id,
+            'quantity' => min(99, $quantity),
+        ]);
+    }
+
+    public function subtotal(): int
+    {
+        return (int) $this->items()->sum(fn (CartItem $item) => $item->lineTotal);
+    }
+
+    public function itemCount(): int
+    {
+        $conditions = $this->ownerConditions();
+
+        return (int) CartItem::where($conditions)->sum('quantity');
+    }
+
     public function mergeGuestSessionInto(User $user, ?string $guestSessionId): void
     {
         if (!$guestSessionId) {
             return;
         }
 
-        $guestCart = Cart::where('session_id', $guestSessionId)->whereNull('user_id')->first();
-        if (!$guestCart) {
-            return;
-        }
+        $guestItems = CartItem::where('session_id', $guestSessionId)
+            ->whereNull('user_id')
+            ->with('product')
+            ->get();
 
-        $userCart = Cart::firstOrCreate(['user_id' => $user->id]);
-        $userCart->mergeFrom($guestCart);
+        foreach ($guestItems as $guestItem) {
+            if (!$guestItem->product) {
+                $guestItem->delete();
+                continue;
+            }
+
+            $existing = CartItem::where('user_id', $user->id)
+                ->where('product_id', $guestItem->product_id)
+                ->first();
+
+            if ($existing) {
+                $existing->quantity = min(99, $existing->quantity + $guestItem->quantity);
+                $existing->save();
+                $guestItem->delete();
+            } else {
+                $guestItem->update([
+                    'user_id' => $user->id,
+                    'session_id' => null,
+                ]);
+            }
+        }
     }
 
-    public function itemCount(): int
+    public function clearItems(): void
+    {
+        CartItem::where($this->ownerConditions())->delete();
+    }
+
+    private function ownerConditions(): array
     {
         if ($user = Auth::user()) {
-            $cart = Cart::where('user_id', $user->id)->first();
-        } else {
-            $cart = Cart::where('session_id', Session::getId())->whereNull('user_id')->first();
+            return ['user_id' => $user->id];
         }
 
-        if (!$cart) {
-            return 0;
-        }
-
-        return (int) $cart->items()->sum('quantity');
+        return ['session_id' => Session::getId(), 'user_id' => null];
     }
 }

@@ -14,19 +14,19 @@
             <i class="bi bi-check-lg" aria-hidden="true"></i>
         </div>
         <p class="eyebrow">Order confirmed</p>
-        <h1 class="checkout-title">Thank you, {{ $order->first_name }}.</h1>
+        <h1 class="checkout-title">Thank you, {{ $order->ship_first_name }}.</h1>
         <p class="checkout-success__text">
-            Your order <strong>{{ $order->number }}</strong> was created successfully.
+            Your order <strong>{{ $order->order_number }}</strong> was created successfully.
         </p>
 
         <div class="checkout-success__grid">
             <div>
                 <span class="eyebrow">Delivery</span>
-                <p>{{ $deliveryOptions[$order->delivery_method]['label'] ?? $order->delivery_method }}</p>
+                <p>{{ $order->shippingMethod?->name ?? 'N/A' }}</p>
             </div>
             <div>
                 <span class="eyebrow">Payment</span>
-                <p>{{ $paymentOptions[$order->payment_method]['label'] ?? $order->payment_method }}</p>
+                <p>{{ $order->paymentMethod?->name ?? 'N/A' }}</p>
             </div>
             <div>
                 <span class="eyebrow">Total</span>

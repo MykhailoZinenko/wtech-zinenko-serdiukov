@@ -4,9 +4,7 @@
 @section('main-class', 'cart-page')
 
 @php
-    $items = $cart->items;
-    $itemCount = $cart->itemCount();
-    $subtotal = $cart->subtotal();
+    $itemCount = $items->sum('quantity');
     $countLabel = $itemCount === 1 ? '1 item' : "{$itemCount} items";
     $fmt = fn ($n) => number_format((float) $n, 0, ',', ' ');
 @endphp
@@ -55,7 +53,7 @@
                             <div class="cart-item__body">
                                 <h3 class="cart-item__name"><a href="{{ $product ? route('products.show', $product) : '#' }}">{{ $product?->name ?? 'Unavailable product' }}</a></h3>
                                 <p class="cart-item__meta">{{ $product?->category?->name }}</p>
-                                <div class="cart-item__price">{{ $item->formatted_unit_price }} <span class="eyebrow product-price__unit">Crowns</span></div>
+                                <div class="cart-item__price">{{ number_format($item->product->price, 0, ',', ' ') }} <span class="eyebrow product-price__unit">Crowns</span></div>
                             </div>
                             <div class="cart-item__qty">
                                 <form action="{{ route('cart.update', $item) }}" method="POST" data-cart-update>
@@ -65,7 +63,7 @@
                                     <input type="number" id="cart-qty-{{ $item->id }}" name="quantity" class="input-base cart-item__qty-input" min="1" max="99" value="{{ $item->quantity }}" onchange="this.form.submit()" />
                                 </form>
                             </div>
-                            <div class="cart-item__total">{{ $item->formatted_line_total }} <span class="eyebrow product-price__unit">Crowns</span></div>
+                            <div class="cart-item__total">{{ number_format($item->lineTotal, 0, ',', ' ') }} <span class="eyebrow product-price__unit">Crowns</span></div>
                             <form action="{{ route('cart.remove', $item) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
@@ -86,38 +84,34 @@
                         @method('PATCH')
 
                         <fieldset class="cart-options__group">
-                            <legend>Delivery</legend>
-                            @foreach ($deliveryOptions as $key => $option)
-                                @php
-                                    $fee = $key === 'courier' && $subtotal >= 500 ? 0 : $option['fee'];
-                                @endphp
-                                <label class="cart-option @if ($selectedDelivery === $key) active @endif">
-                                    <input type="radio" name="delivery" value="{{ $key }}" @checked($selectedDelivery === $key) onchange="this.form.submit()" />
+                            <legend>Shipping</legend>
+                            @foreach ($shippingMethods as $method)
+                                <label class="cart-option @if ($selectedShippingMethodId == $method->id) active @endif">
+                                    <input type="radio" name="shipping_method_id" value="{{ $method->id }}" @checked($selectedShippingMethodId == $method->id) onchange="this.form.submit()" />
                                     <span class="cart-option__body">
-                                        <span class="cart-option__title">{{ $option['label'] }}</span>
-                                        <span class="cart-option__desc">{{ $option['description'] }}</span>
+                                        <span class="cart-option__title">{{ $method->name }}</span>
+                                        <span class="cart-option__desc">{{ $method->description ?? 'Est. ' . $method->estimated_days . ' days' }}</span>
                                     </span>
-                                    <span class="cart-option__price">{{ $fee === 0 ? 'Free' : $fmt($fee) . ' Crowns' }}</span>
+                                    <span class="cart-option__price">{{ $method->cost === 0 ? 'Free' : $fmt($method->cost) . ' Crowns' }}</span>
                                 </label>
                             @endforeach
-                            @error('delivery')
+                            @error('shipping_method_id')
                                 <p class="form-error">{{ $message }}</p>
                             @enderror
                         </fieldset>
 
                         <fieldset class="cart-options__group">
                             <legend>Payment</legend>
-                            @foreach ($paymentOptions as $key => $option)
-                                <label class="cart-option @if ($selectedPayment === $key) active @endif">
-                                    <input type="radio" name="payment" value="{{ $key }}" @checked($selectedPayment === $key) onchange="this.form.submit()" />
+                            @foreach ($paymentMethods as $method)
+                                <label class="cart-option @if ($selectedPaymentMethodId == $method->id) active @endif">
+                                    <input type="radio" name="payment_method_id" value="{{ $method->id }}" @checked($selectedPaymentMethodId == $method->id) onchange="this.form.submit()" />
                                     <span class="cart-option__body">
-                                        <span class="cart-option__title">{{ $option['label'] }}</span>
-                                        <span class="cart-option__desc">{{ $option['description'] }}</span>
+                                        <span class="cart-option__title">{{ $method->name }}</span>
+                                        <span class="cart-option__desc">{{ $method->description ?? '' }}</span>
                                     </span>
-                                    <span class="cart-option__price">{{ $option['fee'] === 0 ? 'Free' : $fmt($option['fee']) . ' Crowns' }}</span>
                                 </label>
                             @endforeach
-                            @error('payment')
+                            @error('payment_method_id')
                                 <p class="form-error">{{ $message }}</p>
                             @enderror
                         </fieldset>
@@ -128,12 +122,8 @@
                         <span>{{ $fmt($subtotal) }} <span class="eyebrow product-price__unit">Crowns</span></span>
                     </div>
                     <div class="cart-summary__row">
-                        <span>Delivery</span>
-                        <span>{{ $deliveryFee === 0 ? 'Free' : $fmt($deliveryFee) . ' Crowns' }}</span>
-                    </div>
-                    <div class="cart-summary__row">
-                        <span>Payment</span>
-                        <span>{{ $paymentFee === 0 ? 'Free' : $fmt($paymentFee) . ' Crowns' }}</span>
+                        <span>Shipping</span>
+                        <span>{{ $shippingCost === 0 ? 'Free' : $fmt($shippingCost) . ' Crowns' }}</span>
                     </div>
                     <div class="cart-summary__row cart-summary__total">
                         <span>Total</span>

@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductSpecification extends Model
 {
+    public $timestamps = false;
+
     protected $fillable = [
         'product_id',
-        'key',
+        'label',
         'value',
         'sort_order',
     ];

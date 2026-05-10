@@ -23,17 +23,18 @@ class CheckoutController extends Controller
 
     public function show(): View|RedirectResponse
     {
-        $cart = $this->cartResolver->resolve();
+        $items = $this->cartResolver->items();
 
-        if ($cart->items->isEmpty()) {
+        if ($items->isEmpty()) {
             return redirect()->route('cart.show')->with('cart_success', 'Your cart is empty.');
         }
 
         $defaults = $this->options->selectedOptions();
-        $totals = $this->options->totals($cart->subtotal(), $defaults['delivery'], $defaults['payment']);
+        $subtotal = $this->cartResolver->subtotal();
+        $totals = $this->options->totals($subtotal, $defaults['delivery'], $defaults['payment']);
 
         return view('checkout.show', [
-            'cart' => $cart,
+            'items' => $items,
             'deliveryOptions' => OrderOptionService::DELIVERY_OPTIONS,
             'paymentOptions' => OrderOptionService::PAYMENT_OPTIONS,
             'selectedDelivery' => $defaults['delivery'],
@@ -44,14 +45,14 @@ class CheckoutController extends Controller
 
     public function store(CheckoutRequest $request): RedirectResponse
     {
-        $cart = $this->cartResolver->resolve();
+        $items = $this->cartResolver->items();
 
-        if ($cart->items->isEmpty()) {
+        if ($items->isEmpty()) {
             return redirect()->route('cart.show')->with('cart_success', 'Your cart is empty.');
         }
 
-        foreach ($cart->items as $item) {
-            if (! $item->product || $item->quantity > $item->product->stock_quantity) {
+        foreach ($items as $item) {
+            if (! $item->product || $item->quantity > $item->product->stock) {
                 $name = $item->product?->name ?? 'a product';
                 return redirect()->route('cart.show')->with(
                     'cart_error',
@@ -61,42 +62,44 @@ class CheckoutController extends Controller
         }
 
         $validated = $request->validated();
-        $subtotal = $cart->subtotal();
-        $totals = $this->options->totals($subtotal, $validated['delivery'], $validated['payment']);
+        $subtotal = $this->cartResolver->subtotal();
+        $shippingMethod = \App\Models\ShippingMethod::findOrFail($validated['shipping_method_id']);
+        $shippingCost = $shippingMethod->cost;
+        $total = $subtotal + $shippingCost;
 
-        $order = retry(3, fn () => DB::transaction(function () use ($cart, $validated, $subtotal, $totals) {
+        $order = retry(3, fn () => DB::transaction(function () use ($items, $validated, $subtotal, $shippingCost, $total) {
             $order = Order::create([
-                'number' => $this->nextOrderNumber(),
+                'order_number' => $this->nextOrderNumber(),
                 'user_id' => Auth::id(),
-                'status' => 'new',
-                'currency' => $cart->currency,
-                'first_name' => $validated['first_name'],
-                'last_name' => $validated['last_name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'] ?? null,
-                'address' => $validated['address'],
-                'city' => $validated['city'],
-                'postal_code' => $validated['postal_code'],
-                'region' => $validated['region'],
+                'shipping_method_id' => $validated['shipping_method_id'],
+                'payment_method_id' => $validated['payment_method_id'],
+                'status' => 'pending',
+                'ship_first_name' => $validated['first_name'],
+                'ship_last_name' => $validated['last_name'],
+                'ship_street' => $validated['address'],
+                'ship_city' => $validated['city'],
+                'ship_postal_code' => $validated['postal_code'],
+                'ship_region' => $validated['region'],
+                'customer_email' => $validated['email'],
+                'customer_phone' => $validated['phone'] ?? null,
                 'notes' => $validated['notes'] ?? null,
-                'delivery_method' => $validated['delivery'],
-                'payment_method' => $validated['payment'],
                 'subtotal' => $subtotal,
-                'delivery_fee' => $totals['deliveryFee'],
-                'payment_fee' => $totals['paymentFee'],
-                'total' => $totals['total'],
+                'shipping_cost' => $shippingCost,
+                'discount' => 0,
+                'total' => $total,
+                'payment_status' => 'pending',
             ]);
 
-            foreach ($cart->items as $item) {
+            foreach ($items as $item) {
                 $this->createOrderItem($order, $item);
-                $item->product->decrement('stock_quantity', $item->quantity);
+                $item->product->decrement('stock', $item->quantity);
             }
 
-            $cart->items()->delete();
+            $this->cartResolver->clearItems();
             session()->forget(['cart.delivery', 'cart.payment']);
 
             return $order;
-        }), when: fn ($e) => str_contains($e->getMessage(), 'orders_number_unique'));
+        }), when: fn ($e) => str_contains($e->getMessage(), 'orders_order_number_unique'));
 
         return redirect()->route('checkout.success', $order);
     }
@@ -119,17 +122,16 @@ class CheckoutController extends Controller
         $order->items()->create([
             'product_id' => $product?->id,
             'product_name' => $product?->name ?? 'Unavailable product',
-            'product_slug' => $product?->slug,
-            'sku' => $product?->sku,
+            'product_sku' => $product?->sku ?? 'N/A',
             'quantity' => $item->quantity,
-            'unit_price' => $item->unit_price,
-            'line_total' => $item->line_total,
+            'unit_price' => $product?->price ?? 0,
+            'line_total' => ($product?->price ?? 0) * $item->quantity,
         ]);
     }
 
     private function nextOrderNumber(): string
     {
-        return 'WWE-' . now()->format('Ymd') . '-' . Str::upper(Str::random(6));
+        return 'WW-' . now()->format('Ymd') . '-' . Str::upper(Str::random(6));
     }
 
     private function canSeeOrder(Order $order): bool

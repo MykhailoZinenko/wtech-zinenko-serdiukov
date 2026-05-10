@@ -4,19 +4,12 @@
 @section('main-class', 'checkout-page')
 
 @php
-    $items = $cart->items;
     $fmt = fn ($n) => number_format((float) $n, 0, ',', ' ');
-    $currentDelivery = old('delivery', $selectedDelivery);
-    $currentPayment = old('payment', $selectedPayment);
-    $currentDelivery = array_key_exists($currentDelivery, $deliveryOptions) ? $currentDelivery : $selectedDelivery;
-    $currentPayment = array_key_exists($currentPayment, $paymentOptions) ? $currentPayment : $selectedPayment;
-    $currentDeliveryFee = $currentDelivery === 'courier' && $subtotal >= 500 ? 0 : $deliveryOptions[$currentDelivery]['fee'];
-    $currentPaymentFee = $paymentOptions[$currentPayment]['fee'];
-    $currentTotal = $subtotal + $currentDeliveryFee + $currentPaymentFee;
-    $deliveryFees = collect($deliveryOptions)
-        ->map(fn ($option, $key) => $key === 'courier' && $subtotal >= 500 ? 0 : $option['fee'])
-        ->all();
-    $paymentFees = collect($paymentOptions)->map(fn ($option) => $option['fee'])->all();
+    $selectedShipping = $shippingMethods->firstWhere('id', old('shipping_method_id', $selectedShippingMethodId)) ?? $shippingMethods->first();
+    $selectedPayment = $paymentMethods->firstWhere('id', old('payment_method_id', $selectedPaymentMethodId)) ?? $paymentMethods->first();
+    $currentShippingCost = $selectedShipping?->cost ?? 0;
+    $currentTotal = $subtotal + $currentShippingCost;
+    $shippingCosts = $shippingMethods->pluck('cost', 'id')->all();
     $user = auth()->user();
 @endphp
 
@@ -126,8 +119,7 @@
         novalidate
         data-checkout-form
         data-subtotal="{{ $subtotal }}"
-        data-delivery-fees='@json($deliveryFees)'
-        data-payment-fees='@json($paymentFees)'
+        data-shipping-costs='@json($shippingCosts)'
     >
         @csrf
         <div class="row g-4">
@@ -206,19 +198,18 @@
                         Delivery Method
                     </h2>
                     <div class="shipping-options" role="radiogroup" aria-label="Select delivery method">
-                        @foreach ($deliveryOptions as $key => $option)
-                            @php($fee = $key === 'courier' && $subtotal >= 500 ? 0 : $option['fee'])
+                        @foreach ($shippingMethods as $method)
                             <label class="shipping-option">
-                                <input type="radio" name="delivery" value="{{ $key }}" @checked($currentDelivery === $key) />
+                                <input type="radio" name="shipping_method_id" value="{{ $method->id }}" @checked(old('shipping_method_id', $selectedShippingMethodId) == $method->id) />
                                 <div class="shipping-option__info">
-                                    <span class="shipping-option__name">{{ $option['label'] }}</span>
-                                    <span class="shipping-option__desc">{{ $option['description'] }}</span>
+                                    <span class="shipping-option__name">{{ $method->name }}</span>
+                                    <span class="shipping-option__desc">{{ $method->description ?? 'Est. ' . $method->estimated_days . ' days' }}</span>
                                 </div>
-                                <span class="shipping-option__price">{{ $fee === 0 ? 'Free' : $fmt($fee) . ' Crowns' }}</span>
+                                <span class="shipping-option__price">{{ $method->cost === 0 ? 'Free' : $fmt($method->cost) . ' Crowns' }}</span>
                             </label>
                         @endforeach
                     </div>
-                    @error('delivery') <p class="form-error">{{ $message }}</p> @enderror
+                    @error('shipping_method_id') <p class="form-error">{{ $message }}</p> @enderror
                 </section>
 
                 <section class="card-base checkout-section" aria-labelledby="payment-title">
@@ -227,17 +218,17 @@
                         Payment Method
                     </h2>
                     <div class="payment-options" role="radiogroup" aria-label="Select payment method">
-                        @foreach ($paymentOptions as $key => $option)
+                        @foreach ($paymentMethods as $method)
                             <label class="payment-option">
-                                <input type="radio" name="payment" value="{{ $key }}" @checked($currentPayment === $key) />
+                                <input type="radio" name="payment_method_id" value="{{ $method->id }}" @checked(old('payment_method_id', $selectedPaymentMethodId) == $method->id) />
                                 <div class="payment-option__info">
-                                    <span class="payment-option__name">{{ $option['label'] }}</span>
-                                    <span class="payment-option__desc">{{ $option['description'] }}</span>
+                                    <span class="payment-option__name">{{ $method->name }}</span>
+                                    <span class="payment-option__desc">{{ $method->description ?? '' }}</span>
                                 </div>
                             </label>
                         @endforeach
                     </div>
-                    @error('payment') <p class="form-error">{{ $message }}</p> @enderror
+                    @error('payment_method_id') <p class="form-error">{{ $message }}</p> @enderror
                 </section>
             </div>
 
@@ -257,7 +248,7 @@
                                     @endif
                                 </div>
                                 <span class="checkout-summary__item-name">{{ $product?->name ?? 'Unavailable product' }} x{{ $item->quantity }}</span>
-                                <span class="checkout-summary__item-price">{{ $item->formatted_line_total }} Cr</span>
+                                <span class="checkout-summary__item-price">{{ number_format($item->lineTotal, 0, ',', ' ') }} Cr</span>
                             </div>
                         @endforeach
                     </div>
@@ -267,12 +258,8 @@
                         <span>{{ $fmt($subtotal) }} Crowns</span>
                     </div>
                     <div class="checkout-summary__row">
-                        <span>Delivery</span>
-                        <span data-checkout-delivery>{{ $currentDeliveryFee === 0 ? 'Free' : $fmt($currentDeliveryFee) . ' Crowns' }}</span>
-                    </div>
-                    <div class="checkout-summary__row">
-                        <span>Payment</span>
-                        <span data-checkout-payment>{{ $currentPaymentFee === 0 ? 'Free' : $fmt($currentPaymentFee) . ' Crowns' }}</span>
+                        <span>Shipping</span>
+                        <span data-checkout-shipping>{{ $currentShippingCost === 0 ? 'Free' : $fmt($currentShippingCost) . ' Crowns' }}</span>
                     </div>
                     <div class="checkout-summary__row checkout-summary__total">
                         <span>Total</span>

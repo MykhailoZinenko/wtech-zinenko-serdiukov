@@ -35,7 +35,7 @@
         @if ($product->category)
             <p class="eyebrow product-card__category">{{ $product->category->name }}</p>
         @endif
-        <x-product-rating :rating="$product->average_rating" :count="$product->total_reviews" />
+        <x-product-rating :rating="$product->avg_rating" :count="$product->review_count" />
         <h3 class="product-card__name"><a href="{{ route('products.show', $product) }}">{{ $product->name }}</a></h3>
         <p class="product-card__desc">{{ $product->short_description }}</p>
     </div>

@@ -25,7 +25,7 @@ class HomeController extends Controller
                     ->whereIn('category_id', $categoryIds);
 
                 $category->setAttribute('display_product_count', (clone $products)->count());
-                $categoryImage = $category->image_url
+                $categoryImage = $category->image_path
                     ?: (clone $products)->whereHas('primaryImage')->first()?->display_image_url
                     ?: "https://picsum.photos/seed/category-{$category->slug}/900/520";
 
