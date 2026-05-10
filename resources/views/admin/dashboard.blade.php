@@ -77,6 +77,7 @@
         <div class="adm-card">
             <div class="adm-card__hdr">
                 <span class="adm-card__title">Recent Orders</span>
+                <a href="#" class="btn-base btn-outline-gold btn-sm">View All</a>
             </div>
             @if ($recentOrders->isEmpty())
                 <div class="adm-card__body">
@@ -92,16 +93,18 @@
                                 <th class="col-hide-md">Items</th>
                                 <th class="col-hide-md">Total</th>
                                 <th>Status</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($recentOrders as $order)
                                 <tr>
-                                    <td><span class="td-heading">{{ $order->order_number }}</span></td>
+                                    <td><span class="tbl-link td-heading">{{ $order->order_number }}</span></td>
                                     <td>{{ $order->ship_first_name }} {{ $order->ship_last_name }}</td>
                                     <td class="col-hide-md">{{ $order->items_count ?? $order->items()->count() }}</td>
-                                    <td class="col-hide-md td-gold">{{ $fmt($order->total) }} Cr</td>
+                                    <td class="col-hide-md td-gold">{{ $fmt($order->total) }} ℂ</td>
                                     <td><span class="badge {{ $statusClass[$order->status] ?? 'badge--grey' }}">{{ ucfirst($order->status) }}</span></td>
+                                    <td><span class="btn-base btn-outline-gold btn-sm btn-icon"><i class="bi bi-arrow-right"></i></span></td>
                                 </tr>
                             @endforeach
                         </tbody>
