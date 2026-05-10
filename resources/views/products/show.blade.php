@@ -93,9 +93,16 @@
                         <button type="submit" class="btn-base btn-gold btn-flex" aria-label="Add {{ $product->name }} to cart" {{ $product->in_stock ? '' : 'disabled' }}>
                             <i class="bi bi-bag-plus"></i> Add to Cart
                         </button>
-                        <button type="button" class="wishlist-btn product-detail__wishlist" aria-label="Add to wishlist">
-                            <i class="bi bi-heart"></i>
-                        </button>
+                        @auth
+                            @php $isWishlisted = in_array($product->id, $wishlistedIds ?? []); @endphp
+                            <button type="button"
+                                class="wishlist-btn product-detail__wishlist"
+                                data-wishlist-toggle="{{ $product->id }}"
+                                aria-label="{{ $isWishlisted ? 'Remove from' : 'Add to' }} wishlist"
+                                @if($isWishlisted) style="color:var(--clr-red-light);border-color:var(--clr-red);" @endif>
+                                <i class="bi {{ $isWishlisted ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+                            </button>
+                        @endauth
                     </form>
                 </div>
 

@@ -55,6 +55,19 @@
   padding: 26px 32px 30px;
 }
 
+.login-card__options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  margin-top: 2px;
+}
+
+.login-card__options .form-check-wwe {
+  margin: 0;
+  font-size: var(--fs-sm);
+}
+
 .login-back {
   display: block;
   text-align: center;

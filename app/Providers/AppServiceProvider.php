@@ -49,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('cartCount', $count);
         });
 
-        View::composer('components.product-card', function ($view) {
+        View::composer(['components.product-card', 'products.show'], function ($view) {
             static $wishlistedIds = null;
 
             if ($wishlistedIds === null) {

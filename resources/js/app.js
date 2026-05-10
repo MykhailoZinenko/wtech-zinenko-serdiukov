@@ -2,6 +2,24 @@ import axios from 'axios';
 window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+(function () {
+    var scrollKey = 'scrollY';
+    var urlKey = 'scrollUrl';
+    var saved = sessionStorage.getItem(scrollKey);
+    var savedUrl = sessionStorage.getItem(urlKey);
+    sessionStorage.removeItem(scrollKey);
+    sessionStorage.removeItem(urlKey);
+    if (saved !== null && savedUrl === location.pathname + location.search) {
+        document.documentElement.style.scrollBehavior = 'auto';
+        window.scrollTo(0, parseInt(saved, 10));
+        document.documentElement.style.scrollBehavior = '';
+    }
+    document.addEventListener('submit', function () {
+        sessionStorage.setItem(scrollKey, String(window.scrollY));
+        sessionStorage.setItem(urlKey, location.pathname + location.search);
+    });
+})();
+
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
 if (csrfToken) {
     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
@@ -105,16 +123,40 @@ document.addEventListener('click', function (e) {
 });
 
 document.addEventListener('click', function (e) {
-    const btn = e.target.closest('.product-card__wishlist');
+    const btn = e.target.closest('[data-wishlist-toggle]');
     if (!btn) return;
 
-    const icon = btn.querySelector('i');
-    if (!icon) return;
+    e.preventDefault();
+    e.stopPropagation();
 
-    const active = icon.classList.contains('bi-heart-fill');
-    icon.className = active ? 'bi bi-heart' : 'bi bi-heart-fill';
-    btn.style.color = active ? '' : 'var(--clr-red-light)';
-    btn.style.borderColor = active ? '' : 'var(--clr-red)';
+    const productId = btn.dataset.wishlistToggle;
+    const icon = btn.querySelector('i');
+    if (!icon || !productId) return;
+
+    axios.post(`/wishlist/toggle/${productId}`)
+        .then(function (res) {
+            const wishlisted = res.data.wishlisted;
+            icon.className = wishlisted ? 'bi bi-heart-fill' : 'bi bi-heart';
+            btn.style.color = wishlisted ? 'var(--clr-red-light)' : '';
+            btn.style.borderColor = wishlisted ? 'var(--clr-red)' : '';
+
+            if (!wishlisted) {
+                const card = btn.closest('.col-sm-6, .col-xl-4, .col-xl-3');
+                if (card && card.closest('.account-page')) {
+                    card.style.transition = 'opacity .3s ease, transform .3s ease';
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(.95)';
+                    setTimeout(function () {
+                        card.remove();
+                        var grid = document.querySelector('.account-page .row.g-4');
+                        if (grid && !grid.children.length) {
+                            location.reload();
+                        }
+                    }, 300);
+                }
+            }
+        })
+        .catch(function () {});
 });
 
 (function () {

@@ -30,17 +30,16 @@
             @include('partials.account.sidebar')
         </div>
         <div class="col-lg-9">
-            <h1 class="account-content__title">Order History</h1>
-
-            @if ($orders->isEmpty())
-                <div class="card-base account-empty">
-                    <p>You haven't placed any orders yet.</p>
-                    <a href="{{ route('products.index') }}" class="btn-base btn-gold">
-                        <i class="bi bi-shop" aria-hidden="true"></i> Browse the Catalogue
-                    </a>
-                </div>
-            @else
-                <div class="card-base">
+            <div class="card-base account-info">
+                <h1 class="account-info__title">Order History</h1>
+                @if ($orders->isEmpty())
+                    <div class="account-empty">
+                        <p>You haven't placed any orders yet.</p>
+                        <a href="{{ route('products.index') }}" class="btn-base btn-gold">
+                            <i class="bi bi-shop" aria-hidden="true"></i> Browse the Catalogue
+                        </a>
+                    </div>
+                @else
                     <div class="order-list">
                         @foreach ($orders as $order)
                             <div class="order-row">
@@ -51,11 +50,11 @@
                             </div>
                         @endforeach
                     </div>
-                </div>
-                <div class="mt-4">
-                    {{ $orders->links() }}
-                </div>
-            @endif
+                    <div class="mt-3">
+                        {{ $orders->links() }}
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 </div>

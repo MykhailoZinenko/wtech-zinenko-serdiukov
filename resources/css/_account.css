@@ -63,13 +63,16 @@
   text-align: center;
 }
 
-.account-content__title {
-  font-size: 1.3rem;
-  margin-bottom: 24px;
-}
-
 .account-info {
   padding: 24px;
+}
+
+.account-info__title {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--clr-border);
+  letter-spacing: .06em;
 }
 
 .account-info__row {
@@ -97,7 +100,7 @@
 }
 
 .account-empty {
-  padding: 60px 24px;
+  padding: 40px 0;
   text-align: center;
   color: var(--clr-text-muted);
 }

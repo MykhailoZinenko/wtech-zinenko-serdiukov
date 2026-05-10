@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Models\Order;
 use App\Services\CartResolver;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,10 +29,13 @@ class LoginController extends Controller
         $request->authenticate();
         if ($user = Auth::user()) {
             $this->cartResolver->mergeGuestSessionInto($user, $guestSessionId);
+            Order::where('customer_email', $user->email)
+                ->whereNull('user_id')
+                ->update(['user_id' => $user->id]);
         }
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard'));
+        return redirect()->intended(route('account.profile'));
     }
 
     public function logout(Request $request): RedirectResponse

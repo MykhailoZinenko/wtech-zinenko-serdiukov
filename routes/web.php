@@ -135,7 +135,7 @@ Route::middleware('auth')->group(function () {
         Route::get('orders', [AccountController::class, 'orders'])->name('orders');
         Route::get('wishlist', [AccountController::class, 'wishlist'])->name('wishlist');
     });
-    Route::post('wishlist/toggle/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::post('wishlist/toggle/{product:id}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {

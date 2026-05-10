@@ -43,7 +43,7 @@
 
                 <div class="header-actions">
                     @auth
-                        <a href="{{ route('dashboard') }}" class="action-btn" aria-label="Your account">
+                        <a href="{{ route('account.profile') }}" class="action-btn" aria-label="Your account">
                             <i class="bi bi-person" aria-hidden="true"></i> Account
                         </a>
                     @else
