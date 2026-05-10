@@ -3,15 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddToCartRequest;
-use App\Http\Requests\UpdateCartOptionsRequest;
 use App\Http\Requests\UpdateCartItemRequest;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Services\CartResolver;
-use App\Services\OrderOptionService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -19,24 +16,14 @@ class CartController extends Controller
 {
     public function __construct(
         private readonly CartResolver $resolver,
-        private readonly OrderOptionService $options,
     ) {
     }
 
     public function show(): View
     {
-        $items = $this->resolver->items();
-        $selected = $this->options->selectedOptions();
-        $subtotal = $this->resolver->subtotal();
-        $totals = $this->options->totals($subtotal, $selected['delivery'], $selected['payment']);
-
         return view('cart.show', [
-            'items' => $items,
-            'deliveryOptions' => OrderOptionService::DELIVERY_OPTIONS,
-            'paymentOptions' => OrderOptionService::PAYMENT_OPTIONS,
-            'selectedDelivery' => $selected['delivery'],
-            'selectedPayment' => $selected['payment'],
-            ...$totals,
+            'items' => $this->resolver->items(),
+            'subtotal' => $this->resolver->subtotal(),
         ]);
     }
 
@@ -67,16 +54,6 @@ class CartController extends Controller
         }
 
         return back()->with('cart_success', 'Cart updated.');
-    }
-
-    public function updateOptions(UpdateCartOptionsRequest $request): RedirectResponse
-    {
-        session([
-            'cart.delivery' => $request->deliveryMethod(),
-            'cart.payment' => $request->paymentMethod(),
-        ]);
-
-        return back()->with('cart_success', 'Delivery and payment updated.');
     }
 
     public function remove(CartItem $item): Response

@@ -79,55 +79,17 @@
             <div class="col-lg-4 mt-4 mt-lg-0">
                 <aside class="card-base sticky-sidebar cart-summary">
                     <h2 class="card-title">Order Summary</h2>
-                    <form action="{{ route('cart.options.update') }}" method="POST" class="cart-options">
-                        @csrf
-                        @method('PATCH')
-
-                        <fieldset class="cart-options__group">
-                            <legend>Shipping</legend>
-                            @foreach ($shippingMethods as $method)
-                                <label class="cart-option @if ($selectedShippingMethodId == $method->id) active @endif">
-                                    <input type="radio" name="shipping_method_id" value="{{ $method->id }}" @checked($selectedShippingMethodId == $method->id) onchange="this.form.submit()" />
-                                    <span class="cart-option__body">
-                                        <span class="cart-option__title">{{ $method->name }}</span>
-                                        <span class="cart-option__desc">{{ $method->description ?? 'Est. ' . $method->estimated_days . ' days' }}</span>
-                                    </span>
-                                    <span class="cart-option__price">{{ $method->cost === 0 ? 'Free' : $fmt($method->cost) . ' Crowns' }}</span>
-                                </label>
-                            @endforeach
-                            @error('shipping_method_id')
-                                <p class="form-error">{{ $message }}</p>
-                            @enderror
-                        </fieldset>
-
-                        <fieldset class="cart-options__group">
-                            <legend>Payment</legend>
-                            @foreach ($paymentMethods as $method)
-                                <label class="cart-option @if ($selectedPaymentMethodId == $method->id) active @endif">
-                                    <input type="radio" name="payment_method_id" value="{{ $method->id }}" @checked($selectedPaymentMethodId == $method->id) onchange="this.form.submit()" />
-                                    <span class="cart-option__body">
-                                        <span class="cart-option__title">{{ $method->name }}</span>
-                                        <span class="cart-option__desc">{{ $method->description ?? '' }}</span>
-                                    </span>
-                                </label>
-                            @endforeach
-                            @error('payment_method_id')
-                                <p class="form-error">{{ $message }}</p>
-                            @enderror
-                        </fieldset>
-                    </form>
-
                     <div class="cart-summary__row">
                         <span>Subtotal</span>
                         <span>{{ $fmt($subtotal) }} <span class="eyebrow product-price__unit">Crowns</span></span>
                     </div>
                     <div class="cart-summary__row">
-                        <span>Shipping</span>
-                        <span>{{ $shippingCost === 0 ? 'Free' : $fmt($shippingCost) . ' Crowns' }}</span>
+                        <span>Delivery</span>
+                        <span>{{ $subtotal >= 500 ? 'Free' : 'Calculated at checkout' }}</span>
                     </div>
                     <div class="cart-summary__row cart-summary__total">
                         <span>Total</span>
-                        <span>{{ $fmt($total) }} <span class="eyebrow product-price__unit">Crowns</span></span>
+                        <span>{{ $fmt($subtotal) }} <span class="eyebrow product-price__unit">Crowns</span></span>
                     </div>
                     <a href="{{ route('checkout.show') }}" class="btn-base btn-gold btn-full" style="margin-top:20px;">
                         <i class="bi bi-lock" aria-hidden="true"></i> Proceed to Checkout

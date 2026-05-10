@@ -20,7 +20,6 @@ Route::get('shop/{product:slug}', [ProductController::class, 'show'])->name('pro
 
 Route::get('cart', [CartController::class, 'show'])->name('cart.show');
 Route::post('cart', [CartController::class, 'add'])->name('cart.add');
-Route::patch('cart/options', [CartController::class, 'updateOptions'])->name('cart.options.update');
 Route::patch('cart/items/{item}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('cart/items/{item}', [CartController::class, 'remove'])->name('cart.remove');
 
