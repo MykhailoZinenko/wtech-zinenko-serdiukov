@@ -7,7 +7,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     var saved = sessionStorage.getItem(key);
     if (saved !== null) {
         sessionStorage.removeItem(key);
+        document.documentElement.style.scrollBehavior = 'auto';
         window.scrollTo(0, parseInt(saved, 10));
+        document.documentElement.style.scrollBehavior = '';
     }
     document.addEventListener('submit', function () {
         sessionStorage.setItem(key, String(window.scrollY));
